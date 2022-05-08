@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @import './post-text.css';
-@import './remirror-editor.css';
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, Inter, sans-serif;

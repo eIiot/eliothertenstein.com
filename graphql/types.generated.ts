@@ -34,10 +34,10 @@ export type Mutation = {
 }
 
 export type MutationCreatePostArgs = {
+  content: Scalars['String']
   excerpt?: InputMaybe<Scalars['String']>
   featureImage?: InputMaybe<Scalars['String']>
   slug: Scalars['String']
-  text: Scalars['String']
   title: Scalars['String']
 }
 
@@ -46,22 +46,22 @@ export type MutationDeletePostArgs = {
 }
 
 export type MutationUpdatePostArgs = {
+  content?: InputMaybe<Scalars['String']>
   excerpt?: InputMaybe<Scalars['String']>
   featureImage?: InputMaybe<Scalars['String']>
   slug: Scalars['String']
-  text?: InputMaybe<Scalars['String']>
   title?: InputMaybe<Scalars['String']>
 }
 
 export type Post = {
   __typename?: 'Post'
+  content: Scalars['String']
   createdAt: Scalars['DateTime']
   excerpt?: Maybe<Scalars['String']>
   featureImage?: Maybe<Scalars['String']>
   id: Scalars['ID']
   publishedAt?: Maybe<Scalars['DateTime']>
   slug: Scalars['String']
-  text: Scalars['String']
   title: Scalars['String']
   updatedAt: Scalars['DateTime']
 }
@@ -84,14 +84,14 @@ export type PostFragmentFragment = {
   publishedAt?: any | null
   slug: string
   title: string
-  text: string
+  content: string
   excerpt?: string | null
   featureImage?: string | null
 }
 
 export type CreatePostMutationVariables = Exact<{
   title: Scalars['String']
-  text: Scalars['String']
+  content: Scalars['String']
   slug: Scalars['String']
   excerpt?: InputMaybe<Scalars['String']>
   featureImage?: InputMaybe<Scalars['String']>
@@ -107,7 +107,7 @@ export type CreatePostMutation = {
     publishedAt?: any | null
     slug: string
     title: string
-    text: string
+    content: string
     excerpt?: string | null
     featureImage?: string | null
   } | null
@@ -115,7 +115,7 @@ export type CreatePostMutation = {
 
 export type UpdatePostMutationVariables = Exact<{
   title?: InputMaybe<Scalars['String']>
-  text?: InputMaybe<Scalars['String']>
+  content?: InputMaybe<Scalars['String']>
   slug: Scalars['String']
   excerpt?: InputMaybe<Scalars['String']>
   featureImage?: InputMaybe<Scalars['String']>
@@ -131,7 +131,7 @@ export type UpdatePostMutation = {
     publishedAt?: any | null
     slug: string
     title: string
-    text: string
+    content: string
     excerpt?: string | null
     featureImage?: string | null
   } | null
@@ -151,7 +151,7 @@ export type DeletePostMutation = {
     publishedAt?: any | null
     slug: string
     title: string
-    text: string
+    content: string
     excerpt?: string | null
     featureImage?: string | null
   } | null
@@ -167,7 +167,7 @@ export type GetPostQuery = {
     __typename?: 'Post'
     id: string
     title: string
-    text: string
+    content: string
     publishedAt?: any | null
     createdAt: any
     slug: string
@@ -186,7 +186,7 @@ export type GetPostsQuery = {
     publishedAt?: any | null
     slug: string
     title: string
-    text: string
+    content: string
     excerpt?: string | null
     featureImage?: string | null
   } | null> | null
@@ -200,7 +200,7 @@ export const PostFragmentFragmentDoc = gql`
     publishedAt
     slug
     title
-    text
+    content
     excerpt
     featureImage
   }
@@ -208,14 +208,14 @@ export const PostFragmentFragmentDoc = gql`
 export const CreatePostDocument = gql`
   mutation createPost(
     $title: String!
-    $text: String!
+    $content: String!
     $slug: String!
     $excerpt: String
     $featureImage: String
   ) {
     createPost(
       title: $title
-      text: $text
+      content: $content
       slug: $slug
       excerpt: $excerpt
       featureImage: $featureImage
@@ -244,7 +244,7 @@ export type CreatePostMutationFn = Apollo.MutationFunction<
  * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
  *   variables: {
  *      title: // value for 'title'
- *      text: // value for 'text'
+ *      content: // value for 'content'
  *      slug: // value for 'slug'
  *      excerpt: // value for 'excerpt'
  *      featureImage: // value for 'featureImage'
@@ -274,14 +274,14 @@ export type CreatePostMutationOptions = Apollo.BaseMutationOptions<
 export const UpdatePostDocument = gql`
   mutation updatePost(
     $title: String
-    $text: String
+    $content: String
     $slug: String!
     $excerpt: String
     $featureImage: String
   ) {
     updatePost(
       title: $title
-      text: $text
+      content: $content
       slug: $slug
       excerpt: $excerpt
       featureImage: $featureImage
@@ -310,7 +310,7 @@ export type UpdatePostMutationFn = Apollo.MutationFunction<
  * const [updatePostMutation, { data, loading, error }] = useUpdatePostMutation({
  *   variables: {
  *      title: // value for 'title'
- *      text: // value for 'text'
+ *      content: // value for 'content'
  *      slug: // value for 'slug'
  *      excerpt: // value for 'excerpt'
  *      featureImage: // value for 'featureImage'
@@ -392,7 +392,7 @@ export const GetPostDocument = gql`
     post(slug: $slug) {
       id
       title
-      text
+      content
       publishedAt
       createdAt
       slug

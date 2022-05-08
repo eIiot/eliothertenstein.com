@@ -1,8 +1,8 @@
 import CustomImage from '../components/articles/CustomImage'
-import StyledLink from '../components/articles/StyledLink'
 import CustomGridLayout from '../components/home/CustomGridLayout'
-import SiteLayout from '../components/layouts/SiteLayout'
+import SiteLayout, { getLayout } from '../components/layouts/SiteLayout'
 import { ArrowRight } from 'iconoir-react'
+import Link from 'next/link'
 import type { NextPage } from 'next'
 // import Head from 'next/head'
 // import Image from 'next/image'
@@ -16,9 +16,9 @@ const Home: NextPage = () => {
         <p className="pb-3">
           Hi! I&apos;m Eliot, a student and developer based in Berkeley, CA.
           I&apos;m most well known for{' '}
-          <StyledLink href="https://www.therailmap.com" target="_blank">
+          <Link href="https://www.therailmap.com" target="_blank">
             The Rail Map
-          </StyledLink>
+          </Link>
           , a hobby project of mine that visualizes railroads throughout the
           world, and helps people track their trains.
         </p>
@@ -34,23 +34,23 @@ const Home: NextPage = () => {
         <div className="flex flex-col space-y-3">
           <div className="flex justify-between">
             <span>Twitter</span>
-            <StyledLink
+            <Link
               href="
             https://twitter.com/eiioth"
               target="_blank"
             >
               @eiioth
-            </StyledLink>
+            </Link>
           </div>
           <div className="flex justify-between">
             <span>Github</span>
-            <StyledLink
+            <Link
               href="
             https://twitter.com/eiioth"
               target="_blank"
             >
               @eiiot
-            </StyledLink>
+            </Link>
           </div>
         </div>
       </CustomGridLayout>
@@ -64,5 +64,7 @@ const Home: NextPage = () => {
     </div>
   )
 }
+
+Home.getLayout = (page) => getLayout(page)
 
 export default Home

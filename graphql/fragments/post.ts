@@ -8,7 +8,7 @@ export const PostFragment = gql`
     publishedAt
     slug
     title
-    text
+    content
     excerpt
     featureImage
   }

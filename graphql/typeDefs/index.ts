@@ -10,7 +10,7 @@ export default gql`
     publishedAt: DateTime
     slug: String!
     title: String!
-    text: String!
+    content: String!
     excerpt: String
     featureImage: String
   }
@@ -23,14 +23,14 @@ export default gql`
   type Mutation {
     createPost(
       title: String!
-      text: String!
+      content: String!
       slug: String!
       excerpt: String
       featureImage: String
     ): Post
     updatePost(
       title: String
-      text: String
+      content: String
       slug: String!
       excerpt: String
       featureImage: String

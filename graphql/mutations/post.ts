@@ -4,14 +4,14 @@ import { gql } from 'apollo-server-micro'
 export const CREATE_POST = gql`
   mutation createPost(
     $title: String!
-    $text: String!
+    $content: String!
     $slug: String!
     $excerpt: String
     $featureImage: String
   ) {
     createPost(
       title: $title
-      text: $text
+      content: $content
       slug: $slug
       excerpt: $excerpt
       featureImage: $featureImage
@@ -25,14 +25,14 @@ export const CREATE_POST = gql`
 export const UPDATE_POST = gql`
   mutation updatePost(
     $title: String
-    $text: String
+    $content: String
     $slug: String!
     $excerpt: String
     $featureImage: String
   ) {
     updatePost(
       title: $title
-      text: $text
+      content: $content
       slug: $slug
       excerpt: $excerpt
       featureImage: $featureImage

@@ -2,7 +2,7 @@ import { Context } from '../../../context'
 
 export async function updatePost(
   parent,
-  { title, text, slug, excerpt, featureImage },
+  { title, content, slug, excerpt, featureImage },
   ctx: Context
 ) {
   const { prisma } = ctx
@@ -12,7 +12,7 @@ export async function updatePost(
     },
     data: {
       title,
-      text,
+      content,
       slug,
       excerpt,
       featureImage,

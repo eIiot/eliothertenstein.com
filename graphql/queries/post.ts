@@ -6,7 +6,7 @@ export const GET_POST = gql`
     post(slug: $slug) {
       id
       title
-      text
+      content
       publishedAt
       createdAt
       slug

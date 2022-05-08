@@ -1,4 +1,4 @@
-import RemirrorPostEditor from './RemirrorPostEditor'
+import EditorJSPostEditor from './EditorJSPostEditor'
 import { useGetPostQuery } from '../../graphql/types.generated'
 import ErrorNotFound from '../ErrorNotFound'
 
@@ -13,17 +13,19 @@ const PostEditor = (props: PostEditorProps) => {
 
   const { data, loading, error } = useGetPostQuery({
     variables: {
-      slug, // value for 'slug'
+      slug: 'test',
     },
   })
+
+  console.log('data', data)
 
   // return the post content
   return (
     <div className="w-full">
       {!loading ? (
-        data && data.post && data.post.text ? (
-          <div className="space-y-3 px-4 py-8">
-            <RemirrorPostEditor slug={slug} text={data.post.text} />
+        data && data.post && data.post.content ? (
+          <div className="space-y-3 px-24 py-8">
+            <EditorJSPostEditor content={data.post.content} slug={slug} />
           </div>
         ) : (
           <ErrorNotFound />
