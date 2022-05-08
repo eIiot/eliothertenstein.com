@@ -1,8 +1,13 @@
+import { getContext } from '../../../graphql/context'
+import { schema } from '../../../graphql/schema'
+import { ApolloServer, gql } from 'apollo-server-micro'
 import Cors from 'micro-cors'
-import schema from 'graphql/schema'
-import { ApolloServer } from 'apollo-server-micro'
 import { PageConfig } from 'next'
-import { createContext } from 'graphql/context'
+
+const server = new ApolloServer({
+  schema,
+  context: getContext(),
+})
 
 export const config: PageConfig = {
   api: {
@@ -11,11 +16,6 @@ export const config: PageConfig = {
 }
 
 const cors = Cors()
-
-const server = new ApolloServer({
-  context: createContext,
-  schema,
-})
 
 const startServer = server.start()
 

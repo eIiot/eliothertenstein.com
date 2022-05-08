@@ -1,4 +1,5 @@
 import { ReactChildren } from 'react'
+import { withProviders } from '../providers/withProviders'
 import Sidebar from '../Sidebar'
 
 interface LayoutProps {
@@ -17,6 +18,8 @@ const SiteLayout = (props: LayoutProps) => {
   )
 }
 
-export const getLayout = (page: JSX.Element) => <SiteLayout>{page}</SiteLayout>
+export const getLayout = withProviders((page: JSX.Element) => (
+  <SiteLayout>{page}</SiteLayout>
+))
 
 export default SiteLayout

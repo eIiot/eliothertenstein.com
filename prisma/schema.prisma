@@ -7,28 +7,147 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// model User {
+//   id           String     @id @default(cuid())
+//   createdAt    DateTime   @default(now())
+//   role         Role       @default(USER)
+//   username     String     @unique @db.VarChar(16)
+//   twitterId    String     @unique
+//   authikId     String?    @unique
+//   email        String?    @unique
+//   pendingEmail String?
+//   avatar       String?
+//   description  String?    @db.VarChar(256)
+//   location     String?    @db.VarChar(32)
+//   name         String?
+//   comments     Comment[]
+//   reactions    Reaction[]
+//   // posts        Post[]
+//   stacks       Stack[]
+// }
+
+// enum Role {
+//   BLOCKED
+//   USER
+//   ADMIN
+// }
+
+// model Comment {
+//   id         String     @id @default(cuid())
+//   createdAt  DateTime   @default(now())
+//   updatedAt  DateTime   @updatedAt
+//   text       String     @db.Text
+//   audio      Audio?
+//   reactions  Reaction[]
+//   author     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId     String
+//   // post       Post?      @relation(fields: [postId], references: [id], onDelete: Cascade)
+//   stack      Stack?     @relation(fields: [stackId], references: [id], onDelete: Cascade)
+//   bookmarkId String?
+//   questionId String?
+//   postId     String?
+//   stackId    String?
+
+//   @@index([bookmarkId])
+//   @@index([questionId])
+//   @@index([postId])
+//   @@index([stackId])
+// }
+
+// model Audio {
+//   id            String   @id @default(cuid())
+//   createdAt     DateTime @default(now())
+//   updatedAt     DateTime @updatedAt
+//   plays         Int
+//   waveform      Json
+//   url           String
+//   transcription String
+//   comment       Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+//   commentId     String   @unique
+// }
+
 model Post {
-  id        String     @id @default(cuid())
-  slug      String     @unique
-  title     String
-  content   String?
-  published Boolean    @default(false)
-  createdAt DateTime   @default(now()) @map(name: "created_at")
+  id           String     @id @default(cuid())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  publishedAt  DateTime?
+  // author       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slug         String     @unique
+  title        String     @db.VarChar(280)
+  text         String     @db.Text
+  excerpt      String     @db.VarChar(280)
+  featureImage String?
+  // comments     Comment[]
+  // reactions    Reaction[]
+  // history      PostEdit[]
+  // userId       String
+
+  @@index([publishedAt])
 }
 
-model Comment {
-  id        String     @default(cuid()) @id
-  text      String
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  String?
-}
+// model PostEdit {
+//   id           String   @id @default(cuid())
+//   createdAt    DateTime @default(now())
+//   text         String   @db.Text
+//   title        String   @db.VarChar(280)
+//   excerpt      String   @db.VarChar(280)
+//   featureImage String?
+//   post         Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+//   postId       String?
 
-model User {
-  id            String       @default(cuid()) @id
-  name          String?
-  email         String?   @unique
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  comments      Comment[]
-  @@map(name: "users")
-}
+//   @@index([postId])
+// }
+
+// model Tag {
+//   id        String     @id @default(cuid())
+//   name      String     @unique
+//   stacks    Stack[]
+// }
+
+// model Stack {
+//   id          String     @id @default(cuid())
+//   createdAt   DateTime   @default(now())
+//   updatedAt   DateTime   @updatedAt
+//   name        String
+//   slug        String?    @unique
+//   description String     @db.VarChar(280)
+//   image       String
+//   url         String
+//   tags        Tag[]
+//   comments    Comment[]
+//   reactions   Reaction[]
+//   users       User[]
+// }
+
+// model Reaction {
+//   id         String    @id @default(cuid())
+//   createdAt  DateTime  @default(now())
+//   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId     String
+//   comment    Comment?  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+//   post       Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
+//   stack      Stack?    @relation(fields: [stackId], references: [id], onDelete: Cascade)
+//   commentId  String?
+//   bookmarkId String?
+//   questionId String?
+//   postId     String?
+//   stackId    String?
+
+//   @@index([commentId])
+//   @@index([bookmarkId])
+//   @@index([questionId])
+//   @@index([postId])
+//   @@index([stackId])
+// }
+
+// enum EmailSubscriptionType {
+//   HACKER_NEWS
+// }
+
+// model EmailSubscription {
+//   email String
+//   type  EmailSubscriptionType
+
+//   @@unique(fields: [email, type], name: "emailAndType")
+//   @@index([email])
+// }

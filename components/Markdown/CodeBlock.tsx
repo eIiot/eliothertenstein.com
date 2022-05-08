@@ -1,6 +1,6 @@
 import React from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
-export function CodeBlock({
+export const CodeBlock = ({
   text,
   language,
   ...rest
@@ -8,16 +8,16 @@ export function CodeBlock({
   text: string
   language: string
   [key: string]: any
-}) {
+}) => {
   return (
     <SyntaxHighlighter
+      language={language}
       showLineNumbers={false}
       useInlineStyles={false}
-      language={language}
-      children={text}
-      style=""
       wrapLongLines
       {...rest}
-    />
+    >
+      {text}
+    </SyntaxHighlighter>
   )
 }

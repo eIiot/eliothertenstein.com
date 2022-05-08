@@ -1,33 +1,19 @@
-import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
 import PostEditor from '../../../components/editor/PostEditor'
 import { getLayout } from '../../../components/layouts/SiteLayout'
 import PostsList from '../../../components/posts/PostsList'
 import ListView from '../../../components/views/ListView'
+import { useRouter } from 'next/router'
 
 const Editor = () => {
   const router = useRouter()
-  const { slug } = router.query
-  const [post, setPost] = useState<{
-    id: string
-    title: string
-    content: string
-    published: boolean
-    createdAt: string
-  }>()
+  const { slug } = router.query as { slug: string }
 
-  useEffect(() => {
-    fetch(`/api/posts/${slug}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setPost(data)
-      })
-  }, [slug])
+  console.log('slug', slug)
 
-  return <PostEditor id={id} />
+  return <PostEditor slug={slug} />
 }
 
 Editor.getLayout = (page: React.ReactNode) =>
-  getLayout(<ListView list={<PostsList />} detail={page} showDetail={true} />)
+  getLayout(<ListView detail={page} list={<PostsList />} showDetail />)
 
 export default Editor

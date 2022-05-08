@@ -1,3 +1,5 @@
+import { CodeBlock } from './CodeBlock'
+import StyledLink from '../articles/StyledLink'
 import deepmerge from 'deepmerge'
 import Link from 'next/link'
 import * as React from 'react'
@@ -7,8 +9,6 @@ import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
 import linkifyRegex from 'remark-linkify-regex'
-
-import { CodeBlock } from './CodeBlock'
 
 const LinkRenderer = ({ href, ...rest }: any) => {
   // auto-link headings
@@ -26,17 +26,17 @@ const LinkRenderer = ({ href, ...rest }: any) => {
   }
   try {
     const url = new URL(href)
-    if (url.origin === 'https://brianlovin.com') {
+    if (url.origin === 'https://eliothertenstein.com') {
       return (
         <Link href={href}>
           <a {...rest} />
         </Link>
       )
     }
-    return <a target="_blank" rel="noopener" href={href} {...rest} />
+    return <StyledLink href={href} {...rest} />
   } catch (e) {
     console.error(e)
-    return <a target="_blank" rel="noopener" href={href} {...rest} />
+    return <StyledLink href={href} {...rest} />
   }
 }
 
@@ -50,8 +50,8 @@ const getComponentsForVariant = (variant) => {
           const language = /language-(\w+)/.exec(className || '')?.[1]
           return !inline && language ? (
             <CodeBlock
-              text={String(children).replace(/\n$/, '')}
               language={language}
+              text={String(children).replace(/\n$/, '')}
               {...props}
             />
           ) : (
@@ -62,8 +62,8 @@ const getComponentsForVariant = (variant) => {
           const language = /language-(\w+)/.exec(className || '')?.[1]
           return !inline && language ? (
             <CodeBlock
-              text={String(children).replace(/\n$/, '')}
               language={language}
+              text={String(children).replace(/\n$/, '')}
               {...props}
             />
           ) : (
@@ -91,8 +91,8 @@ const getComponentsForVariant = (variant) => {
           const language = /language-(\w+)/.exec(className || '')?.[1]
           return !inline && language ? (
             <CodeBlock
-              text={String(children).replace(/\n$/, '')}
               language={language}
+              text={String(children).replace(/\n$/, '')}
               {...props}
             />
           ) : (
@@ -124,13 +124,13 @@ export const MarkdownRenderer = (props: any) => {
   return (
     <Markdown
       {...rest}
-      remarkPlugins={[remarkGfm, linkifyRegex(/^(?!.*\bRT\b)(?:.+\s)?@\w+/i)]}
+      components={components}
       rehypePlugins={[
         [rehypeSanitize, schema],
         rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
       ]}
-      components={components}
+      remarkPlugins={[remarkGfm, linkifyRegex(/^(?!.*\bRT\b)(?:.+\s)?@\w+/i)]}
     >
       {children}
     </Markdown>

@@ -1,48 +1,51 @@
+import { useUpdatePostMutation } from '../../graphql/types.generated'
+import { Remirror, useHelpers, useKeymap, useRemirror } from '@remirror/react'
+import { useCallback, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import {
   BoldExtension,
   ItalicExtension,
   UnderlineExtension,
   MarkdownExtension,
 } from 'remirror/extensions'
-import { Remirror, useHelpers, useKeymap, useRemirror } from '@remirror/react'
 import 'remirror/styles/all.css'
-import { useCallback } from 'react'
 
-interface RemirrorEditorProps {
+interface RemirrorPostEditorProps {
   text: string
-  id: string | string[] | undefined
+  slug: string
 }
 
-const RemirrorEditor = (props: RemirrorEditorProps) => {
-  const { text, id } = props
+const RemirrorPostEditor = (props: RemirrorPostEditorProps) => {
+  const { text, slug } = props
+
+  const [updatePost] = useUpdatePostMutation()
+
   const hooks = [
     () => {
-      const { getHTML } = useHelpers()
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const { getMarkdown } = useHelpers()
 
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       const handleSaveShortcut = useCallback(
         ({ state }) => {
-          console.log(`Save to backend`)
+          console.log(`Save to backend: ${getMarkdown(state)}`)
 
-          fetch(`/api/posts/${id}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
+          updatePost({
+            variables: {
+              slug,
+              text: getMarkdown(state),
             },
-            body: JSON.stringify({
-              content: getHTML(state),
-            }),
           })
-            .then((res) => res.json())
-            .then((data) => {
-              console.log(data)
-            })
+
+          toast.success('Saved!')
 
           return true // Prevents any further key handlers from being run.
         },
-        [getHTML]
+        [getMarkdown]
       )
 
       // "Mod" means platform agnostic modifier key - i.e. Ctrl on Windows, or Cmd on MacOS
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       useKeymap('Mod-s', handleSaveShortcut)
     },
   ]
@@ -52,6 +55,7 @@ const RemirrorEditor = (props: RemirrorEditorProps) => {
       new BoldExtension(),
       new ItalicExtension(),
       new UnderlineExtension(),
+      new MarkdownExtension(),
     ],
 
     // Set the initial content.
@@ -71,9 +75,12 @@ const RemirrorEditor = (props: RemirrorEditorProps) => {
   return (
     <div className="remirror-theme">
       {/* the className is used to define css variables necessary for the editor */}
-      <Remirror manager={manager} initialContent={state} hooks={hooks} />
+      <Remirror hooks={hooks} initialContent={state} manager={manager} />
     </div>
   )
 }
 
-export default RemirrorEditor
+export default RemirrorPostEditor
+function useParams<T>(): [any] {
+  throw new Error('Function not implemented.')
+}

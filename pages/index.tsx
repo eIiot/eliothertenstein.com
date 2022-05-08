@@ -1,9 +1,9 @@
-import { ArrowRight } from 'iconoir-react'
-import type { NextPage } from 'next'
+import CustomImage from '../components/articles/CustomImage'
+import StyledLink from '../components/articles/StyledLink'
 import CustomGridLayout from '../components/home/CustomGridLayout'
 import SiteLayout from '../components/layouts/SiteLayout'
-import StyledLink from '../components/articles/StyledLink'
-import CustomImage from '../components/articles/CustomImage'
+import { ArrowRight } from 'iconoir-react'
+import type { NextPage } from 'next'
 // import Head from 'next/head'
 // import Image from 'next/image'
 
@@ -14,8 +14,8 @@ const Home: NextPage = () => {
 
       <CustomGridLayout title="">
         <p className="pb-3">
-          Hi! I'm Eliot, a student and developer based in Berkeley, CA. I'm most
-          well known for{' '}
+          Hi! I&apos;m Eliot, a student and developer based in Berkeley, CA.
+          I&apos;m most well known for{' '}
           <StyledLink href="https://www.therailmap.com" target="_blank">
             The Rail Map
           </StyledLink>
@@ -24,10 +24,10 @@ const Home: NextPage = () => {
         </p>
 
         <p className="pb-3">
-          As you might have guessed, I'm decently into transit, including all
-          things trains, planes, busses etc. I also enjoy cycling, photography,
-          and writing bad takes on twitter, all in my much-too-limited free
-          time.
+          As you might have guessed, I&apos;m decently into transit, including
+          all things trains, planes, busses etc. I also enjoy cycling,
+          photography, and writing bad takes on twitter, all in my
+          much-too-limited free time.
         </p>
       </CustomGridLayout>
       <CustomGridLayout title="Social">
@@ -56,9 +56,9 @@ const Home: NextPage = () => {
       </CustomGridLayout>
       <CustomGridLayout title="Location">
         <CustomImage
-          src="https://brianlovin.com/_next/image?url=%2Fstatic%2Fimg%2Fsf.png&w=1920&q=100"
           alt="map"
           caption="San Francisco, CA"
+          src="https://brianlovin.com/_next/image?url=%2Fstatic%2Fimg%2Fsf.png&w=1920&q=100"
         />
       </CustomGridLayout>
     </div>

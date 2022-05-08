@@ -1,6 +1,6 @@
 import '../styles/globals.css'
-import type { AppProps } from 'next/app'
 import SiteLayout from '../components/layouts/SiteLayout'
+import type { AppProps } from 'next/app'
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const getLayout =
