@@ -2,83 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
-.prose {
+.post-text {
   @apply text-gray-700 dark:text-gray-400;
 }
 
-.prose blockquote {
+.post-text blockquote {
   @apply border-l-2 border-gray-200 font-normal dark:border-gray-800 dark:text-gray-400;
 }
 
-.prose figure {
+.post-text blockquote p:first-child {
+  @apply ml-2;
+}
+
+.post-text figure {
   @apply md:-mx-6;
 }
 
-.prose img {
+.post-text img {
   @apply w-full rounded-md;
 }
 
-.prose a {
-  @apply break-words font-normal text-blue-600 no-underline hover:underline dark:text-blue-500;
+.post-text a {
+  @apply relative break-words font-normal text-blue-500 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:translate-y-1 after:bg-blue-300 after:opacity-0 after:transition after:duration-200 after:ease-in-out hover:after:translate-y-0 hover:after:opacity-100;
 }
 
-.prose a code {
+.post-text a code {
   @apply text-blue-600 dark:text-blue-500;
 }
 
-.prose table {
-  @apply text-gray-1000 my-2 rounded-md border border-gray-200 dark:border-gray-800 dark:text-gray-50;
+.post-text table {
+  @apply my-2 rounded-md border border-gray-200 text-gray-100 dark:border-gray-800 dark:text-gray-50;
 }
 
-.prose.comment table {
+.post-text.comment table {
   @apply my-2;
 }
 
-.prose thead {
+.post-text thead {
   @apply text-gray-800 dark:text-gray-200;
 }
 
-.prose thead th {
+.post-text thead th {
   @apply p-2;
   padding-left: 1rem !important;
 }
 
-.prose thead th,
-.prose tbody th,
-.prose tbody td {
+.post-text thead th,
+.post-text tbody th,
+.post-text tbody td {
   @apply border-r border-gray-200 p-2 dark:border-gray-800;
   padding-left: 1rem !important;
 }
 
-.prose tbody tr {
+.post-text tbody tr {
   @apply border-b border-gray-200 dark:border-gray-800;
 }
 
-.prose thead tr {
+.post-text thead tr {
   @apply border-b-2 border-gray-200 dark:border-gray-800;
 }
 
-.prose tbody tr:nth-child(2n) {
+.post-text tbody tr:nth-child(2n) {
   @apply bg-gray-50 dark:bg-gray-900;
 }
 
-.prose b,
-.prose strong {
+.post-text b,
+.post-text strong {
   @apply font-bold text-gray-900 dark:text-gray-300;
 }
 
-.prose hr {
+.post-text hr {
   @apply border-gray-200 dark:border-gray-800;
 }
 
 /* the kg-embed-card gets applied to iframes sent from Ghost. this preserves a good video aspect ratio */
-.prose .kg-embed-card {
+.post-text .kg-embed-card {
   @apply my-4;
   position: relative;
   padding-top: 56.25%;
 }
 
-.prose .kg-embed-card iframe {
+.post-text .kg-embed-card iframe {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -86,92 +90,112 @@
   left: 0;
 }
 
-.prose h1,
-.prose h2,
-.prose h3,
-.prose h4,
-.prose h5,
-.prose h6 {
+.post-text h1,
+.post-text h2,
+.post-text h3,
+.post-text h4,
+.post-text h5,
+.post-text h6 {
   @apply font-sans font-bold text-gray-900 dark:text-gray-100;
   scroll-margin-top: 4rem;
 }
 
-.prose h1 a,
-.prose h2 a,
-.prose h3 a,
-.prose h4 a,
-.prose h5 a,
-.prose h6 a {
-  @apply text-gray-1000 font-sans font-bold no-underline dark:text-gray-100;
+.post-text h1 a,
+.post-text h2 a,
+.post-text h3 a,
+.post-text h4 a,
+.post-text h5 a,
+.post-text h6 a {
+  @apply font-sans font-bold text-gray-100 no-underline dark:text-gray-100;
 }
 
-.prose h5 {
-  @apply mt-12 -mb-3 text-xl;
+.post-text h1 {
+  @apply mt-12 -mb-3 text-4xl;
 }
 
-.prose pre {
+.post-text h2 {
+  @apply mt-10 -mb-3 text-3xl;
+}
+
+.post-text h3 {
+  @apply mt-8 -mb-3 text-2xl;
+}
+
+.post-text h4 {
+  @apply mt-6 -mb-3 text-xl;
+}
+
+.post-text h5 {
+  @apply mt-4 -mb-3 text-lg;
+}
+
+.post-text h6 {
+  @apply mt-2 -mb-3 font-bold;
+}
+
+.post-text pre {
   @apply space-y-4 rounded-md border-gray-300 bg-gray-400 bg-opacity-5 px-8 py-6 text-sm text-gray-800 dark:border-gray-800 dark:text-gray-200;
 }
 
-.prose.comment {
+.post-text.comment {
   @apply max-w-none;
 }
 
-.prose.comment pre {
+.post-text.comment pre {
   @apply my-2 px-3 py-2;
 }
 
 /* this is needed to avoid HN comments from overflowing off the right edge of the screen */
-.prose p {
-  @apply break-words;
+.post-text p {
+  @apply my-3 break-words;
   word-break: break-word;
 }
 
-.prose.comment p,
-.prose.comment ul,
-.prose.comment ol {
+.post-text.comment p,
+.post-text.comment ul,
+.post-text.comment ol {
   @apply my-3;
 }
 
-.prose.comment p:first-of-type {
+.post-text.comment p:first-of-type {
   margin-top: 0 !important;
 }
 
-.prose.comment p + p {
+.post-text.comment p + p {
   margin-top: 0;
 }
 
-.prose.comment pre {
+.post-text.comment pre {
   @apply my-3;
 }
 
-.prose.comment a {
+.post-text.comment a {
   @apply break-all;
 }
 
-.prose p + p {
+.post-text p + p {
   margin-top: 0;
 }
 
-.prose code {
+.post-text code {
   @apply rounded-md border-gray-100 bg-gray-100 px-1 py-0.5 text-gray-800 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-200;
 }
 
-.prose code,
-.prose pre {
+.post-text code,
+.post-text pre {
   @apply whitespace-pre-wrap text-sm font-medium;
   word-break: break-word;
 }
 
-.prose pre > code {
+.post-text pre > code {
   @apply bg-gray-800 text-gray-200;
 }
 
-.prose pre {
+.post-text pre {
   @apply bg-gray-800 text-gray-100;
 }
 
-.prose sup {
+.post-text sup {
   @apply text-sm text-blue-500 dark:text-gray-400;
   vertical-align: super;
   top: 0px;

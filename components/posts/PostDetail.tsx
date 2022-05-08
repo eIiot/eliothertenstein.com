@@ -24,9 +24,9 @@ const PostDetail = (props: PostDetailProps) => {
         data && data.post && data.post.text ? (
           <div className="space-y-3 px-4 py-8">
             <h1 className="text-lg font-normal">{data.post.title}</h1>
-            <MarkdownRenderer className="text-base">
-              {data.post.text}
-            </MarkdownRenderer>
+            <div className="post-text">
+              <MarkdownRenderer>{data.post.text}</MarkdownRenderer>
+            </div>
           </div>
         ) : (
           <ErrorNotFound />
