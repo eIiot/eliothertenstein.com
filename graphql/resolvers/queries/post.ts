@@ -1,4 +1,4 @@
-import { Context } from '../../../context'
+import { Context } from '../../context'
 
 export async function post(parent, { slug }, ctx: Context) {
   const { prisma } = ctx

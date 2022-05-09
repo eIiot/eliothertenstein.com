@@ -1,6 +1,11 @@
-import EditorJSPostEditor from './EditorJSPostEditor'
 import { useGetPostQuery } from '../../graphql/types.generated'
 import ErrorNotFound from '../ErrorNotFound'
+import { EditPencil, SaveActionFloppy } from 'iconoir-react'
+import dynamic from 'next/dynamic'
+
+const EditorJSPostEditor = dynamic(() => import('./EditorJSPostEditor'), {
+  ssr: false,
+})
 
 // get post by slug from Prisma using serverSideProp
 
@@ -16,8 +21,6 @@ const PostEditor = (props: PostEditorProps) => {
       slug: 'test',
     },
   })
-
-  console.log('data', data)
 
   // return the post content
   return (

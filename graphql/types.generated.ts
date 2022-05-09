@@ -28,29 +28,39 @@ export type Scalars = {
 
 export type Mutation = {
   __typename?: 'Mutation'
-  createPost?: Maybe<Post>
   deletePost?: Maybe<Post>
-  updatePost?: Maybe<Post>
-}
-
-export type MutationCreatePostArgs = {
-  content: Scalars['String']
-  excerpt?: InputMaybe<Scalars['String']>
-  featureImage?: InputMaybe<Scalars['String']>
-  slug: Scalars['String']
-  title: Scalars['String']
+  deleteUser?: Maybe<User>
+  upsertPost?: Maybe<Post>
+  upsertUser?: Maybe<User>
 }
 
 export type MutationDeletePostArgs = {
   slug: Scalars['String']
 }
 
-export type MutationUpdatePostArgs = {
+export type MutationDeleteUserArgs = {
+  id: Scalars['String']
+}
+
+export type MutationUpsertPostArgs = {
   content?: InputMaybe<Scalars['String']>
   excerpt?: InputMaybe<Scalars['String']>
   featureImage?: InputMaybe<Scalars['String']>
+  id?: InputMaybe<Scalars['ID']>
   slug: Scalars['String']
   title?: InputMaybe<Scalars['String']>
+}
+
+export type MutationUpsertUserArgs = {
+  avatar?: InputMaybe<Scalars['String']>
+  description?: InputMaybe<Scalars['String']>
+  email?: InputMaybe<Scalars['String']>
+  githubId: Scalars['Int']
+  id: Scalars['ID']
+  location?: InputMaybe<Scalars['String']>
+  name: Scalars['String']
+  role: Role
+  username: Scalars['String']
 }
 
 export type Post = {
@@ -70,10 +80,36 @@ export type Query = {
   __typename?: 'Query'
   post?: Maybe<Post>
   posts?: Maybe<Array<Maybe<Post>>>
+  user?: Maybe<User>
 }
 
 export type QueryPostArgs = {
   slug: Scalars['String']
+}
+
+export type QueryUserArgs = {
+  id: Scalars['ID']
+}
+
+export enum Role {
+  Admin = 'ADMIN',
+  Blocked = 'BLOCKED',
+  User = 'USER',
+}
+
+export type User = {
+  __typename?: 'User'
+  avatar?: Maybe<Scalars['String']>
+  createdAt: Scalars['DateTime']
+  description?: Maybe<Scalars['String']>
+  email?: Maybe<Scalars['String']>
+  githubId: Scalars['Int']
+  id: Scalars['ID']
+  location?: Maybe<Scalars['String']>
+  name?: Maybe<Scalars['String']>
+  role: Role
+  updatedAt: Scalars['DateTime']
+  username: Scalars['String']
 }
 
 export type PostFragmentFragment = {
@@ -89,31 +125,20 @@ export type PostFragmentFragment = {
   featureImage?: string | null
 }
 
-export type CreatePostMutationVariables = Exact<{
-  title: Scalars['String']
-  content: Scalars['String']
-  slug: Scalars['String']
-  excerpt?: InputMaybe<Scalars['String']>
-  featureImage?: InputMaybe<Scalars['String']>
-}>
-
-export type CreatePostMutation = {
-  __typename?: 'Mutation'
-  createPost?: {
-    __typename?: 'Post'
-    id: string
-    createdAt: any
-    updatedAt: any
-    publishedAt?: any | null
-    slug: string
-    title: string
-    content: string
-    excerpt?: string | null
-    featureImage?: string | null
-  } | null
+export type UserFragmentFragment = {
+  __typename?: 'User'
+  id: string
+  role: Role
+  username: string
+  githubId: number
+  email?: string | null
+  avatar?: string | null
+  description?: string | null
+  location?: string | null
+  name?: string | null
 }
 
-export type UpdatePostMutationVariables = Exact<{
+export type UpsertPostMutationVariables = Exact<{
   title?: InputMaybe<Scalars['String']>
   content?: InputMaybe<Scalars['String']>
   slug: Scalars['String']
@@ -121,9 +146,9 @@ export type UpdatePostMutationVariables = Exact<{
   featureImage?: InputMaybe<Scalars['String']>
 }>
 
-export type UpdatePostMutation = {
+export type UpsertPostMutation = {
   __typename?: 'Mutation'
-  updatePost?: {
+  upsertPost?: {
     __typename?: 'Post'
     id: string
     createdAt: any
@@ -157,6 +182,54 @@ export type DeletePostMutation = {
   } | null
 }
 
+export type UpsertUserMutationVariables = Exact<{
+  id: Scalars['ID']
+  role: Role
+  username: Scalars['String']
+  githubId: Scalars['Int']
+  email?: InputMaybe<Scalars['String']>
+  avatar?: InputMaybe<Scalars['String']>
+  description?: InputMaybe<Scalars['String']>
+  location?: InputMaybe<Scalars['String']>
+  name: Scalars['String']
+}>
+
+export type UpsertUserMutation = {
+  __typename?: 'Mutation'
+  upsertUser?: {
+    __typename?: 'User'
+    id: string
+    role: Role
+    username: string
+    githubId: number
+    email?: string | null
+    avatar?: string | null
+    description?: string | null
+    location?: string | null
+    name?: string | null
+  } | null
+}
+
+export type DeleteUserMutationVariables = Exact<{
+  id: Scalars['String']
+}>
+
+export type DeleteUserMutation = {
+  __typename?: 'Mutation'
+  deleteUser?: {
+    __typename?: 'User'
+    id: string
+    role: Role
+    username: string
+    githubId: number
+    email?: string | null
+    avatar?: string | null
+    description?: string | null
+    location?: string | null
+    name?: string | null
+  } | null
+}
+
 export type GetPostQueryVariables = Exact<{
   slug: Scalars['String']
 }>
@@ -166,11 +239,14 @@ export type GetPostQuery = {
   post?: {
     __typename?: 'Post'
     id: string
+    createdAt: any
+    updatedAt: any
+    publishedAt?: any | null
+    slug: string
     title: string
     content: string
-    publishedAt?: any | null
-    createdAt: any
-    slug: string
+    excerpt?: string | null
+    featureImage?: string | null
   } | null
 }
 
@@ -192,6 +268,26 @@ export type GetPostsQuery = {
   } | null> | null
 }
 
+export type GetUserQueryVariables = Exact<{
+  id: Scalars['ID']
+}>
+
+export type GetUserQuery = {
+  __typename?: 'Query'
+  user?: {
+    __typename?: 'User'
+    id: string
+    role: Role
+    username: string
+    githubId: number
+    email?: string | null
+    avatar?: string | null
+    description?: string | null
+    location?: string | null
+    name?: string | null
+  } | null
+}
+
 export const PostFragmentFragmentDoc = gql`
   fragment PostFragment on Post {
     id
@@ -205,81 +301,28 @@ export const PostFragmentFragmentDoc = gql`
     featureImage
   }
 `
-export const CreatePostDocument = gql`
-  mutation createPost(
-    $title: String!
-    $content: String!
-    $slug: String!
-    $excerpt: String
-    $featureImage: String
-  ) {
-    createPost(
-      title: $title
-      content: $content
-      slug: $slug
-      excerpt: $excerpt
-      featureImage: $featureImage
-    ) {
-      ...PostFragment
-    }
+export const UserFragmentFragmentDoc = gql`
+  fragment UserFragment on User {
+    id
+    role
+    username
+    githubId
+    email
+    avatar
+    description
+    location
+    name
   }
-  ${PostFragmentFragmentDoc}
 `
-export type CreatePostMutationFn = Apollo.MutationFunction<
-  CreatePostMutation,
-  CreatePostMutationVariables
->
-
-/**
- * __useCreatePostMutation__
- *
- * To run a mutation, you first call `useCreatePostMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreatePostMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
- *   variables: {
- *      title: // value for 'title'
- *      content: // value for 'content'
- *      slug: // value for 'slug'
- *      excerpt: // value for 'excerpt'
- *      featureImage: // value for 'featureImage'
- *   },
- * });
- */
-export function useCreatePostMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreatePostMutation,
-    CreatePostMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<CreatePostMutation, CreatePostMutationVariables>(
-    CreatePostDocument,
-    options
-  )
-}
-export type CreatePostMutationHookResult = ReturnType<
-  typeof useCreatePostMutation
->
-export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>
-export type CreatePostMutationOptions = Apollo.BaseMutationOptions<
-  CreatePostMutation,
-  CreatePostMutationVariables
->
-export const UpdatePostDocument = gql`
-  mutation updatePost(
+export const UpsertPostDocument = gql`
+  mutation upsertPost(
     $title: String
     $content: String
     $slug: String!
     $excerpt: String
     $featureImage: String
   ) {
-    updatePost(
+    upsertPost(
       title: $title
       content: $content
       slug: $slug
@@ -291,23 +334,23 @@ export const UpdatePostDocument = gql`
   }
   ${PostFragmentFragmentDoc}
 `
-export type UpdatePostMutationFn = Apollo.MutationFunction<
-  UpdatePostMutation,
-  UpdatePostMutationVariables
+export type UpsertPostMutationFn = Apollo.MutationFunction<
+  UpsertPostMutation,
+  UpsertPostMutationVariables
 >
 
 /**
- * __useUpdatePostMutation__
+ * __useUpsertPostMutation__
  *
- * To run a mutation, you first call `useUpdatePostMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdatePostMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpsertPostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertPostMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updatePostMutation, { data, loading, error }] = useUpdatePostMutation({
+ * const [upsertPostMutation, { data, loading, error }] = useUpsertPostMutation({
  *   variables: {
  *      title: // value for 'title'
  *      content: // value for 'content'
@@ -317,25 +360,25 @@ export type UpdatePostMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useUpdatePostMutation(
+export function useUpsertPostMutation(
   baseOptions?: Apollo.MutationHookOptions<
-    UpdatePostMutation,
-    UpdatePostMutationVariables
+    UpsertPostMutation,
+    UpsertPostMutationVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<UpdatePostMutation, UpdatePostMutationVariables>(
-    UpdatePostDocument,
+  return Apollo.useMutation<UpsertPostMutation, UpsertPostMutationVariables>(
+    UpsertPostDocument,
     options
   )
 }
-export type UpdatePostMutationHookResult = ReturnType<
-  typeof useUpdatePostMutation
+export type UpsertPostMutationHookResult = ReturnType<
+  typeof useUpsertPostMutation
 >
-export type UpdatePostMutationResult = Apollo.MutationResult<UpdatePostMutation>
-export type UpdatePostMutationOptions = Apollo.BaseMutationOptions<
-  UpdatePostMutation,
-  UpdatePostMutationVariables
+export type UpsertPostMutationResult = Apollo.MutationResult<UpsertPostMutation>
+export type UpsertPostMutationOptions = Apollo.BaseMutationOptions<
+  UpsertPostMutation,
+  UpsertPostMutationVariables
 >
 export const DeletePostDocument = gql`
   mutation deletePost($slug: String!) {
@@ -387,17 +430,141 @@ export type DeletePostMutationOptions = Apollo.BaseMutationOptions<
   DeletePostMutation,
   DeletePostMutationVariables
 >
+export const UpsertUserDocument = gql`
+  mutation upsertUser(
+    $id: ID!
+    $role: Role!
+    $username: String!
+    $githubId: Int!
+    $email: String
+    $avatar: String
+    $description: String
+    $location: String
+    $name: String!
+  ) {
+    upsertUser(
+      id: $id
+      role: $role
+      username: $username
+      githubId: $githubId
+      email: $email
+      avatar: $avatar
+      description: $description
+      location: $location
+      name: $name
+    ) {
+      ...UserFragment
+    }
+  }
+  ${UserFragmentFragmentDoc}
+`
+export type UpsertUserMutationFn = Apollo.MutationFunction<
+  UpsertUserMutation,
+  UpsertUserMutationVariables
+>
+
+/**
+ * __useUpsertUserMutation__
+ *
+ * To run a mutation, you first call `useUpsertUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertUserMutation, { data, loading, error }] = useUpsertUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      role: // value for 'role'
+ *      username: // value for 'username'
+ *      githubId: // value for 'githubId'
+ *      email: // value for 'email'
+ *      avatar: // value for 'avatar'
+ *      description: // value for 'description'
+ *      location: // value for 'location'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useUpsertUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertUserMutation,
+    UpsertUserMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpsertUserMutation, UpsertUserMutationVariables>(
+    UpsertUserDocument,
+    options
+  )
+}
+export type UpsertUserMutationHookResult = ReturnType<
+  typeof useUpsertUserMutation
+>
+export type UpsertUserMutationResult = Apollo.MutationResult<UpsertUserMutation>
+export type UpsertUserMutationOptions = Apollo.BaseMutationOptions<
+  UpsertUserMutation,
+  UpsertUserMutationVariables
+>
+export const DeleteUserDocument = gql`
+  mutation deleteUser($id: String!) {
+    deleteUser(id: $id) {
+      ...UserFragment
+    }
+  }
+  ${UserFragmentFragmentDoc}
+`
+export type DeleteUserMutationFn = Apollo.MutationFunction<
+  DeleteUserMutation,
+  DeleteUserMutationVariables
+>
+
+/**
+ * __useDeleteUserMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteUserMutation,
+    DeleteUserMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeleteUserMutation, DeleteUserMutationVariables>(
+    DeleteUserDocument,
+    options
+  )
+}
+export type DeleteUserMutationHookResult = ReturnType<
+  typeof useDeleteUserMutation
+>
+export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>
+export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<
+  DeleteUserMutation,
+  DeleteUserMutationVariables
+>
 export const GetPostDocument = gql`
   query getPost($slug: String!) {
     post(slug: $slug) {
-      id
-      title
-      content
-      publishedAt
-      createdAt
-      slug
+      ...PostFragment
     }
   }
+  ${PostFragmentFragmentDoc}
 `
 
 /**
@@ -492,4 +659,53 @@ export type GetPostsLazyQueryHookResult = ReturnType<
 export type GetPostsQueryResult = Apollo.QueryResult<
   GetPostsQuery,
   GetPostsQueryVariables
+>
+export const GetUserDocument = gql`
+  query getUser($id: ID!) {
+    user(id: $id) {
+      ...UserFragment
+    }
+  }
+  ${UserFragmentFragmentDoc}
+`
+
+/**
+ * __useGetUserQuery__
+ *
+ * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUserQuery(
+  baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(
+    GetUserDocument,
+    options
+  )
+}
+export function useGetUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetUserQuery, GetUserQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(
+    GetUserDocument,
+    options
+  )
+}
+export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>
+export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>
+export type GetUserQueryResult = Apollo.QueryResult<
+  GetUserQuery,
+  GetUserQueryVariables
 >

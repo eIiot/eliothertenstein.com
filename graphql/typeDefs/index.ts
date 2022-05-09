@@ -15,26 +15,54 @@ export default gql`
     featureImage: String
   }
 
+  enum Role {
+    BLOCKED
+    USER
+    ADMIN
+  }
+
+  type User {
+    id: ID!
+    role: Role!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    username: String!
+    githubId: Int!
+    email: String
+    avatar: String
+    description: String
+    location: String
+    name: String
+  }
+
   type Query {
     posts: [Post]
     post(slug: String!): Post
+    user(id: ID!): User
   }
 
   type Mutation {
-    createPost(
-      title: String!
-      content: String!
+    upsertPost(
+      id: ID
       slug: String!
-      excerpt: String
-      featureImage: String
-    ): Post
-    updatePost(
       title: String
       content: String
-      slug: String!
       excerpt: String
       featureImage: String
     ): Post
     deletePost(slug: String!): Post
+
+    upsertUser(
+      id: ID!
+      role: Role!
+      username: String!
+      githubId: Int!
+      email: String
+      avatar: String
+      description: String
+      location: String
+      name: String!
+    ): User
+    deleteUser(id: String!): User
   }
 `

@@ -2,31 +2,43 @@ import { useGetPostsQuery } from '../../graphql/types.generated'
 import ActiveLink from '../ActiveLink'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import moment from 'moment'
+import { toast } from 'react-hot-toast'
 
 const PostsList = () => {
   const { data, loading, error } = useGetPostsQuery()
+
+  if (error) {
+    toast.error(error.message)
+  }
 
   return (
     <ScrollArea.Root className="h-full w-full">
       <ScrollArea.Viewport className="h-full">
         <div className="text-normal w-full pt-3 text-center font-normal">
-          Projects
+          Posts
         </div>
         <div className="flex flex-col space-y-2 p-3">
           {!loading ? (
-            data.posts.map((post) => (
-              <ActiveLink
-                activeClassName="!bg-black !text-white"
-                className="flex cursor-pointer flex-col rounded-md px-2 py-1.5 transition duration-200 hover:bg-neutral-100"
-                href={`/posts/${post.slug}`}
-                key={post.id}
-              >
-                <span className="">{post.title}</span>
-                <span className="text-neutral-600">
-                  {moment(post.createdAt).format('MMMM Do YYYY')}
-                </span>
-              </ActiveLink>
-            ))
+            data && data.posts ? (
+              data.posts.map((post) =>
+                post ? (
+                  <ActiveLink
+                    activeClassName="bg-black text-white hover:bg-neutral-700"
+                    className="flex cursor-pointer flex-col rounded-md px-2 py-1.5 transition duration-200 "
+                    href={`/posts/${post.slug}`}
+                    inactiveClassName="bg-white hover:bg-neutral-100"
+                    key={post.id}
+                  >
+                    <span className="">{post.title}</span>
+                    <span className="text-neutral-600">
+                      {moment(post.createdAt).format('MMMM Do YYYY')}
+                    </span>
+                  </ActiveLink>
+                ) : null
+              )
+            ) : (
+              <span>no posts</span>
+            )
           ) : (
             <span>Loading</span>
           )}

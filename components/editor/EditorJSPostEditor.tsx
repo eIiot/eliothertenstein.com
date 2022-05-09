@@ -1,7 +1,10 @@
-import { useUpdatePostMutation } from '../../graphql/types.generated'
+import { EDITOR_JS_TOOLS } from './tools'
+import { useUpsertPostMutation } from '../../graphql/types.generated'
+import { EditorConfig } from '@editorjs/editorjs'
+import { SaveActionFloppy } from 'iconoir-react'
 import { useCallback, useRef } from 'react'
 import { createReactEditorJS } from 'react-editor-js'
-import toast from 'react-hot-toast'
+import { toast } from 'react-hot-toast'
 import { useHotkeys } from 'react-hotkeys-hook'
 
 const ReactEditorJS = createReactEditorJS()
@@ -16,14 +19,14 @@ interface EditorCore {
 
   clear(): Promise<void>
 
-  save(): Promise<OutputData>
+  save(): Promise<EditorConfig>
 
-  render(data: OutputData): Promise<void>
+  render(data: EditorConfig): Promise<void>
 }
 
 const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
   const { slug, content } = props
-  const editorCore = useRef(null)
+  const editorCore = useRef<EditorCore | null>(null)
 
   const jsonContent = JSON.parse(content)
 
@@ -33,12 +36,12 @@ const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
     editorCore.current = instance
   }, [])
 
-  const [updatePost] = useUpdatePostMutation()
+  const [upsertPost] = useUpsertPostMutation()
 
   const handleSave = useCallback(() => {
-    editorCore.current.save().then((savedJsonContent) => {
+    editorCore.current?.save().then((savedJsonContent) => {
       const content = JSON.stringify(savedJsonContent)
-      updatePost({
+      upsertPost({
         variables: {
           slug,
           content,
@@ -51,7 +54,7 @@ const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
           toast.error(error.message)
         })
     })
-  }, [])
+  }, [slug, upsertPost])
 
   useHotkeys(
     'command+s, control+s',
@@ -66,7 +69,19 @@ const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
   )
 
   return (
-    <ReactEditorJS defaultValue={jsonContent} onInitialize={handleInitialize} />
+    <>
+      <span
+        className="absolute right-0 top-0 m-3 cursor-pointer rounded-lg p-3 text-black shadow-lg hover:bg-neutral-100"
+        onClick={handleSave}
+      >
+        <SaveActionFloppy />
+      </span>
+      <ReactEditorJS
+        defaultValue={jsonContent}
+        onInitialize={handleInitialize}
+        tools={EDITOR_JS_TOOLS}
+      />
+    </>
   )
 }
 

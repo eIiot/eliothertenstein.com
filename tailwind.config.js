@@ -6,5 +6,9 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [
+    require('tailwindcss-radix')(),
+    require('tailwind-children'),
+    require('@tailwindcss/custom-forms'),
+  ],
 }

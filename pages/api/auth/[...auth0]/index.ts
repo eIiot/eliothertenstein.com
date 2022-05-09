@@ -1,5 +1,14 @@
-import { handleAuth } from '@auth0/nextjs-auth0'
+import { afterCallback } from '../../../../lib/auth0/afterCallback'
+import { handleAuth, handleCallback } from '@auth0/nextjs-auth0'
 
-console.log('the AUTH0_SECRET env var is set: ', !!process.env.AUTH0_SECRET)
+export default handleAuth({
+  async callback(req, res) {
+    try {
+      await handleCallback(req, res, { afterCallback })
+    } catch (error: unknown) {
+      res.status(error.status || 500).end(error.message)
+    }
+  },
+})
 
-export default handleAuth()
+// export default handleAuth()

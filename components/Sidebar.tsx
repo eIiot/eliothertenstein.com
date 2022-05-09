@@ -1,8 +1,10 @@
 import ActiveLink from './ActiveLink'
 import { useUser } from '@auth0/nextjs-auth0'
+import * as Avatar from '@radix-ui/react-avatar'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
-import { Code, HomeSimple, User } from 'iconoir-react'
+import { Code, HomeSimple, Settings, User } from 'iconoir-react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const Sidebar = () => {
   const { user, error, isLoading } = useUser()
@@ -14,20 +16,21 @@ const Sidebar = () => {
         </span>
       </div>
       <ScrollArea.Root className="w-full flex-grow">
-        <ScrollArea.Viewport className="flex-col">
-          <div className="flex h-full flex-1 flex-col space-y-2 p-3">
+        <ScrollArea.Viewport className="min-h-full flex-col">
+          <div className="flex h-full min-h-full flex-1 flex-col space-y-2 p-3">
             <ActiveLink
-              activeClassName="!bg-black !text-white"
-              className="justify-left flex flex-1 cursor-pointer items-center rounded-md  px-2 py-1.5 transition duration-200 hover:bg-neutral-100"
+              activeClassName="bg-black text-white hover:bg-neutral-700"
+              className="justify-left flex flex-1 cursor-pointer items-center rounded-md bg-white px-2 py-1.5 transition duration-200 hover:bg-neutral-100"
               href="/"
             >
               <HomeSimple className="mr-3 inline-block" />
               <span className="">Home</span>
             </ActiveLink>
             <ActiveLink
-              activeClassName="!bg-black !text-white"
-              className="justify-left flex flex-1 cursor-pointer items-center rounded-md  px-2 py-1.5 transition duration-200 hover:bg-neutral-100"
+              activeClassName="bg-black text-white hover:bg-neutral-700"
+              className="justify-left flex flex-1 cursor-pointer items-center rounded-md px-2 py-1.5 transition duration-200"
               href="/posts"
+              inactiveClassName="bg-white text-black hover:bg-neutral-100"
             >
               <Code className="mr-3 inline-block" />
               <span className="">Posts</span>
@@ -52,31 +55,33 @@ const Sidebar = () => {
           <div className="grid grid-cols-5">
             <div className="col-span-1 h-full w-full">
               <a
-                className="h-full w-full items-center justify-center"
-                href="/profile"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-100"
+                href="/profile/me"
               >
-                <Image
-                  alt="Profile"
-                  className="rounded-full"
-                  height={32}
-                  src={user.picture}
-                  width={32}
-                />
+                <Avatar.Root>
+                  <Avatar.Image
+                    alt="Profile"
+                    className="rounded-full"
+                    src={user.picture ?? undefined}
+                  />
+                  <Avatar.Fallback className="color-red-500 content-center items-center">
+                    EH
+                  </Avatar.Fallback>
+                </Avatar.Root>
               </a>
             </div>
-            <div className="col-span-2 flex h-full w-full items-center justify-center">
-              <span className="text-normal inline-block w-full text-center font-normal">
+            <div className="col-span-3 flex h-full w-full items-center justify-center">
+              <span className="text-normal inline-block w-full pl-2 text-left font-normal">
                 {user.name}
               </span>
             </div>
-            <div className="col-span-2 h-full w-full">
-              <span className="flex w-full items-center justify-center">
-                <a
-                  className="rounded-md px-3 py-2 shadow-xl"
-                  href="/api/auth/logout"
-                >
-                  Logout
-                </a>
+            <div className="col-span-1 h-full w-full">
+              <span className="flex h-full w-full items-center justify-center">
+                <Link href="/me/settings" passHref>
+                  <a className="cursor-pointer text-black">
+                    <Settings className="mr-3 inline-block" />{' '}
+                  </a>
+                </Link>
               </span>
             </div>
           </div>

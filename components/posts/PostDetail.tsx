@@ -1,6 +1,11 @@
+import postStyles from './PostStyles'
+import ChecklistRenderer from './renderers/ChecklistRenderer'
+import LinkRenderer from './renderers/LinkRenderer'
 import { useGetPostQuery } from '../../graphql/types.generated'
 import ErrorNotFound from '../ErrorNotFound'
 import Blocks from 'editorjs-blocks-react-renderer'
+import { EditPencil } from 'iconoir-react'
+import Link from 'next/link'
 
 // get post by slug from Prisma using serverSideProp
 
@@ -17,57 +22,26 @@ const PostDetail = (props: PostDetailProps) => {
     },
   })
 
-  const defaultConfigs = {
-    code: {
-      className: '',
-    },
-    delimiter: {
-      className: '',
-    },
-    embed: {
-      className: '',
-      rel: 'noreferer nofollower external', // Generates an <a> if not able to receive an "embed" property
-      sandbox: undefined,
-    },
-    header: {
-      className: '',
-    },
-    image: {
-      className: '',
-      actionsClassNames: {
-        stretched: 'image-block--stretched',
-        withBorder: 'image-block--with-border',
-        withBackground: 'image-block--with-background',
-      },
-    },
-    list: {
-      className: '',
-    },
-    paragraph: {
-      className: '',
-    },
-    quote: {
-      className: '',
-      actionsClassNames: {
-        alignment: 'text-align-{alignment}', // This is a substitution placeholder: left or center.
-      },
-    },
-    table: {
-      className: '',
-    },
-  }
-
   // return the post content
   return (
     <div className="h-full w-full overflow-scroll">
       {!loading ? (
         data && data.post && data.post.content ? (
           <div className="space-y-3 px-4 py-8">
+            <Link href={slug + '/edit'}>
+              <a className="absolute right-0 top-0 m-3 rounded-lg p-3 text-black shadow-lg hover:bg-neutral-100">
+                <EditPencil />
+              </a>
+            </Link>
             <h1 className="text-lg font-normal">{data.post.title}</h1>
             <div className="post-text">
               <Blocks
-                config={defaultConfigs}
+                config={postStyles}
                 data={JSON.parse(data.post.content)}
+                renderers={{
+                  checklist: ChecklistRenderer,
+                  link: LinkRenderer,
+                }}
               />
             </div>
           </div>

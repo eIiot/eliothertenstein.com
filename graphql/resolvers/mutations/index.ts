@@ -1,9 +1,11 @@
-import { createPost } from './createPost'
-import { deletePost } from './deletePost'
-import { updatePost } from './updatePost'
+import { deletePost } from './post/deletePost'
+import { upsertPost } from './post/upsertPost'
+import { deleteUser } from './user/deleteUser'
+import { upsertUser } from './user/upsertUser'
 
 export default {
-  createPost,
-  updatePost,
+  upsertPost,
   deletePost,
+  upsertUser,
+  deleteUser,
 }

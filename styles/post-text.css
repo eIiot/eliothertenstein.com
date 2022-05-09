@@ -6,12 +6,24 @@
   @apply text-gray-700 dark:text-gray-400;
 }
 
+.post-text > * {
+  @apply my-3;
+}
+
+.post-text > * + * {
+  @apply mt-0;
+}
+
 .post-text blockquote {
   @apply border-l-2 border-gray-200 font-normal dark:border-gray-800 dark:text-gray-400;
 }
 
 .post-text blockquote p:first-child {
-  @apply ml-2;
+  @apply ml-2 italic;
+}
+
+.post-text blockquote footer {
+  @apply ml-2 text-sm;
 }
 
 .post-text figure {
@@ -23,7 +35,7 @@
 }
 
 .post-text a {
-  @apply relative break-words font-normal text-blue-500 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:translate-y-1 after:bg-blue-300 after:opacity-0 after:transition after:duration-200 after:ease-in-out hover:after:translate-y-0 hover:after:opacity-100;
+  @apply relative break-words;
 }
 
 .post-text a code {
@@ -31,7 +43,7 @@
 }
 
 .post-text table {
-  @apply my-2 rounded-md border border-gray-200 text-gray-100 dark:border-gray-800 dark:text-gray-50;
+  @apply my-2 rounded-md border border-gray-200 dark:border-gray-800 dark:text-gray-50;
 }
 
 .post-text.comment table {
@@ -44,14 +56,12 @@
 
 .post-text thead th {
   @apply p-2;
-  padding-left: 1rem !important;
 }
 
 .post-text thead th,
 .post-text tbody th,
 .post-text tbody td {
   @apply border-r border-gray-200 p-2 dark:border-gray-800;
-  padding-left: 1rem !important;
 }
 
 .post-text tbody tr {
@@ -109,30 +119,6 @@
   @apply font-sans font-bold text-gray-100 no-underline dark:text-gray-100;
 }
 
-.post-text h1 {
-  @apply mt-12 -mb-3 text-4xl;
-}
-
-.post-text h2 {
-  @apply mt-10 -mb-3 text-3xl;
-}
-
-.post-text h3 {
-  @apply mt-8 -mb-3 text-2xl;
-}
-
-.post-text h4 {
-  @apply mt-6 -mb-3 text-xl;
-}
-
-.post-text h5 {
-  @apply mt-4 -mb-3 text-lg;
-}
-
-.post-text h6 {
-  @apply mt-2 -mb-3 font-bold;
-}
-
 .post-text pre {
   @apply space-y-4 rounded-md border-gray-300 bg-gray-400 bg-opacity-5 px-8 py-6 text-sm text-gray-800 dark:border-gray-800 dark:text-gray-200;
 }
@@ -145,16 +131,10 @@
   @apply my-2 px-3 py-2;
 }
 
-/* this is needed to avoid HN comments from overflowing off the right edge of the screen */
-.post-text p {
-  @apply my-3 break-words;
-  word-break: break-word;
-}
-
 .post-text.comment p,
 .post-text.comment ul,
 .post-text.comment ol {
-  @apply my-3;
+  @apply my-3 list-decimal;
 }
 
 .post-text.comment p:first-of-type {

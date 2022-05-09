@@ -2,7 +2,6 @@ import PostEditor from '../../../components/editor/PostEditor'
 import { getLayout } from '../../../components/layouts/SiteLayout'
 import PostsList from '../../../components/posts/PostsList'
 import ListView from '../../../components/views/ListView'
-import { withPageAuthRequired } from '@auth0/nextjs-auth0'
 import { useRouter } from 'next/router'
 
 const Editor = () => {
@@ -18,5 +17,3 @@ Editor.getLayout = (page: React.ReactNode) =>
   getLayout(<ListView detail={page} list={<PostsList />} showDetail />)
 
 export default Editor
-
-export const getServerSideProps = withPageAuthRequired()

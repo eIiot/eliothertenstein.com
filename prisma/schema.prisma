@@ -7,30 +7,29 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// model User {
-//   id           String     @id @default(cuid())
-//   createdAt    DateTime   @default(now())
-//   role         Role       @default(USER)
-//   username     String     @unique @db.VarChar(16)
-//   twitterId    String     @unique
-//   authikId     String?    @unique
-//   email        String?    @unique
-//   pendingEmail String?
-//   avatar       String?
-//   description  String?    @db.VarChar(256)
-//   location     String?    @db.VarChar(32)
-//   name         String?
-//   comments     Comment[]
-//   reactions    Reaction[]
-//   // posts        Post[]
-//   stacks       Stack[]
-// }
+model User {
+  id           String     @id
+  createdAt    DateTime   @default(now())
+  role         Role       @default(USER)
+  username     String     @unique @db.VarChar(16)
+  githubId     BigInt     @unique
+  email        String?    @unique
+  pendingEmail String?
+  avatar       String?
+  description  String?    @db.VarChar(256)
+  location     String?    @db.VarChar(32)
+  name         String
+  // comments     Comment[]
+  // reactions    Reaction[]
+  // posts        Post[]
+  // stacks       Stack[]
+}
 
-// enum Role {
-//   BLOCKED
-//   USER
-//   ADMIN
-// }
+enum Role {
+  BLOCKED
+  USER
+  ADMIN
+}
 
 // model Comment {
 //   id         String     @id @default(cuid())
