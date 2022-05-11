@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import './post-text.css';
+@import './link-preview.css';
 
 .bg-grid-pattern {
   background-color: #ffffff;
@@ -11,6 +12,10 @@
 
 .animate-link-hover {
   @apply relative text-blue-500 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:translate-y-1 after:bg-blue-300 after:opacity-0 after:transition after:duration-200 after:ease-in-out hover:after:translate-y-0 hover:after:opacity-100;
+}
+
+.animate-button-hover {
+  @apply transition-transform duration-200 ease-in-out hover:scale-110 active:scale-90;
 }
 
 @layer base {

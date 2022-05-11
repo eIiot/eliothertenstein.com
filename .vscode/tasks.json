@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "generate:watch",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm: generate:watch",
+      "detail": "graphql-codegen --watch './graphql/**/*.ts'"
+    },
+    {
+      "type": "npm",
+      "script": "dev",
+      "problemMatcher": [],
+      "label": "npm: dev",
+      "detail": "next dev"
+    },
+    {
+      "type": "npm",
+      "script": "prisma:deploy",
+      "problemMatcher": [],
+      "label": "npm: prisma:deploy",
+      "detail": "cd prisma && prisma db && prisma generate"
+    },
+    {
+      "type": "npm",
+      "script": "prisma:studio",
+      "problemMatcher": [],
+      "label": "npm: prisma:studio",
+      "detail": "cd prisma && prisma studio"
+    }
+  ]
+}

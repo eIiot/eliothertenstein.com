@@ -8,6 +8,7 @@ const PostsList = () => {
   const { data, loading, error } = useGetPostsQuery()
 
   if (error) {
+    console.error(error)
     toast.error(error.message)
   }
 
@@ -23,16 +24,16 @@ const PostsList = () => {
               data.posts.map((post) =>
                 post ? (
                   <ActiveLink
-                    activeClassName="bg-black text-white hover:bg-neutral-700"
-                    className="flex cursor-pointer flex-col rounded-md px-2 py-1.5 transition duration-200 "
+                    activeClassName="bg-black text-white hover:bg-neutral-700 child-a:text-neutral-400"
+                    className="duration-20 child flex cursor-pointer flex-col rounded-md px-2 py-1.5 transition"
                     href={`/posts/${post.slug}`}
-                    inactiveClassName="bg-white hover:bg-neutral-100"
+                    inactiveClassName="bg-white hover:bg-neutral-100 last-child:text-neutral-600 child-a:text-neutral-500"
                     key={post.id}
                   >
                     <span className="">{post.title}</span>
-                    <span className="text-neutral-600">
+                    <a className="text-sm">
                       {moment(post.createdAt).format('MMMM Do YYYY')}
-                    </span>
+                    </a>
                   </ActiveLink>
                 ) : null
               )

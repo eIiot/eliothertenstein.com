@@ -2,9 +2,9 @@ import ActiveLink from './ActiveLink'
 import { useUser } from '@auth0/nextjs-auth0'
 import * as Avatar from '@radix-ui/react-avatar'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
-import { Code, HomeSimple, Settings, User } from 'iconoir-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { BookOpen, Home, Settings, User } from 'react-feather'
 
 const Sidebar = () => {
   const { user, error, isLoading } = useUser()
@@ -23,7 +23,7 @@ const Sidebar = () => {
               className="justify-left flex flex-1 cursor-pointer items-center rounded-md bg-white px-2 py-1.5 transition duration-200 hover:bg-neutral-100"
               href="/"
             >
-              <HomeSimple className="mr-3 inline-block" />
+              <Home className="mr-3 inline-block" />
               <span className="">Home</span>
             </ActiveLink>
             <ActiveLink
@@ -32,7 +32,7 @@ const Sidebar = () => {
               href="/posts"
               inactiveClassName="bg-white text-black hover:bg-neutral-100"
             >
-              <Code className="mr-3 inline-block" />
+              <BookOpen className="mr-3 inline-block" />
               <span className="">Posts</span>
             </ActiveLink>
           </div>
@@ -53,12 +53,9 @@ const Sidebar = () => {
         )}
         {user && (
           <div className="grid grid-cols-5">
-            <div className="col-span-1 h-full w-full">
-              <a
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-100"
-                href="/profile/me"
-              >
-                <Avatar.Root>
+            <div className="col-span-1 flex h-full w-full items-center justify-center">
+              <Link className="" href="/profile/me">
+                <Avatar.Root className="h-8 w-8 cursor-pointer rounded-full bg-neutral-100">
                   <Avatar.Image
                     alt="Profile"
                     className="rounded-full"
@@ -68,7 +65,7 @@ const Sidebar = () => {
                     EH
                   </Avatar.Fallback>
                 </Avatar.Root>
-              </a>
+              </Link>
             </div>
             <div className="col-span-3 flex h-full w-full items-center justify-center">
               <span className="text-normal inline-block w-full pl-2 text-left font-normal">

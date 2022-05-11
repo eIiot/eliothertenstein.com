@@ -20,7 +20,7 @@ const ListView = (props: ListViewProps) => {
       </div>
       <main
         className={
-          'flex h-full max-h-screen w-full flex-col overflow-y-auto bg-white' +
+          'flex h-full max-h-screen w-full flex-col overflow-y-auto ' +
           (showDetail ? ' relative' : ' hidden')
         }
       >

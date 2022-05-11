@@ -10,8 +10,8 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
         success: 1,
         url: result.meta.url || '',
         meta: {
-          title: result.meta.title,
-          description: result.meta.description,
+          title: result.meta.title || result.og.title,
+          description: result.meta.description || result.og.description,
           image: result.meta.image || result.og.image,
         },
       })

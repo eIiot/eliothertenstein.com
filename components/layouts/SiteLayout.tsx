@@ -11,7 +11,7 @@ const SiteLayout = (props: LayoutProps) => {
   return (
     <div className="absolute inset-0 flex flex-row">
       <Sidebar />
-      <main className="relative flex max-h-screen w-full flex-col overflow-y-auto bg-white">
+      <main className="relative flex h-screen w-full flex-col overflow-y-auto bg-white">
         {children}
       </main>
     </div>

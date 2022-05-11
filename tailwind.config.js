@@ -4,7 +4,11 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      transitionDelay: {
+        0: '0ms',
+      },
+    },
   },
   plugins: [
     require('tailwindcss-radix')(),

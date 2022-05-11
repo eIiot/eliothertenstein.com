@@ -13,7 +13,6 @@ export async function upsertPost(
     update: {
       title,
       content,
-      slug,
       excerpt,
       featureImage,
     },

@@ -8,7 +8,7 @@ const getUser = async (username: string) => {
   try {
     // get the user data from the github api
     const response = await octokit.rest.users.getByUsername({
-      username: 'eiiot',
+      username: username,
     })
 
     return response.data

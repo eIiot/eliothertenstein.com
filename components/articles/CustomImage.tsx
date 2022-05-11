@@ -1,4 +1,4 @@
-import { PinAlt } from 'iconoir-react'
+import { MapPin } from 'react-feather'
 
 interface CustomImageProps {
   src: string
@@ -13,23 +13,28 @@ const CustomImage = (props: CustomImageProps) => {
   return (
     <div>
       <img
-        src={src}
         alt={alt}
         className={`${className} w-full rounded-lg`}
+        src={src}
         {...rest}
       />
       {caption && (
         <div className="mt-2 text-right text-neutral-400">
-          <PinAlt
+          <MapPin
             className="relative bottom-[0.125em] mr-2 inline-block"
-            width={16}
             height={16}
+            width={16}
           />
           {caption}
         </div>
       )}
     </div>
   )
+}
+
+CustomImage.defaultProps = {
+  caption: '',
+  className: '',
 }
 
 export default CustomImage
