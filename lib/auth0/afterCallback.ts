@@ -5,7 +5,6 @@ export async function afterCallback(_, __, session) {
   const { user } = session
   const { sub: id, nickname } = user
   const details = await getUser(nickname)
-  console.log('details', details)
   const {
     bio: description,
     location,
@@ -23,7 +22,7 @@ export async function afterCallback(_, __, session) {
         description,
         location,
         avatar,
-        name,
+        name: name || nickname,
       },
       create: {
         id,
@@ -33,12 +32,12 @@ export async function afterCallback(_, __, session) {
         description,
         location,
         avatar,
-        name,
+        name: name || nickname,
       },
     })
+
+    return session
   } catch (error) {
     console.error(error)
   }
-
-  return session
 }

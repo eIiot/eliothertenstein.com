@@ -1,6 +1,4 @@
-import { useGetPostQuery } from '../../graphql/types.generated'
-import ErrorNotFound from '../ErrorNotFound'
-import { EditPencil, SaveActionFloppy } from 'iconoir-react'
+import { useGetPostQuery } from '../../../graphql/types.generated'
 import dynamic from 'next/dynamic'
 
 const EditorJSPostEditor = dynamic(() => import('./EditorJSPostEditor'), {
@@ -18,7 +16,7 @@ const PostEditor = (props: PostEditorProps) => {
 
   const { data, loading, error } = useGetPostQuery({
     variables: {
-      slug: 'test',
+      slug,
     },
   })
 
@@ -28,10 +26,12 @@ const PostEditor = (props: PostEditorProps) => {
       {!loading ? (
         data && data.post && data.post.content ? (
           <div className="space-y-3 px-24 py-8">
-            <EditorJSPostEditor content={data.post.content} slug={slug} />
+            <EditorJSPostEditor content={data.post.content} post={data.post} />
           </div>
         ) : (
-          <ErrorNotFound />
+          <div className="space-y-3 px-24 py-8">
+            <EditorJSPostEditor post={data?.post} />
+          </div>
         )
       ) : (
         <div className="animate-shimmer h-full w-full rounded-lg bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 bg-[length:400%_100%]" />

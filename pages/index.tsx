@@ -1,7 +1,6 @@
 import CustomImage from '../components/articles/CustomImage'
 import CustomGridLayout from '../components/home/CustomGridLayout'
 import SiteLayout, { getLayout } from '../components/layouts/SiteLayout'
-import { ArrowRight } from 'iconoir-react'
 import Link from 'next/link'
 import type { NextPage } from 'next'
 // import Head from 'next/head'

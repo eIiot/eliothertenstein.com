@@ -2,41 +2,38 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/prop-types */
 import { RenderFn } from 'editorjs-blocks-react-renderer'
-import Image from 'next/image'
-import { useState } from 'react'
 
 const LinkRenderer: RenderFn<{}> = ({ data, className = '' }) => {
-  const [ratio, setRatio] = useState(16 / 9) // default to 16:9o
-
   return (
-    <>
-      <div className="rounded-lg shadow-lg">
-        <a
-          className="flex w-full flex-row"
-          href={data.link}
-          key={data.link}
-          title={data.meta.title}
-        >
-          <Image
-            alt={data.meta.title}
-            className="flex-none rounded-lg"
-            height={200 / ratio}
-            layout="fixed"
-            onLoadingComplete={({ naturalWidth, naturalHeight }) =>
-              setRatio(naturalWidth / naturalHeight)
-            } // you can use "responsive", "fill" or the default "intrinsic"
-            src={'/api/imageProxy/' + encodeURIComponent(data.meta.image)}
-            width={200}
-          />
-          <div className="ml-3 flex flex-1 flex-col">
-            <h3 className="text-xl font-bold text-gray-900">
-              {data.meta.title}
-            </h3>
-            <p className="text-gray-700">{data.meta.description}</p>
-          </div>
-        </a>
+    <a
+      className="Container border-neutral-600 bg-white"
+      data-testid="container"
+      href={data.link}
+      rel="noreferrer"
+      target="_blank"
+    >
+      <div
+        className="Image"
+        data-testid="image-container"
+        style={{
+          backgroundImage: `url("${data.meta.image}"), url("https://i.imgur.com/UeDNBNQ.jpeg")`,
+        }}
+      />
+      <div className="LowerContainer">
+        <h3 className="Title text-black" data-testid="title">
+          {data.meta.title}
+        </h3>
+        <div className="Description text-black">{data.meta.description}</div>
+        <div className="Secondary SiteDetails text-gray-500">
+          {data.link.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+        </div>
       </div>
-    </>
+    </a>
+    // <LinkPreview
+    //   className={className}
+    //   explicitImageSrc={data.meta.image}
+    //   url={data.link}
+    // />
   )
 }
 

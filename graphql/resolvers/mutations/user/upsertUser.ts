@@ -2,18 +2,7 @@ import { Context } from '../../../context'
 
 export async function upsertUser(
   parent,
-  {
-    id,
-    role,
-    username,
-    githubId,
-    auth0Id,
-    email,
-    avatar,
-    description,
-    location,
-    name,
-  },
+  { id, role, username, githubId, email, avatar, description, location, name },
   ctx: Context
 ) {
   const { prisma } = ctx
@@ -25,7 +14,6 @@ export async function upsertUser(
       role,
       username,
       githubId,
-      auth0Id,
       email,
       avatar,
       description,
@@ -37,7 +25,6 @@ export async function upsertUser(
       role,
       username,
       githubId,
-      auth0Id,
       email,
       avatar,
       description,
