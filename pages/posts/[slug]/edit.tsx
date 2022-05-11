@@ -4,11 +4,7 @@ import PostsList from '../../../components/posts/PostsList'
 import ListView from '../../../components/views/ListView'
 import prisma from '../../../lib/prisma'
 import { AuthPage } from '../../../types/page'
-import {
-  withPageAuthRequired,
-  getSession,
-  WithPageAuthRequiredProps,
-} from '@auth0/nextjs-auth0'
+import { withPageAuthRequired, getSession } from '@auth0/nextjs-auth0'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 

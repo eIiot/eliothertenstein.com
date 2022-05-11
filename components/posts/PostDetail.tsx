@@ -12,10 +12,11 @@ import { Edit } from 'react-feather'
 
 interface PostDetailProps {
   slug: string
+  isAdmin: boolean
 }
 
 const PostDetail = (props: PostDetailProps) => {
-  const { slug } = props
+  const { slug, isAdmin } = props
 
   const { data, loading, error } = useGetPostQuery({
     variables: {
@@ -29,11 +30,13 @@ const PostDetail = (props: PostDetailProps) => {
       {!loading ? (
         data && data.post && data.post.content ? (
           <div className="space-y-3 px-4 py-8">
-            <Link href={slug + '/edit'}>
-              <a className="absolute right-0 top-0 m-3 rounded-lg bg-white p-3 text-black shadow-lg hover:bg-neutral-100">
-                <Edit />
-              </a>
-            </Link>
+            {isAdmin && (
+              <Link href={slug + '/edit'}>
+                <a className="absolute right-0 top-0 m-3 rounded-lg bg-white p-3 text-black shadow-lg hover:bg-neutral-100">
+                  <Edit />
+                </a>
+              </Link>
+            )}
             <h1 className="text-3xl font-bold">{data.post.title}</h1>
             <h2 className="text-lg text-neutral-600">
               {moment(data.post.createdAt).format('MMMM Do YYYY')}
