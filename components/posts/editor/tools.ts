@@ -28,8 +28,6 @@ import SimpleImage from '@editorjs/simple-image'
 // @ts-ignore
 import Table from '@editorjs/table'
 // @ts-ignore
-import Warning from '@editorjs/warning'
-// @ts-ignore
 import Hyperlink from 'editorjs-hyperlink'
 
 async function getSignedUrl() {
@@ -59,7 +57,6 @@ export const EDITOR_JS_TOOLS = {
   embed: Embed,
   table: Table,
   list: List,
-  warning: Warning,
   code: Code,
   link: {
     class: Link,
