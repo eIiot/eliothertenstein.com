@@ -10,7 +10,11 @@ export interface Context {
 }
 
 export async function getViewer(req: NextApiRequest, res: NextApiResponse) {
-  const { user } = getSession(req, res)
+  const session = getSession(req, res)
+
+  if (!session) return null
+
+  const { user } = session
 
   let viewer
   if (user) {

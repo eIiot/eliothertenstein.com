@@ -179,15 +179,14 @@ const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
                   </fieldset>
                   <fieldset className="flex w-full flex-row items-center justify-center space-x-3">
                     <label className="h-min w-16 flex-none text-right text-sm font-bold">
-                      Exerpt
+                      Excerpt
                     </label>
                     <textarea
                       className="inline-block flex-1 rounded-lg p-2 ring-1 ring-black"
                       defaultValue={post?.excerpt || ''}
                       name="excerpt"
-                      placeholder="Exerpt"
+                      placeholder="Excerpt"
                     />
-                    {/* <label className="text-sm font-bold">Description</label> */}
                   </fieldset>
                   <fieldset className="flex w-full flex-row items-center justify-center space-x-3">
                     <label className="h-min w-16 flex-none text-right text-sm font-bold">

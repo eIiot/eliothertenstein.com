@@ -13,6 +13,7 @@ export async function afterCallback(_, __, session) {
     login: username,
     avatar_url: avatar,
   } = details
+  console.log(typeof githubId)
   try {
     await prisma.user.upsert({
       where: {
