@@ -1,3 +1,5 @@
+import EditorDeleteDialog from './EditorDeleteDialog'
+import EditorSaveDialog from './EditorSaveDialog'
 import { EDITOR_JS_TOOLS } from './tools'
 import {
   Post,
@@ -5,8 +7,9 @@ import {
   useUpsertPostMutation,
 } from '../../../graphql/types.generated'
 import { EditorConfig } from '@editorjs/editorjs'
-import * as AlertDialog from '@radix-ui/react-alert-dialog'
-import * as Dialog from '@radix-ui/react-dialog'
+import DragDrop from 'editorjs-drag-drop'
+// @ts-ignore NO TYPING AVAILABLE
+import Undo from 'editorjs-undo'
 import { useCallback, useRef, useState } from 'react'
 import { createReactEditorJS } from 'react-editor-js'
 import { Save, Trash2 } from 'react-feather'
@@ -32,6 +35,7 @@ interface EditorCore {
 
 const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
   const { post, content } = props
+
   const editorCore = useRef<EditorCore | null>(null)
 
   const jsonContent = content ? (JSON.parse(content) as EditorConfig) : null
@@ -39,6 +43,12 @@ const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
   const handleInitialize = useCallback((instance) => {
     editorCore.current = instance
   }, [])
+
+  const handleReady = () => {
+    const editor = editorCore.current._editorJS
+    new Undo({ editor })
+    new DragDrop(editor)
+  }
 
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
@@ -149,131 +159,22 @@ const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
       <ReactEditorJS
         defaultValue={jsonContent}
         onInitialize={handleInitialize}
+        onReady={handleReady}
         tools={EDITOR_JS_TOOLS}
       />
-      <Dialog.Root onOpenChange={onSaveDialogChange} open={isSaveDialogOpen}>
-        <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 z-10 flex items-center justify-center bg-transparent">
-            <Dialog.Content className="items-left relative flex max-w-sm flex-col rounded-lg bg-white p-8 shadow-xl">
-              <Dialog.Title className="text-lg font-bold">
-                Save Post
-              </Dialog.Title>
-              <Dialog.Description className="flex flex-col space-y-4 text-sm font-normal">
-                <span className="pb-3">
-                  Make changes to the post attributes here. Click save when
-                  you&apos;re done.
-                </span>
-                <form className="space-y-4" onSubmit={handleSave}>
-                  <fieldset className="flex w-full flex-row items-center justify-center space-x-3">
-                    <label className="h-min w-16 flex-none text-right text-sm font-bold">
-                      Title
-                    </label>
-                    <input
-                      className="inline-block flex-1 rounded-lg p-2 ring-1 ring-black"
-                      defaultValue={post?.title || ''}
-                      name="title"
-                      placeholder="Title"
-                      type="text"
-                    />
-                    {/* <label className="text-sm font-bold">Description</label> */}
-                  </fieldset>
-                  <fieldset className="flex w-full flex-row items-center justify-center space-x-3">
-                    <label className="h-min w-16 flex-none text-right text-sm font-bold">
-                      Excerpt
-                    </label>
-                    <textarea
-                      className="inline-block flex-1 rounded-lg p-2 ring-1 ring-black"
-                      defaultValue={post?.excerpt || ''}
-                      name="excerpt"
-                      placeholder="Excerpt"
-                    />
-                  </fieldset>
-                  <fieldset className="flex w-full flex-row items-center justify-center space-x-3">
-                    <label className="h-min w-16 flex-none text-right text-sm font-bold">
-                      Slug
-                    </label>
-                    <input
-                      className={
-                        'inline-block flex-1 rounded-lg p-2 ring-1 ring-black' +
-                        (post?.slug ? ' text-neutral-400' : '')
-                      }
-                      disabled={!!post?.slug}
-                      name="slug"
-                      placeholder="Slug"
-                      type="text"
-                      value={post?.slug}
-                    />
-                    {/* <label className="text-sm font-bold">Description</label> */}
-                  </fieldset>
-
-                  <div className="flex flex-row items-center justify-end space-x-3">
-                    <button
-                      aria-label="Close"
-                      className="animate-button-hover inline-block rounded-lg bg-green-700 px-3 py-2 text-white"
-                      type="submit"
-                    >
-                      {isSaving ? (
-                        <span className="flex items-center justify-center">
-                          Saving...
-                        </span>
-                      ) : (
-                        <span className="flex items-center justify-center">
-                          Save
-                        </span>
-                      )}
-                    </button>
-                    <Dialog.Close
-                      aria-label="Cancel"
-                      className="animate-button-hover inline-block rounded-lg bg-neutral-800 px-3 py-2 text-white"
-                      type="submit"
-                    >
-                      Cancel
-                    </Dialog.Close>
-                  </div>
-                </form>
-              </Dialog.Description>
-            </Dialog.Content>
-          </Dialog.Overlay>
-        </Dialog.Portal>
-      </Dialog.Root>
-      <AlertDialog.Root
-        onOpenChange={onDeleteDialogChange}
-        open={isDeleteDialogOpen}
-      >
-        <AlertDialog.Portal>
-          <AlertDialog.Overlay className="fixed inset-0 z-10 flex items-center justify-center bg-transparent">
-            <AlertDialog.Content className="items-left relative flex max-w-sm flex-col rounded-lg bg-white p-8 shadow-xl">
-              <AlertDialog.Title className="text-lg font-bold">
-                Delete Post
-              </AlertDialog.Title>
-              <AlertDialog.Description className="flex flex-col space-y-4 text-sm font-normal">
-                <span className="pb-3">
-                  Are you sure you want to delete this post?
-                </span>
-                <span className="flex flex-row items-center justify-evenly space-x-3">
-                  <AlertDialog.Action
-                    className="animate-button-hover rounded-md bg-red-700 px-3 py-2 text-white"
-                    onClick={handleDelete}
-                  >
-                    {isDeleting ? (
-                      <span className="flex items-center justify-center">
-                        Deleting...
-                      </span>
-                    ) : (
-                      <span className="flex items-center justify-center">
-                        Delete
-                      </span>
-                    )}
-                  </AlertDialog.Action>
-                  <AlertDialog.Cancel className="animate-button-hover rounded-md bg-neutral-800 px-3 py-2 text-white">
-                    Cancel
-                  </AlertDialog.Cancel>
-                </span>
-              </AlertDialog.Description>
-            </AlertDialog.Content>
-          </AlertDialog.Overlay>
-        </AlertDialog.Portal>
-      </AlertDialog.Root>
+      <EditorSaveDialog
+        handleSave={handleSave}
+        isSaveDialogOpen={isSaveDialogOpen}
+        isSaving={isSaving}
+        onOpenChange={onSaveDialogChange}
+        post={post}
+      />
+      <EditorDeleteDialog
+        handleDelete={handleDelete}
+        isDeleteDialogOpen={isDeleteDialogOpen}
+        isDeleting={isDeleting}
+        onDeleteDialogChange={onDeleteDialogChange}
+      />
     </>
   )
 }

@@ -3409,6 +3409,11 @@ editorjs-blocks-react-renderer@^1.2.4:
   dependencies:
     html-react-parser "^1.4.5"
 
+editorjs-drag-drop@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/editorjs-drag-drop/-/editorjs-drag-drop-1.1.1.tgz#70a607000532876ba461998425b99641d1087ade"
+  integrity sha512-FDK5VM2mBPRqQSUlrDft3qUz3z4zAb++A6kR7mVdnC5dBVAsuZZlWJcy4aUIuV1iS4TvB8MyDRVfv21rOB+s0Q==
+
 editorjs-hyperlink@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/editorjs-hyperlink/-/editorjs-hyperlink-1.0.6.tgz#f75ba7d3e8dab4527993ed165fd44cbfcae3a672"
@@ -3423,6 +3428,13 @@ editorjs-react-renderer@^3.1.1:
     classnames "^2.3.1"
     html-react-parser "^1.4.0"
     react "^17.0.2"
+
+editorjs-undo@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/editorjs-undo/-/editorjs-undo-2.0.1.tgz#59779f30606ee836c10cd129d78aaf952a67a166"
+  integrity sha512-9HxHDOA7ogsrgtTQLvqpGsnLPyTZNkdvt9En09Rvn1xMWhVlGIWGZMU+dZVnNPPYD46+CcduniAT1DxdYO0xpg==
+  dependencies:
+    vanilla-caret-js "^1.0.1"
 
 electron-to-chromium@^1.4.118:
   version "1.4.136"
@@ -7408,6 +7420,11 @@ value-or-promise@1.0.11, value-or-promise@^1.0.11:
   version "1.0.11"
   resolved "https://registry.npmjs.org/value-or-promise/-/value-or-promise-1.0.11.tgz"
   integrity sha512-41BrgH+dIbCFXClcSapVs5M6GkENd3gQOJpEfPDNa71LsUGMXDL0jMWpI/Rh7WhX+Aalfz2TTS3Zt5pUsbnhLg==
+
+vanilla-caret-js@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vanilla-caret-js/-/vanilla-caret-js-1.0.1.tgz#96cf4e6ee154ca87c813bb4604c90a24555abc35"
+  integrity sha512-s5hXdyIMmeJ1dzfqvZSEGIXGi5xaHrWKsfRZfNUFVqDLwD2TA5QlPJqFhUhZ4D3wgyf6Pjw5ygUbOpj/QePsSw==
 
 vfile-message@^3.0.0:
   version "3.1.2"

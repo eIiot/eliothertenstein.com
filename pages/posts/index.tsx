@@ -4,6 +4,7 @@ import ListView from '../../components/views/ListView'
 import prisma from '../../lib/prisma'
 import { Viewer } from '../../types/user'
 import { getSession } from '@auth0/nextjs-auth0'
+import { GetServerSideProps } from 'next'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { Edit } from 'react-feather'
@@ -31,7 +32,7 @@ const PostsPage = (props: PostsPageProps) => {
 PostsPage.getLayout = (page: React.ReactNode) =>
   getLayout(<ListView detail={page} list={<PostsList />} showDetail />)
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = getSession(ctx.req, ctx.res)
 
   if (!session) {

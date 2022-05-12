@@ -5,6 +5,7 @@ import ListView from '../../../components/views/ListView'
 import prisma from '../../../lib/prisma'
 import { Viewer } from '../../../types/user'
 import { getSession, Session } from '@auth0/nextjs-auth0'
+import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import React, { ContextType } from 'react'
 
@@ -22,7 +23,7 @@ const PostPage = (props: PostPageProps) => {
 PostPage.getLayout = (page: React.ReactNode) =>
   getLayout(<ListView detail={page} list={<PostsList />} showDetail />)
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = getSession(ctx.req, ctx.res)
 
   if (!session) {
