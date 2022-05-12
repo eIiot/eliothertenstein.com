@@ -7,6 +7,7 @@ import {
   useUpsertPostMutation,
 } from '../../../graphql/types.generated'
 import { EditorConfig } from '@editorjs/editorjs'
+// @ts-ignore NO TYPING AVAILABLE
 import DragDrop from 'editorjs-drag-drop'
 // @ts-ignore NO TYPING AVAILABLE
 import Undo from 'editorjs-undo'
@@ -31,6 +32,8 @@ interface EditorCore {
   save(): Promise<EditorConfig>
 
   render(data: EditorConfig): Promise<void>
+
+  _editorJS: any
 }
 
 const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
@@ -45,7 +48,7 @@ const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
   }, [])
 
   const handleReady = () => {
-    const editor = editorCore.current._editorJS
+    const editor = editorCore?.current?._editorJS
     new Undo({ editor })
     new DragDrop(editor)
   }
