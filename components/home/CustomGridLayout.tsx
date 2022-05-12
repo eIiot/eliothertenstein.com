@@ -1,8 +1,10 @@
 // * Heavily inspired by Brian Lovin's Personal Site, https://brianlovin.com/
 
+import { ReactElement } from 'react'
+
 interface CustomGridLayoutProps {
   title: string
-  children: React.ReactNode
+  children: ReactElement
 }
 
 const CustomGridLayout = (props: CustomGridLayoutProps) => {

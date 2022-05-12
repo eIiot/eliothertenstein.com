@@ -7,6 +7,7 @@ import { getSession } from '@auth0/nextjs-auth0'
 import { GetServerSideProps } from 'next'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
+import { ReactElement } from 'react'
 import { Edit } from 'react-feather'
 
 interface PostsPageProps {
@@ -29,8 +30,8 @@ const PostsPage = (props: PostsPageProps) => {
   )
 }
 
-PostsPage.getLayout = (page: React.ReactNode) =>
-  getLayout(<ListView detail={page} list={<PostsList />} showDetail />)
+PostsPage.getLayout = (page: ReactElement) =>
+  getLayout(<ListView detail={page} list={<PostsList />} showDetail={false} />)
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = getSession(ctx.req, ctx.res)

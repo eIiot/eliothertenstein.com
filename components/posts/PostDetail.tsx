@@ -31,7 +31,7 @@ const PostDetail = (props: PostDetailProps) => {
     <div className="h-full w-full overflow-scroll bg-white">
       {!loading ? (
         data && data.post && data.post.content ? (
-          <div className="mx-auto max-w-2xl space-y-3 px-4 py-8">
+          <div className="mx-auto max-w-2xl space-y-3 px-4 py-20">
             {viewer && viewer.isAdmin && (
               <Link href={slug + '/edit'}>
                 <a className="absolute right-0 top-0 m-3 rounded-lg bg-white p-3 text-black shadow-lg hover:bg-neutral-100">

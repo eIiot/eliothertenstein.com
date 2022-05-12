@@ -6,6 +6,7 @@ import prisma from '../../../lib/prisma'
 import { AuthPage } from '../../../types/page'
 import { withPageAuthRequired, getSession, Session } from '@auth0/nextjs-auth0'
 import { useRouter } from 'next/router'
+import { ReactElement } from 'react'
 import { toast } from 'react-hot-toast'
 
 const Editor = withPageAuthRequired(() => {
@@ -15,7 +16,7 @@ const Editor = withPageAuthRequired(() => {
   return <PostEditor slug={slug} />
 }) as AuthPage
 
-Editor.getLayout = (page: React.ReactNode) =>
+Editor.getLayout = (page: ReactElement) =>
   getLayout(<ListView detail={page} list={<PostsList />} showDetail />)
 
 export const getServerSideProps = withPageAuthRequired({
