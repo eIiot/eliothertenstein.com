@@ -2,22 +2,29 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/prop-types */
 import { RenderFn } from 'editorjs-blocks-react-renderer'
-import Prism from 'prismjs'
-import 'prismjs/themes/prism-tomorrow.css'
-import { useEffect } from 'react'
+import Highlight, { defaultProps } from 'prism-react-renderer'
+import vsDark from 'prism-react-renderer/themes/vsDark'
 
 const CodeBlockRenderer: RenderFn<{}> = ({ data, className = '' }) => {
-  useEffect(() => {
-    Prism.highlightAll()
-  }, [])
   return (
-    <>
-      <div className="Code">
-        <pre>
-          <code className={`language-${data.language}`}>{data.code}</code>
+    <Highlight
+      {...defaultProps}
+      code={data.code}
+      language={data.language}
+      theme={vsDark}
+    >
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <pre className={className} style={style}>
+          {tokens.map((line, i) => (
+            <div key={i} {...getLineProps({ line, key: i })}>
+              {line.map((token, key) => (
+                <span key={key} {...getTokenProps({ token, key })} />
+              ))}
+            </div>
+          ))}
         </pre>
-      </div>
-    </>
+      )}
+    </Highlight>
   )
 }
 
