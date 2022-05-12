@@ -5,7 +5,7 @@
 /* default text styling */
 
 .post-text {
-  @apply text-gray-700 dark:text-gray-400;
+  @apply font-light text-gray-500 dark:text-gray-400;
 }
 
 /* add margins to text */
@@ -35,7 +35,11 @@
 /* images */
 
 .post-text img {
-  @apply rounded-md;
+  @apply mx-auto rounded-md shadow-sm;
+}
+
+.post-text figure {
+  @apply w-full;
 }
 
 .post-text figcaption {
