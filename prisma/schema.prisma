@@ -12,7 +12,7 @@ model User {
   createdAt    DateTime   @default(now())
   role         Role       @default(USER)
   username     String     @unique @db.VarChar(16)
-  githubId     BigInt     @unique
+  githubId     Int        @unique
   email        String?    @unique
   pendingEmail String?
   avatar       String?

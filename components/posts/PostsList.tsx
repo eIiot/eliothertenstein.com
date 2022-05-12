@@ -1,7 +1,9 @@
 import { useGetPostsQuery } from '../../graphql/types.generated'
 import ActiveLink from '../ActiveLink'
+import MenuBarGhost from '../effects/MenuBarGhost'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import moment from 'moment'
+import { Loader } from 'react-feather'
 import { toast } from 'react-hot-toast'
 
 const PostsList = () => {
@@ -41,7 +43,11 @@ const PostsList = () => {
               <span>no posts</span>
             )
           ) : (
-            <span>Loading</span>
+            <>
+              <MenuBarGhost height="56px" />
+              <MenuBarGhost height="56px" />
+              <MenuBarGhost height="56px" />
+            </>
           )}
         </div>
       </ScrollArea.Viewport>

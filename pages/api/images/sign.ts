@@ -9,7 +9,7 @@ export default withApiAuthRequired(
       res: NextApiResponse,
       req: NextApiRequest
     ) => {
-      const { user: viewer } = getSession(req, res)
+      const { user: viewer } = getSession(req, res) as Session
       return viewer
     }
 
