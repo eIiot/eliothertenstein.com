@@ -5,7 +5,7 @@
 /* default text styling */
 
 .post-text {
-  @apply font-light text-gray-500 dark:text-gray-400;
+  @apply font-light text-neutral-500 dark:text-neutral-400;
 }
 
 /* add margins to text */
@@ -21,7 +21,7 @@
 /* blockquote */
 
 .post-text blockquote {
-  @apply border-l-2 border-gray-200 font-normal dark:border-gray-800 dark:text-gray-400;
+  @apply border-l-2 border-neutral-200 font-normal dark:border-neutral-800 dark:text-neutral-400;
 }
 
 .post-text blockquote p:first-child {
@@ -59,7 +59,7 @@
 /* tables */
 
 .post-text table {
-  @apply my-2 rounded-md border border-gray-200 dark:border-gray-800 dark:text-gray-50;
+  @apply my-2 rounded-md border border-neutral-200 dark:border-neutral-800 dark:text-neutral-50;
 }
 
 .post-text.comment table {
@@ -67,7 +67,7 @@
 }
 
 .post-text thead {
-  @apply text-gray-800 dark:text-gray-200;
+  @apply text-neutral-800 dark:text-neutral-200;
 }
 
 .post-text thead th {
@@ -77,32 +77,32 @@
 .post-text thead th,
 .post-text tbody th,
 .post-text tbody td {
-  @apply border-r border-gray-200 p-2 dark:border-gray-800;
+  @apply border-r border-neutral-200 p-2 dark:border-neutral-800;
 }
 
 .post-text tbody tr {
-  @apply border-b border-gray-200 dark:border-gray-800;
+  @apply border-b border-neutral-200 dark:border-neutral-800;
 }
 
 .post-text thead tr {
-  @apply border-b-2 border-gray-200 dark:border-gray-800;
+  @apply border-b-2 border-neutral-200 dark:border-neutral-800;
 }
 
 .post-text tbody tr:nth-child(2n) {
-  @apply bg-gray-50 dark:bg-gray-900;
+  @apply bg-neutral-50 dark:bg-neutral-900;
 }
 
 /* bold */
 
 .post-text b,
 .post-text strong {
-  @apply font-bold text-gray-900 dark:text-gray-300;
+  @apply font-bold text-neutral-900 dark:text-neutral-300;
 }
 
 /* headings */
 
 .post-text hr {
-  @apply border-gray-200 dark:border-gray-800;
+  @apply border-neutral-200 dark:border-neutral-800;
 }
 
 .post-text h1,
@@ -111,7 +111,7 @@
 .post-text h4,
 .post-text h5,
 .post-text h6 {
-  @apply font-sans font-bold text-gray-900 dark:text-gray-100;
+  @apply font-sans font-bold text-neutral-900 dark:text-neutral-100;
   scroll-margin-top: 4rem;
 }
 
@@ -121,17 +121,17 @@
 .post-text h4 a,
 .post-text h5 a,
 .post-text h6 a {
-  @apply font-sans font-bold text-gray-100 no-underline dark:text-gray-100;
+  @apply font-sans font-bold text-neutral-100 no-underline dark:text-neutral-100;
 }
 
 /* code */
 
 .post-text pre {
-  @apply space-y-4 rounded-md border-gray-300 bg-gray-400 bg-opacity-5 px-8 py-6 text-sm text-gray-800 dark:border-gray-800 dark:text-gray-200;
+  @apply space-y-4 rounded-md border-neutral-300 bg-neutral-400 bg-opacity-5 px-8 py-6 text-sm text-neutral-800 dark:border-neutral-800 dark:text-neutral-200;
 }
 
 .post-text code {
-  @apply rounded-md border-gray-100 bg-gray-100 px-1 py-0.5 text-gray-800 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-200;
+  @apply rounded-md border-neutral-100 bg-neutral-100 px-1 py-0.5 text-neutral-800 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200;
 }
 
 .post-text code,
@@ -141,15 +141,15 @@
 }
 
 .post-text pre > code {
-  @apply bg-gray-800 text-gray-200;
+  @apply bg-neutral-800 text-neutral-200;
 }
 
 .post-text pre {
-  @apply bg-gray-800 text-gray-100;
+  @apply bg-neutral-800 text-neutral-100;
 }
 
 .post-text sup {
-  @apply text-sm text-blue-500 dark:text-gray-400;
+  @apply text-sm text-blue-500 dark:text-neutral-400;
   vertical-align: super;
   top: 0px;
   position: relative;
