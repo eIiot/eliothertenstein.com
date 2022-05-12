@@ -1,5 +1,6 @@
 import postStyles from './PostStyles'
 import ChecklistRenderer from './renderers/ChecklistRenderer'
+import CodeBlockRenderer from './renderers/CodeBlockRenderer'
 import LinkRenderer from './renderers/LinkRenderer'
 import { useGetPostQuery } from '../../graphql/types.generated'
 import { Viewer } from '../../types/user'
@@ -49,6 +50,7 @@ const PostDetail = (props: PostDetailProps) => {
                 renderers={{
                   checklist: ChecklistRenderer,
                   link: LinkRenderer,
+                  code: CodeBlockRenderer,
                 }}
               />
             </div>

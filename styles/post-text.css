@@ -140,14 +140,6 @@
   word-break: break-word;
 }
 
-.post-text pre > code {
-  @apply bg-neutral-800 text-neutral-200;
-}
-
-.post-text pre {
-  @apply bg-neutral-800 text-neutral-100;
-}
-
 .post-text sup {
   @apply text-sm text-blue-500 dark:text-neutral-400;
   vertical-align: super;
