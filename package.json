@@ -60,6 +60,7 @@
     "eslint-plugin-next": "^0.0.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
+    "framer-motion": "^6.3.3",
     "graphql-iso-date": "^3.6.1",
     "html-metadata-parser": "^2.0.4",
     "html-react-parser": "^1.4.12",

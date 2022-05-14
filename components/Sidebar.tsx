@@ -70,8 +70,8 @@ const Sidebar = (props: SidebarProps) => {
               }}
             />
             <ActiveLink
-              activeClassName="after:absolute after:right-0 after:h-9 after:w-1 after:translate-x-1/2 after:rounded-sm after:bg-black active:translate-y-1"
-              className="justify-left z-10 flex flex-1 cursor-pointer items-center rounded-md px-2 py-1.5 transition duration-200"
+              activeClassName="after:absolute after:right-0 after:h-9 after:w-1 after:translate-x-1/2 after:rounded-sm after:bg-black"
+              className="justify-left group z-10 flex flex-1 cursor-pointer items-center rounded-md px-2 py-1.5 transition duration-200"
               href="/"
               inactiveClassName="bg-transparent text-black"
               onClick={() => {
@@ -88,11 +88,11 @@ const Sidebar = (props: SidebarProps) => {
             </ActiveLink>
             <ActiveLink
               activeChildren={<BookOpen className="mr-3 inline-block" />}
-              activeClassName="after:absolute after:right-0 after:h-9 after:w-1 after:translate-x-1/2 after:rounded-sm after:bg-black active:translate-y-1"
+              activeClassName="after:absolute after:right-0 after:h-9 after:w-1 after:translate-x-1/2 after:rounded-sm after:bg-black"
               className="justify-left z-10 flex flex-1 cursor-pointer items-center rounded-md px-2 py-1.5 transition duration-200"
               href="/posts"
               inactiveChildren={<Book className="mr-3 inline-block" />}
-              inactiveClassName="bg-transparent text-black "
+              inactiveClassName="bg-transparent text-black"
               onClick={() => {
                 setIsHidden(true)
               }}
