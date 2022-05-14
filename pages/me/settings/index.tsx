@@ -6,15 +6,18 @@ import { Viewer } from '../../../types/user'
 import { getSession, Session, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import * as AlertDialog from '@radix-ui/react-alert-dialog'
 import Link from 'next/link'
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
+import { ArrowLeft, Menu } from 'react-feather'
 import toast from 'react-hot-toast'
 
 interface SettingsPageProps {
   viewer: Viewer
+  isSidebarHidden: boolean
+  setIsSidebarHidden: (isSidebarHidden: boolean) => void
 }
 
 const SettingsPage = withPageAuthRequired((props: SettingsPageProps) => {
-  const { viewer } = props
+  const { viewer, isSidebarHidden, setIsSidebarHidden } = props
   const [deleteUser] = useDeleteUserMutation()
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -43,6 +46,13 @@ const SettingsPage = withPageAuthRequired((props: SettingsPageProps) => {
   }
   return (
     <span className="mt-32 flex flex-col items-start space-y-3 px-9">
+      <button
+        className="absolute left-0 top-0 block p-3 lg:hidden"
+        onClick={() => setIsSidebarHidden(!isSidebarHidden)}
+        type="button"
+      >
+        <Menu size={24} />
+      </button>
       <h1 className="h-2xl font-bold">Account</h1>
       <Link href="/api/auth/logout" passHref>
         <a className="animate-button-hover rounded-md border-[1px] border-neutral-300 px-3 py-2 shadow-sm ">
@@ -103,7 +113,7 @@ const SettingsPage = withPageAuthRequired((props: SettingsPageProps) => {
   )
 }) as AuthPage
 
-SettingsPage.getLayout = (page: React.ReactNode) => getLayout(page)
+SettingsPage.getLayout = (page: ReactElement) => getLayout(page)
 
 export const getServerSideProps = withPageAuthRequired({
   returnTo: '/',

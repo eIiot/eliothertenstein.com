@@ -1,8 +1,10 @@
 // ? Editor JS Does not provide typings for their tools :/
+
+// @ts-ignore
+import editorjsCodeflask from '@calumk/editorjs-codeflask'
 // @ts-ignore
 import CheckList from '@editorjs/checklist'
 // @ts-ignore
-import Code from '@editorjs/code'
 // @ts-ignore
 import Delimiter from '@editorjs/delimiter'
 // @ts-ignore
@@ -27,8 +29,6 @@ import Raw from '@editorjs/raw'
 import SimpleImage from '@editorjs/simple-image'
 // @ts-ignore
 import Table from '@editorjs/table'
-// @ts-ignore
-import Warning from '@editorjs/warning'
 // @ts-ignore
 import Hyperlink from 'editorjs-hyperlink'
 
@@ -59,8 +59,7 @@ export const EDITOR_JS_TOOLS = {
   embed: Embed,
   table: Table,
   list: List,
-  warning: Warning,
-  code: Code,
+  code: editorjsCodeflask,
   link: {
     class: Link,
     config: {

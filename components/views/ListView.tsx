@@ -1,13 +1,31 @@
-import { ReactNode } from 'react'
+import { cloneElement, isValidElement, ReactElement } from 'react'
 
 interface ListViewProps {
-  list: ReactNode
-  detail?: ReactNode
+  list: ReactElement
+  detail?: ReactElement
+  children?: ReactElement
   showDetail: boolean
+  isSidebarHidden?: boolean
+  setIsSidebarHidden?: (isSidebarHidden: boolean) => void
 }
 
 const ListView = (props: ListViewProps) => {
-  const { list, detail, showDetail } = props
+  const {
+    list,
+    detail,
+    showDetail,
+    isSidebarHidden,
+    setIsSidebarHidden,
+    children,
+  } = props
+
+  // add the isSidebarHidden and setIsSidebarHidden prop to the list component
+
+  const listWithProps = cloneElement(list, {
+    isSidebarHidden,
+    setIsSidebarHidden,
+  })
+
   return (
     <div className="bg-grid-pattern flex h-full flex-row">
       <div
@@ -16,7 +34,7 @@ const ListView = (props: ListViewProps) => {
           (showDetail ? ' hidden' : 'relative')
         }
       >
-        {list}
+        {listWithProps}
       </div>
       <main
         className={
@@ -26,12 +44,16 @@ const ListView = (props: ListViewProps) => {
       >
         {detail ? detail : null}
       </main>
+      {children ? children : null}
     </div>
   )
 }
 
 ListView.defaultProps = {
+  children: null,
   detail: null,
+  isSidebarHidden: false,
+  setIsSidebarHidden: () => {},
 }
 
 export default ListView

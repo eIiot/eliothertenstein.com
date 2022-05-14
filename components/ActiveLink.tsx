@@ -1,17 +1,29 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { ReactElement } from 'react'
 
 interface ActiveLinkProps {
-  children: React.ReactNode
+  children: ReactElement
   href: string
   className?: string
   activeClassName?: string
   inactiveClassName?: string
+  activeChildren?: ReactElement
+  inactiveChildren?: ReactElement
+  [x: string]: any
 }
 
 const ActiveLink = (props: ActiveLinkProps) => {
-  const { children, href, className, activeClassName, inactiveClassName } =
-    props
+  const {
+    children,
+    href,
+    className,
+    activeClassName,
+    inactiveClassName,
+    activeChildren,
+    inactiveChildren,
+    ...rest
+  } = props
   const router = useRouter()
   const isActive = router.asPath.includes(href + '/') || router.asPath === href
   const classNames = isActive
@@ -19,14 +31,19 @@ const ActiveLink = (props: ActiveLinkProps) => {
     : className + ' ' + inactiveClassName
   return (
     <Link href={href} passHref>
-      <div className={classNames}>{children}</div>
+      <a {...rest} className={classNames}>
+        {isActive ? activeChildren : inactiveChildren}
+        {children}
+      </a>
     </Link>
   )
 }
 
 ActiveLink.defaultProps = {
+  activeChildren: null,
   activeClassName: '',
   className: '',
+  inactiveChildren: null,
   inactiveClassName: '',
 }
 

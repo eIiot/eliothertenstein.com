@@ -1,14 +1,28 @@
 import CustomImage from '../components/articles/CustomImage'
 import CustomGridLayout from '../components/home/CustomGridLayout'
 import SiteLayout, { getLayout } from '../components/layouts/SiteLayout'
+import { Page } from '../types/page'
 import Link from 'next/link'
-import type { NextPage } from 'next'
+import { Menu } from 'react-feather'
 // import Head from 'next/head'
 // import Image from 'next/image'
 
-const Home: NextPage = () => {
+interface HomeProps {
+  isSidebarHidden: boolean
+  setIsSidebarHidden: (isSidebarHidden: boolean) => void
+}
+
+const Home: Page = (props: HomeProps) => {
+  const { isSidebarHidden, setIsSidebarHidden } = props
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-12 pb-10 md:px-8">
+      <button
+        className="absolute left-0 top-0 block p-3 lg:hidden"
+        onClick={() => setIsSidebarHidden(!isSidebarHidden)}
+        type="button"
+      >
+        <Menu size={24} />
+      </button>
       <p className="py-12" />
 
       <CustomGridLayout title="">
@@ -33,23 +47,25 @@ const Home: NextPage = () => {
         <div className="flex flex-col space-y-3">
           <div className="flex justify-between">
             <span>Twitter</span>
-            <Link
+            <a
+              className="animate-link-hover"
               href="
             https://twitter.com/eiioth"
               target="_blank"
             >
               @eiioth
-            </Link>
+            </a>
           </div>
           <div className="flex justify-between">
             <span>Github</span>
-            <Link
+            <a
+              className="animate-link-hover"
               href="
-            https://twitter.com/eiioth"
+            https://github.com/eiiot"
               target="_blank"
             >
               @eiiot
-            </Link>
+            </a>
           </div>
         </div>
       </CustomGridLayout>

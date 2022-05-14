@@ -3,10 +3,16 @@ import ActiveLink from '../ActiveLink'
 import MenuBarGhost from '../effects/MenuBarGhost'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import moment from 'moment'
-import { Loader } from 'react-feather'
+import { Loader, Menu } from 'react-feather'
 import { toast } from 'react-hot-toast'
 
-const PostsList = () => {
+interface PostsListProps {
+  isSidebarHidden?: boolean
+  setIsSidebarHidden?: (isSidebarHidden: boolean) => void
+}
+
+const PostsList = (props: PostsListProps) => {
+  const { isSidebarHidden, setIsSidebarHidden } = props
   const { data, loading, error } = useGetPostsQuery()
 
   if (error) {
@@ -17,7 +23,14 @@ const PostsList = () => {
   return (
     <ScrollArea.Root className="h-full w-full">
       <ScrollArea.Viewport className="h-full">
-        <div className="text-normal w-full pt-3 text-center font-normal">
+        <div className="text-normal relative w-full pt-3 text-center font-normal">
+          <button
+            className="absolute left-0 block px-3 lg:hidden"
+            onClick={() => setIsSidebarHidden(!isSidebarHidden)}
+            type="button"
+          >
+            <Menu size={24} />
+          </button>
           Posts
         </div>
         <div className="flex flex-col space-y-2 p-3">
@@ -32,10 +45,12 @@ const PostsList = () => {
                     inactiveClassName="bg-white hover:bg-neutral-100 last-child:text-neutral-600 child-a:text-neutral-500"
                     key={post.id}
                   >
-                    <span className="">{post.title}</span>
-                    <a className="text-sm">
-                      {moment(post.createdAt).format('MMMM Do YYYY')}
-                    </a>
+                    <>
+                      <span className="">{post.title}</span>
+                      <a className="text-sm">
+                        {moment(post.createdAt).format('MMMM Do YYYY')}
+                      </a>
+                    </>
                   </ActiveLink>
                 ) : null
               )
@@ -56,6 +71,11 @@ const PostsList = () => {
       </ScrollArea.Scrollbar>
     </ScrollArea.Root>
   )
+}
+
+PostsList.defaultProps = {
+  isSidebarHidden: false,
+  setIsSidebarHidden: () => {},
 }
 
 export default PostsList
