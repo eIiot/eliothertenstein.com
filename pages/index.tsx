@@ -1,5 +1,5 @@
-import CustomImage from '../components/articles/CustomImage'
 import CustomGridLayout from '../components/home/CustomGridLayout'
+import CustomImage from '../components/home/CustomImage'
 import SiteLayout, { getLayout } from '../components/layouts/SiteLayout'
 import { Page } from '../types/page'
 import Link from 'next/link'
@@ -26,9 +26,10 @@ const Home: Page = (props: HomeProps) => {
       <p className="py-12" />
 
       <CustomGridLayout title="">
+        <p className="pb-3">Hi! 👋</p>
         <p className="pb-3">
-          Hi! I&apos;m Eliot, a student and developer based in Berkeley, CA.
-          I&apos;m most well known for{' '}
+          My name is Eliot, I&apos;m a student and developer based in Berkeley,
+          CA. I&apos;m most well known for{' '}
           <Link href="https://www.therailmap.com" target="_blank">
             The Rail Map
           </Link>
