@@ -1,9 +1,9 @@
 import CustomImage from '../components/articles/CustomImage'
 import CustomGridLayout from '../components/home/CustomGridLayout'
 import SiteLayout, { getLayout } from '../components/layouts/SiteLayout'
+import { Page } from '../types/page'
 import Link from 'next/link'
 import { Menu } from 'react-feather'
-import type { NextPage } from 'next'
 // import Head from 'next/head'
 // import Image from 'next/image'
 
@@ -12,7 +12,7 @@ interface HomeProps {
   setIsSidebarHidden: (isSidebarHidden: boolean) => void
 }
 
-const Home: NextPage = (props: HomeProps) => {
+const Home: Page = (props: HomeProps) => {
   const { isSidebarHidden, setIsSidebarHidden } = props
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-12 pb-10 md:px-8">
@@ -48,6 +48,7 @@ const Home: NextPage = (props: HomeProps) => {
           <div className="flex justify-between">
             <span>Twitter</span>
             <a
+              className="animate-link-hover"
               href="
             https://twitter.com/eiioth"
               target="_blank"
@@ -58,6 +59,7 @@ const Home: NextPage = (props: HomeProps) => {
           <div className="flex justify-between">
             <span>Github</span>
             <a
+              className="animate-link-hover"
               href="
             https://github.com/eiiot"
               target="_blank"

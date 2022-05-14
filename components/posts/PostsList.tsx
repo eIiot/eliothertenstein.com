@@ -7,8 +7,8 @@ import { Loader, Menu } from 'react-feather'
 import { toast } from 'react-hot-toast'
 
 interface PostsListProps {
-  isSidebarHidden: boolean
-  setIsSidebarHidden: (isSidebarHidden: boolean) => void
+  isSidebarHidden?: boolean
+  setIsSidebarHidden?: (isSidebarHidden: boolean) => void
 }
 
 const PostsList = (props: PostsListProps) => {
@@ -71,6 +71,11 @@ const PostsList = (props: PostsListProps) => {
       </ScrollArea.Scrollbar>
     </ScrollArea.Root>
   )
+}
+
+PostsList.defaultProps = {
+  isSidebarHidden: false,
+  setIsSidebarHidden: () => {},
 }
 
 export default PostsList

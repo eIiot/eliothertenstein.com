@@ -3,7 +3,18 @@ import { useUser } from '@auth0/nextjs-auth0'
 import * as Avatar from '@radix-ui/react-avatar'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import Link from 'next/link'
-import { BookOpen, Home, Menu, Settings, User, X } from 'react-feather'
+import { useState } from 'react'
+import {
+  ArrowUpRight,
+  Book,
+  BookOpen,
+  GitHub,
+  Home,
+  Menu,
+  Settings,
+  User,
+  X,
+} from 'react-feather'
 
 interface SidebarProps {
   isHidden: boolean
@@ -13,10 +24,15 @@ interface SidebarProps {
 const Sidebar = (props: SidebarProps) => {
   const { isHidden, setIsHidden } = props
   const { user, error, isLoading } = useUser()
+  const [bgHighlightTranslate, setBgHighlightTranslate] = useState(0)
+  const [displayBgHighlight, setDisplayBgHighlight] = useState(false)
+  const [bgHighlightAnimationDuration, setBgHighlightAnimationDuration] =
+    useState(0)
+
   return (
     <div
       className={
-        '3xl:w-80 absolute z-40 flex h-full max-h-screen min-h-screen w-3/4 flex-none transform flex-col overflow-y-auto border-r border-neutral-100 bg-white transition duration-200 ease-in-out sm:w-1/2 md:w-1/3 lg:relative lg:z-auto lg:w-56 lg:translate-x-0 2xl:w-72 ' +
+        '3xl:w-80 absolute z-40 flex h-full max-h-screen min-h-screen w-3/4 flex-none transform flex-col overflow-hidden overflow-y-auto border-r border-neutral-100 bg-white transition duration-200 ease-in-out sm:w-1/2 md:w-1/3 lg:relative lg:z-auto lg:w-56 lg:translate-x-0 2xl:w-72 ' +
         (isHidden ? '-translate-x-full' : 'translate-x-0')
       }
     >
@@ -34,13 +50,35 @@ const Sidebar = (props: SidebarProps) => {
       </div>
       <ScrollArea.Root className="w-full flex-grow">
         <ScrollArea.Viewport className="min-h-full flex-col">
-          <div className="flex h-full min-h-full flex-1 flex-col space-y-2 p-3">
+          <div
+            className="m-3 flex h-full min-h-full flex-1 flex-col space-y-2"
+            onMouseEnter={() => {
+              setDisplayBgHighlight(true)
+              setBgHighlightAnimationDuration(200)
+            }}
+            onMouseLeave={() => {
+              setDisplayBgHighlight(false)
+              setBgHighlightAnimationDuration(0)
+            }}
+          >
+            <div
+              className="absolute top-[20px] h-9 w-full rounded-md bg-neutral-100 px-2"
+              style={{
+                transform: `translateY(${bgHighlightTranslate}px)`,
+                display: displayBgHighlight ? 'block' : 'none',
+                transition: `transform ${bgHighlightAnimationDuration}ms ease-in-out`,
+              }}
+            />
             <ActiveLink
-              activeClassName="bg-black text-white hover:bg-neutral-700"
-              className="justify-left flex flex-1 cursor-pointer items-center rounded-md bg-white px-2 py-1.5 transition duration-200 hover:bg-neutral-100"
+              activeClassName="after:absolute after:right-0 after:h-9 after:w-1 after:translate-x-1/2 after:rounded-sm after:bg-black active:translate-y-1"
+              className="justify-left z-10 flex flex-1 cursor-pointer items-center rounded-md px-2 py-1.5 transition duration-200"
               href="/"
+              inactiveClassName="bg-transparent text-black"
               onClick={() => {
                 setIsHidden(true)
+              }}
+              onMouseEnter={() => {
+                setBgHighlightTranslate(0)
               }}
             >
               <>
@@ -49,17 +87,40 @@ const Sidebar = (props: SidebarProps) => {
               </>
             </ActiveLink>
             <ActiveLink
-              activeClassName="bg-black text-white hover:bg-neutral-700"
-              className="justify-left flex flex-1 cursor-pointer items-center rounded-md px-2 py-1.5 transition duration-200"
+              activeChildren={<BookOpen className="mr-3 inline-block" />}
+              activeClassName="after:absolute after:right-0 after:h-9 after:w-1 after:translate-x-1/2 after:rounded-sm after:bg-black active:translate-y-1"
+              className="justify-left z-10 flex flex-1 cursor-pointer items-center rounded-md px-2 py-1.5 transition duration-200"
               href="/posts"
-              inactiveClassName="bg-white text-black hover:bg-neutral-100"
+              inactiveChildren={<Book className="mr-3 inline-block" />}
+              inactiveClassName="bg-transparent text-black "
               onClick={() => {
                 setIsHidden(true)
               }}
+              onMouseEnter={() => {
+                setBgHighlightTranslate(44)
+              }}
+            >
+              <span className="">Posts</span>
+            </ActiveLink>
+            <span className="z-10">Social</span>
+            <ActiveLink
+              className="justify-left group z-10 flex flex-1 cursor-pointer items-center rounded-md px-2 py-1.5 transition duration-200"
+              href="https://www.github.com/eiiot"
+              onClick={() => {
+                setIsHidden(true)
+              }}
+              onMouseEnter={() => {
+                setBgHighlightTranslate(119)
+              }}
+              target="_blank"
             >
               <>
-                <BookOpen className="mr-3 inline-block" />
-                <span className="">Posts</span>
+                <GitHub className="mr-3 inline-block" />
+                <span className="">GitHub</span>
+                <ArrowUpRight
+                  className="transition-transform duration-100 ease-in-out group-hover:translate-x-[2px] group-hover:-translate-y-[2px]"
+                  size={18}
+                />
               </>
             </ActiveLink>
           </div>
@@ -103,12 +164,12 @@ const Sidebar = (props: SidebarProps) => {
               <span className="flex h-full w-full items-center justify-center">
                 <Link href="/me/settings" passHref>
                   <a
-                    className="cursor-pointer text-black"
+                    className="cursor-pointer rounded-md hover:bg-neutral-100"
                     onClick={() => {
                       setIsHidden(true)
                     }}
                   >
-                    <Settings className="mr-3 inline-block" />{' '}
+                    <Settings className="m-2 inline-block" size={18} />{' '}
                   </a>
                 </Link>
               </span>

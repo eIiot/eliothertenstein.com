@@ -31,7 +31,12 @@ const PostsPage = (props: PostsPageProps) => {
 }
 
 PostsPage.getLayout = (page: ReactElement) =>
-  getLayout(<ListView detail={page} list={<PostsList />} showDetail={false} />)
+  getLayout(
+    <>
+      {page}
+      <ListView list={<PostsList />} showDetail={false} />
+    </>
+  )
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = getSession(ctx.req, ctx.res)

@@ -3,14 +3,21 @@ import { cloneElement, isValidElement, ReactElement } from 'react'
 interface ListViewProps {
   list: ReactElement
   detail?: ReactElement
+  children?: ReactElement
   showDetail: boolean
   isSidebarHidden?: boolean
   setIsSidebarHidden?: (isSidebarHidden: boolean) => void
 }
 
 const ListView = (props: ListViewProps) => {
-  const { list, detail, showDetail, isSidebarHidden, setIsSidebarHidden } =
-    props
+  const {
+    list,
+    detail,
+    showDetail,
+    isSidebarHidden,
+    setIsSidebarHidden,
+    children,
+  } = props
 
   // add the isSidebarHidden and setIsSidebarHidden prop to the list component
 
@@ -37,11 +44,13 @@ const ListView = (props: ListViewProps) => {
       >
         {detail ? detail : null}
       </main>
+      {children ? children : null}
     </div>
   )
 }
 
 ListView.defaultProps = {
+  children: null,
   detail: null,
   isSidebarHidden: false,
   setIsSidebarHidden: () => {},

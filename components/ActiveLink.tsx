@@ -8,6 +8,8 @@ interface ActiveLinkProps {
   className?: string
   activeClassName?: string
   inactiveClassName?: string
+  activeChildren?: ReactElement
+  inactiveChildren?: ReactElement
   [x: string]: any
 }
 
@@ -18,6 +20,8 @@ const ActiveLink = (props: ActiveLinkProps) => {
     className,
     activeClassName,
     inactiveClassName,
+    activeChildren,
+    inactiveChildren,
     ...rest
   } = props
   const router = useRouter()
@@ -28,6 +32,7 @@ const ActiveLink = (props: ActiveLinkProps) => {
   return (
     <Link href={href} passHref>
       <a {...rest} className={classNames}>
+        {isActive ? activeChildren : inactiveChildren}
         {children}
       </a>
     </Link>
@@ -35,8 +40,10 @@ const ActiveLink = (props: ActiveLinkProps) => {
 }
 
 ActiveLink.defaultProps = {
+  activeChildren: null,
   activeClassName: '',
   className: '',
+  inactiveChildren: null,
   inactiveClassName: '',
 }
 

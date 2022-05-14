@@ -54,6 +54,8 @@ const PostDetail = (props: PostDetailProps) => {
                 }}
               />
             </div>
+            {/* comments */}
+            <div className="" />
           </div>
         ) : (
           <ErrorNotFound />
