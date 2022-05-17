@@ -103,7 +103,7 @@ const Sidebar = (props: SidebarProps) => {
               <span className="">Posts</span>
             </ActiveLink>
             <span className="z-10">Social</span>
-            <ActiveLink
+            <a
               className="justify-left group z-10 flex flex-1 cursor-pointer items-center rounded-md px-2 py-1.5 transition duration-200"
               href="https://www.github.com/eiiot"
               onClick={() => {
@@ -112,17 +112,15 @@ const Sidebar = (props: SidebarProps) => {
               onMouseEnter={() => {
                 setBgHighlightTranslate(119)
               }}
-              target="_blank"
+              rel="noreferrer" target="_blank"
             >
-              <>
-                <GitHub className="mr-3 inline-block" />
-                <span className="">GitHub</span>
-                <ArrowUpRight
-                  className="transition-transform duration-100 ease-in-out group-hover:translate-x-[2px] group-hover:-translate-y-[2px]"
-                  size={18}
-                />
-              </>
-            </ActiveLink>
+              <GitHub className="mr-3 inline-block" />
+              <span className="">GitHub</span>
+              <ArrowUpRight
+                className="transition-transform duration-100 ease-in-out group-hover:translate-x-[2px] group-hover:-translate-y-[2px]"
+                size={18}
+              />
+            </a>
           </div>
         </ScrollArea.Viewport>
         <ScrollArea.Scrollbar className="flex w-1 touch-none select-none">

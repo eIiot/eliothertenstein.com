@@ -18,7 +18,7 @@ const PostTitleToast = (props: PostTitleToastProps) => {
 
   return (
     <motion.div
-      className="absolute z-10 mt-3 flex w-full items-center justify-center font-semibold"
+      className="pointer-events-none absolute left-0 right-0 z-10 mx-auto mt-3 flex items-center justify-center font-semibold"
       style={{
         y: useTransform(
           useTransform(scrollYProgress, [0.2, 0], [0, -1]),
