@@ -1,7 +1,8 @@
 import getUser from './getUser'
 import prisma from '../prisma'
+import { Session } from '@auth0/nextjs-auth0'
 
-export async function afterCallback(_, __, session) {
+export async function afterCallback(_: any, __: any, session: Session) {
   const { user } = session
   const { sub: id, nickname } = user
   const details = await getUser(nickname)
@@ -12,8 +13,14 @@ export async function afterCallback(_, __, session) {
     id: githubId,
     login: username,
     avatar_url: avatar,
-  } = details
-  console.log(typeof githubId)
+  } = details as {
+    bio: string
+    location: string
+    name: string
+    id: number
+    login: string
+    avatar_url: string
+  }
   try {
     await prisma.user.upsert({
       where: {
