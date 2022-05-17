@@ -150,32 +150,32 @@
 
 /* comments */
 
-.post-text.comment {
+.comment {
   @apply max-w-none;
 }
 
-.post-text.comment pre {
+.comment pre {
   @apply my-2 px-3 py-2;
 }
 
-.post-text.comment p,
-.post-text.comment ul,
-.post-text.comment ol {
-  @apply my-3 list-decimal;
+.comment p,
+.comment ul,
+.comment ol {
+  @apply my-3 list-inside list-decimal;
 }
 
-.post-text.comment p:first-of-type {
+.comment p:first-of-type {
   margin-top: 0 !important;
 }
 
-.post-text.comment p + p {
+.comment p + p {
   margin-top: 0;
 }
 
-.post-text.comment pre {
+.comment pre {
   @apply my-3;
 }
 
-.post-text.comment a {
+.comment a {
   @apply break-all;
 }

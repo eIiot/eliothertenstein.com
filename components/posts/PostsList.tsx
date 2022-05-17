@@ -22,17 +22,17 @@ const PostsList = (props: PostsListProps) => {
 
   return (
     <ScrollArea.Root className="h-full w-full">
+      <div className="text-normal relative w-full pt-3 text-center font-normal">
+        <button
+          className="absolute left-0 block px-3 lg:hidden"
+          onClick={() => setIsSidebarHidden(!isSidebarHidden)}
+          type="button"
+        >
+          <Menu size={24} />
+        </button>
+        Posts
+      </div>
       <ScrollArea.Viewport className="h-full">
-        <div className="text-normal relative w-full pt-3 text-center font-normal">
-          <button
-            className="absolute left-0 block px-3 lg:hidden"
-            onClick={() => setIsSidebarHidden(!isSidebarHidden)}
-            type="button"
-          >
-            <Menu size={24} />
-          </button>
-          Posts
-        </div>
         <div className="flex flex-col space-y-2 p-3">
           {!loading ? (
             data && data.posts ? (
@@ -47,9 +47,9 @@ const PostsList = (props: PostsListProps) => {
                   >
                     <>
                       <span className="">{post.title}</span>
-                      <a className="text-sm">
+                      <span className="text-sm">
                         {moment(post.createdAt).format('MMMM Do YYYY')}
-                      </a>
+                      </span>
                     </>
                   </ActiveLink>
                 ) : null

@@ -1,9 +1,10 @@
-import { post } from './post/post'
-import { posts } from './post/posts'
-import { user } from './user/user'
+import { getComments } from './comment'
+import { getPost, getPosts } from './post'
+import { getUser } from './user/user'
 
 export default {
-  posts,
-  post,
-  user,
+  posts: getPosts,
+  post: getPost,
+  user: getUser,
+  comments: getComments,
 }

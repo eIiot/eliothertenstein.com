@@ -1,4 +1,4 @@
-import { UserFragment } from '../fragments/user'
+import { UserDetailFragment } from '../fragments/user'
 import { gql } from 'apollo-server-micro'
 
 export const UPSERT_USER = gql`
@@ -24,17 +24,17 @@ export const UPSERT_USER = gql`
       location: $location
       name: $name
     ) {
-      ...UserFragment
+      ...UserDetail
     }
   }
-  ${UserFragment}
+  ${UserDetailFragment}
 `
 
 export const DELETE_USER = gql`
-  mutation deleteUser($id: String!) {
-    deleteUser(id: $id) {
-      ...UserFragment
+  mutation deleteUser($userId: String!) {
+    deleteUser(userId: $userId) {
+      ...UserDetail
     }
   }
-  ${UserFragment}
+  ${UserDetailFragment}
 `

@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server-micro'
 
-export const PostFragment = gql`
-  fragment PostFragment on Post {
+export const PostCoreFragment = gql`
+  fragment PostCore on Post {
     id
     createdAt
     updatedAt
@@ -11,5 +11,7 @@ export const PostFragment = gql`
     content
     excerpt
     featureImage
+    reactionCount
+    commentCount
   }
 `

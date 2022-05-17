@@ -1,15 +1,13 @@
 import { gql } from 'apollo-server-micro'
 
-export const UserFragment = gql`
-  fragment UserFragment on User {
+export const UserDetailFragment = gql`
+  fragment UserDetail on User {
     id
     role
+    createdAt
     username
     githubId
-    email
-    avatar
-    description
-    location
     name
+    avatar
   }
 `

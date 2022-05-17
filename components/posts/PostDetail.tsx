@@ -1,20 +1,31 @@
+import CommentBar from './comments/CommentBar'
+import CommentsList from './comments/CommentsList'
 import postStyles from './PostStyles'
+import PostTitleToast from './PostTitleToast'
 import ChecklistRenderer from './renderers/ChecklistRenderer'
 import CodeBlockRenderer from './renderers/CodeBlockRenderer'
 import LinkRenderer from './renderers/LinkRenderer'
-import { useGetPostQuery } from '../../graphql/types.generated'
-import { Viewer } from '../../types/user'
+import {
+  useCreateCommentMutation,
+  useGetPostQuery,
+  User,
+} from '../../graphql/types.generated'
+import client from '../../lib/apollo'
 import ErrorNotFound from '../ErrorNotFound'
 import Blocks from 'editorjs-blocks-react-renderer'
+import { useElementScroll } from 'framer-motion'
 import moment from 'moment'
 import Link from 'next/link'
-import { Edit } from 'react-feather'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Edit, MessageCircle } from 'react-feather'
+import { toast } from 'react-hot-toast'
+import { useInView } from 'react-intersection-observer'
 
 // get post by slug from Prisma using serverSideProp
 
 interface PostDetailProps {
   slug: string
-  viewer: Viewer | null
+  viewer: User | null
 }
 
 const PostDetail = (props: PostDetailProps) => {
@@ -26,37 +37,106 @@ const PostDetail = (props: PostDetailProps) => {
     },
   })
 
-  // return the post content
+  const postScrollRef = useRef<HTMLDivElement>(null)
+
+  const { scrollYProgress } = useElementScroll(postScrollRef)
+
+  const [inViewRef, inView] = useInView({
+    threshold: 0,
+  })
+
+  const [createComment] = useCreateCommentMutation()
+
+  const [isSending, setIsSending] = useState(false)
+
+  const handleSubmit = useCallback(
+    (event, viewer: User, data) => {
+      event.preventDefault()
+      const content = event.target.elements.content.value
+      setIsSending(true)
+      createComment({
+        variables: {
+          content,
+          postId: data.post.id,
+        },
+      })
+        .then(async (comment) => {
+          event.target.elements.content.value = ''
+          event.target.style.height = '48px'
+          await client.refetchQueries({
+            include: 'active',
+          })
+          // scroll to bottom of comments using framer-motion
+          postScrollRef.current?.scrollTo(0, postScrollRef.current.scrollHeight)
+          setIsSending(false)
+          toast.success('Comment created!')
+        })
+        .catch((err) => {
+          console.log('Error creating comment: ', err)
+          setIsSending(false)
+          toast.error(err.message)
+        })
+    },
+    [createComment]
+  )
+
   return (
-    <div className="h-full w-full overflow-scroll bg-white">
+    <div
+      className="h-full w-full overflow-x-hidden overflow-y-scroll bg-white"
+      ref={postScrollRef}
+    >
       {!loading ? (
-        data && data.post && data.post.content ? (
-          <div className="mx-auto max-w-2xl space-y-3 px-4 py-20">
+        data && data.post ? (
+          <>
+            <PostTitleToast
+              scrollYProgress={scrollYProgress}
+              title={data.post.title}
+            />
             {viewer && viewer.isAdmin && (
               <Link href={slug + '/edit'}>
-                <a className="absolute right-0 top-0 m-3 rounded-lg bg-white p-3 text-black shadow-lg hover:bg-neutral-100">
+                <a className="absolute right-3 top-3 flex rounded-lg bg-white p-3 text-black shadow-lg ring-2 ring-white hover:bg-neutral-100">
                   <Edit />
                 </a>
               </Link>
             )}
-            <h1 className="text-3xl font-bold">{data.post.title}</h1>
-            <h2 className="text-lg text-neutral-600">
-              {moment(data.post.createdAt).format('MMMM Do YYYY')}
-            </h2>
-            <div className="post-text">
-              <Blocks
-                config={postStyles}
-                data={JSON.parse(data.post.content)}
-                renderers={{
-                  checklist: ChecklistRenderer,
-                  link: LinkRenderer,
-                  code: CodeBlockRenderer,
+            {viewer && (
+              <CommentBar
+                handleSubmit={(event) => handleSubmit(event, viewer, data)}
+                inView={inView}
+                isSending={isSending}
+                scrollToComments={() => {
+                  !inView &&
+                    postScrollRef.current?.scrollTo(
+                      0,
+                      postScrollRef.current?.scrollHeight
+                    )
                 }}
+                setIsSending={setIsSending}
               />
+            )}
+            <div className="mx-auto max-w-2xl space-y-3 px-4 pt-20 pb-10">
+              <h1 className="text-3xl font-bold">{data.post.title}</h1>
+              <h2 className="text-lg text-neutral-600">
+                {moment(data.post.createdAt).format('MMMM Do YYYY')}
+              </h2>
+              <div className="post-text">
+                <Blocks
+                  config={postStyles}
+                  data={JSON.parse(data.post.content)}
+                  renderers={{
+                    checklist: ChecklistRenderer,
+                    link: LinkRenderer,
+                    code: CodeBlockRenderer,
+                  }}
+                />
+              </div>
             </div>
-            {/* comments */}
-            <div className="" />
-          </div>
+            <CommentsList
+              inViewRef={inViewRef}
+              postId={data.post.id}
+              viewer={viewer}
+            />
+          </>
         ) : (
           <ErrorNotFound />
         )
