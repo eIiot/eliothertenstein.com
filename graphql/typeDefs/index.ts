@@ -11,8 +11,10 @@ export default gql`
     slug: String!
     title: String!
     content: String!
-    excerpt: String
+    excerpt: String!
     featureImage: String
+    reactionCount: Int
+    commentCount: Int
   }
 
   enum Role {
@@ -25,20 +27,47 @@ export default gql`
     id: ID!
     role: Role!
     createdAt: DateTime!
-    updatedAt: DateTime!
     username: String!
     githubId: Int!
+    name: String!
     email: String
     avatar: String
     description: String
     location: String
-    name: String
+    comments: [Comment]
+    reactions: [Reaction]
+    isAdmin: Boolean
+  }
+
+  type Comment {
+    id: ID!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    content: String!
+    author: User!
+    userId: String!
+    # post: Post!
+    postId: String!
+    # reactions: [Reaction]
+    viewerCanEdit: Boolean!
+    viewerCanDelete: Boolean!
+  }
+
+  type Reaction {
+    id: ID!
+    createdAt: DateTime!
+    user: User!
+    userId: String!
+    comment: Comment
+    post: Post
+    postId: String
   }
 
   type Query {
     posts: [Post]
     post(slug: String!): Post
     user(id: ID!): User
+    comments(postId: ID!): [Comment]
   }
 
   type Mutation {
@@ -63,6 +92,10 @@ export default gql`
       location: String
       name: String!
     ): User
-    deleteUser(id: String!): User
+    deleteUser(userId: String!): User
+
+    createComment(content: String!, postId: String!): Comment
+    updateComment(content: String!, id: String!): Comment
+    deleteComment(id: String!): Boolean
   }
 `

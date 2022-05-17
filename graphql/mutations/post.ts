@@ -1,4 +1,4 @@
-import { PostFragment } from '../fragments/post'
+import { PostCoreFragment } from '../fragments/post'
 import { gql } from 'apollo-server-micro'
 
 export const UPSERT_POST = gql`
@@ -16,17 +16,17 @@ export const UPSERT_POST = gql`
       excerpt: $excerpt
       featureImage: $featureImage
     ) {
-      ...PostFragment
+      ...PostCore
     }
   }
-  ${PostFragment}
+  ${PostCoreFragment}
 `
 
 export const DELETE_POST = gql`
   mutation deletePost($slug: String!) {
     deletePost(slug: $slug) {
-      ...PostFragment
+      ...PostCore
     }
   }
-  ${PostFragment}
+  ${PostCoreFragment}
 `

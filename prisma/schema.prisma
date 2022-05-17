@@ -13,14 +13,14 @@ model User {
   role         Role       @default(USER)
   username     String     @unique @db.VarChar(16)
   githubId     Int        @unique
+  name         String
   email        String?    @unique
   pendingEmail String?
   avatar       String?
   description  String?    @db.VarChar(256)
   location     String?    @db.VarChar(32)
-  name         String
-  // comments     Comment[]
-  // reactions    Reaction[]
+  comments     Comment[]
+  reactions    Reaction[]
   // posts        Post[]
   // stacks       Stack[]
 }
@@ -31,27 +31,27 @@ enum Role {
   ADMIN
 }
 
-// model Comment {
-//   id         String     @id @default(cuid())
-//   createdAt  DateTime   @default(now())
-//   updatedAt  DateTime   @updatedAt
-//   text       String     @db.Text
-//   audio      Audio?
-//   reactions  Reaction[]
-//   author     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-//   userId     String
-//   // post       Post?      @relation(fields: [postId], references: [id], onDelete: Cascade)
-//   stack      Stack?     @relation(fields: [stackId], references: [id], onDelete: Cascade)
-//   bookmarkId String?
-//   questionId String?
-//   postId     String?
-//   stackId    String?
+model Comment {
+  id         String     @id @default(cuid())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  content    String     @db.Text
+  // audio      Audio?
+  reactions  Reaction[]
+  author     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  post       Post       @relation(fields: [postId], references: [id], onDelete: Cascade)
+  // stack      Stack?     @relation(fields: [stackId], references: [id], onDelete: Cascade)
+  // bookmarkId String?
+  // questionId String?
+  postId     String
+  // stackId    String?
 
-//   @@index([bookmarkId])
-//   @@index([questionId])
-//   @@index([postId])
-//   @@index([stackId])
-// }
+  // @@index([bookmarkId])
+  // @@index([questionId])
+  @@index([postId])
+  // @@index([stackId])
+}
 
 // model Audio {
 //   id            String   @id @default(cuid())
@@ -76,8 +76,8 @@ model Post {
   content      String     @db.Text
   excerpt      String     @db.VarChar(280)
   featureImage String?
-  // comments     Comment[]
-  // reactions    Reaction[]
+  comments     Comment[]
+  reactions    Reaction[]
   // history      PostEdit[]
   // userId       String
 
@@ -118,26 +118,26 @@ model Post {
 //   users       User[]
 // }
 
-// model Reaction {
-//   id         String    @id @default(cuid())
-//   createdAt  DateTime  @default(now())
-//   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-//   userId     String
-//   comment    Comment?  @relation(fields: [commentId], references: [id], onDelete: Cascade)
-//   post       Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
-//   stack      Stack?    @relation(fields: [stackId], references: [id], onDelete: Cascade)
-//   commentId  String?
-//   bookmarkId String?
-//   questionId String?
-//   postId     String?
-//   stackId    String?
+model Reaction {
+  id         String    @id @default(cuid())
+  createdAt  DateTime  @default(now())
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  comment    Comment?  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  post       Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  // stack      Stack?    @relation(fields: [stackId], references: [id], onDelete: Cascade)
+  commentId  String?
+  // bookmarkId String?
+  // questionId String?
+  postId     String?
+  // stackId    String?
 
-//   @@index([commentId])
-//   @@index([bookmarkId])
-//   @@index([questionId])
-//   @@index([postId])
-//   @@index([stackId])
-// }
+  @@index([commentId])
+  // @@index([bookmarkId])
+  // @@index([questionId])
+  @@index([postId])
+  // @@index([stackId])
+}
 
 // enum EmailSubscriptionType {
 //   HACKER_NEWS

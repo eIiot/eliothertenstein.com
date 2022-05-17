@@ -1,4 +1,4 @@
-import getContext from '../../../graphql/context'
+import context from '../../../graphql/context'
 import { schema } from '../../../graphql/schema'
 import { ApolloServer } from 'apollo-server-micro'
 import Cors from 'micro-cors'
@@ -12,13 +12,15 @@ export const config: PageConfig = {
 
 const cors = Cors()
 
-export default cors(async (req, res) => {
-  const server = new ApolloServer({
-    schema,
-    context: await getContext(req, res),
-  })
+const server = new ApolloServer({
+  schema,
+  context,
+})
 
-  const startServer = server.start()
+const startServer = server.start()
+
+export default cors(async (req, res) => {
+  console.log('new request at ' + new Date().toISOString())
 
   if (req.method === 'OPTIONS') {
     res.end()
@@ -26,5 +28,6 @@ export default cors(async (req, res) => {
   }
 
   await startServer
+
   await server.createHandler({ path: '/api/graphql' })(req, res)
 })

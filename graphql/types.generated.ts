@@ -26,12 +26,37 @@ export type Scalars = {
   DateTime: any
 }
 
+export type Comment = {
+  __typename?: 'Comment'
+  author: User
+  content: Scalars['String']
+  createdAt: Scalars['DateTime']
+  id: Scalars['ID']
+  postId: Scalars['String']
+  updatedAt: Scalars['DateTime']
+  userId: Scalars['String']
+  viewerCanDelete: Scalars['Boolean']
+  viewerCanEdit: Scalars['Boolean']
+}
+
 export type Mutation = {
   __typename?: 'Mutation'
+  createComment?: Maybe<Comment>
+  deleteComment?: Maybe<Scalars['Boolean']>
   deletePost?: Maybe<Post>
   deleteUser?: Maybe<User>
+  updateComment?: Maybe<Comment>
   upsertPost?: Maybe<Post>
   upsertUser?: Maybe<User>
+}
+
+export type MutationCreateCommentArgs = {
+  content: Scalars['String']
+  postId: Scalars['String']
+}
+
+export type MutationDeleteCommentArgs = {
+  id: Scalars['String']
 }
 
 export type MutationDeletePostArgs = {
@@ -39,6 +64,11 @@ export type MutationDeletePostArgs = {
 }
 
 export type MutationDeleteUserArgs = {
+  userId: Scalars['String']
+}
+
+export type MutationUpdateCommentArgs = {
+  content: Scalars['String']
   id: Scalars['String']
 }
 
@@ -65,12 +95,14 @@ export type MutationUpsertUserArgs = {
 
 export type Post = {
   __typename?: 'Post'
+  commentCount?: Maybe<Scalars['Int']>
   content: Scalars['String']
   createdAt: Scalars['DateTime']
-  excerpt?: Maybe<Scalars['String']>
+  excerpt: Scalars['String']
   featureImage?: Maybe<Scalars['String']>
   id: Scalars['ID']
   publishedAt?: Maybe<Scalars['DateTime']>
+  reactionCount?: Maybe<Scalars['Int']>
   slug: Scalars['String']
   title: Scalars['String']
   updatedAt: Scalars['DateTime']
@@ -78,9 +110,14 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query'
+  comments?: Maybe<Array<Maybe<Comment>>>
   post?: Maybe<Post>
   posts?: Maybe<Array<Maybe<Post>>>
   user?: Maybe<User>
+}
+
+export type QueryCommentsArgs = {
+  postId: Scalars['ID']
 }
 
 export type QueryPostArgs = {
@@ -89,6 +126,17 @@ export type QueryPostArgs = {
 
 export type QueryUserArgs = {
   id: Scalars['ID']
+}
+
+export type Reaction = {
+  __typename?: 'Reaction'
+  comment?: Maybe<Comment>
+  createdAt: Scalars['DateTime']
+  id: Scalars['ID']
+  post?: Maybe<Post>
+  postId?: Maybe<Scalars['String']>
+  user: User
+  userId: Scalars['String']
 }
 
 export enum Role {
@@ -100,19 +148,43 @@ export enum Role {
 export type User = {
   __typename?: 'User'
   avatar?: Maybe<Scalars['String']>
+  comments?: Maybe<Array<Maybe<Comment>>>
   createdAt: Scalars['DateTime']
   description?: Maybe<Scalars['String']>
   email?: Maybe<Scalars['String']>
   githubId: Scalars['Int']
   id: Scalars['ID']
+  isAdmin?: Maybe<Scalars['Boolean']>
   location?: Maybe<Scalars['String']>
-  name?: Maybe<Scalars['String']>
+  name: Scalars['String']
+  reactions?: Maybe<Array<Maybe<Reaction>>>
   role: Role
-  updatedAt: Scalars['DateTime']
   username: Scalars['String']
 }
 
-export type PostFragmentFragment = {
+export type CommentDetailFragment = {
+  __typename?: 'Comment'
+  id: string
+  createdAt: any
+  updatedAt: any
+  content: string
+  userId: string
+  postId: string
+  viewerCanEdit: boolean
+  viewerCanDelete: boolean
+  author: {
+    __typename?: 'User'
+    id: string
+    role: Role
+    createdAt: any
+    username: string
+    githubId: number
+    name: string
+    avatar?: string | null
+  }
+}
+
+export type PostCoreFragment = {
   __typename?: 'Post'
   id: string
   createdAt: any
@@ -121,21 +193,96 @@ export type PostFragmentFragment = {
   slug: string
   title: string
   content: string
-  excerpt?: string | null
+  excerpt: string
   featureImage?: string | null
+  reactionCount?: number | null
+  commentCount?: number | null
 }
 
-export type UserFragmentFragment = {
+export type ReactionDetailFragment = {
+  __typename?: 'Reaction'
+  id: string
+  createdAt: any
+}
+
+export type UserDetailFragment = {
   __typename?: 'User'
   id: string
   role: Role
+  createdAt: any
   username: string
   githubId: number
-  email?: string | null
+  name: string
   avatar?: string | null
-  description?: string | null
-  location?: string | null
-  name?: string | null
+}
+
+export type CreateCommentMutationVariables = Exact<{
+  content: Scalars['String']
+  postId: Scalars['String']
+}>
+
+export type CreateCommentMutation = {
+  __typename?: 'Mutation'
+  createComment?: {
+    __typename?: 'Comment'
+    id: string
+    createdAt: any
+    updatedAt: any
+    content: string
+    userId: string
+    postId: string
+    viewerCanEdit: boolean
+    viewerCanDelete: boolean
+    author: {
+      __typename?: 'User'
+      id: string
+      role: Role
+      createdAt: any
+      username: string
+      githubId: number
+      name: string
+      avatar?: string | null
+    }
+  } | null
+}
+
+export type UpdateCommentMutationVariables = Exact<{
+  content: Scalars['String']
+  id: Scalars['String']
+}>
+
+export type UpdateCommentMutation = {
+  __typename?: 'Mutation'
+  updateComment?: {
+    __typename?: 'Comment'
+    id: string
+    createdAt: any
+    updatedAt: any
+    content: string
+    userId: string
+    postId: string
+    viewerCanEdit: boolean
+    viewerCanDelete: boolean
+    author: {
+      __typename?: 'User'
+      id: string
+      role: Role
+      createdAt: any
+      username: string
+      githubId: number
+      name: string
+      avatar?: string | null
+    }
+  } | null
+}
+
+export type DeleteCommentMutationVariables = Exact<{
+  id: Scalars['String']
+}>
+
+export type DeleteCommentMutation = {
+  __typename?: 'Mutation'
+  deleteComment?: boolean | null
 }
 
 export type UpsertPostMutationVariables = Exact<{
@@ -157,8 +304,10 @@ export type UpsertPostMutation = {
     slug: string
     title: string
     content: string
-    excerpt?: string | null
+    excerpt: string
     featureImage?: string | null
+    reactionCount?: number | null
+    commentCount?: number | null
   } | null
 }
 
@@ -177,8 +326,10 @@ export type DeletePostMutation = {
     slug: string
     title: string
     content: string
-    excerpt?: string | null
+    excerpt: string
     featureImage?: string | null
+    reactionCount?: number | null
+    commentCount?: number | null
   } | null
 }
 
@@ -200,18 +351,16 @@ export type UpsertUserMutation = {
     __typename?: 'User'
     id: string
     role: Role
+    createdAt: any
     username: string
     githubId: number
-    email?: string | null
+    name: string
     avatar?: string | null
-    description?: string | null
-    location?: string | null
-    name?: string | null
   } | null
 }
 
 export type DeleteUserMutationVariables = Exact<{
-  id: Scalars['String']
+  userId: Scalars['String']
 }>
 
 export type DeleteUserMutation = {
@@ -220,14 +369,41 @@ export type DeleteUserMutation = {
     __typename?: 'User'
     id: string
     role: Role
+    createdAt: any
     username: string
     githubId: number
-    email?: string | null
+    name: string
     avatar?: string | null
-    description?: string | null
-    location?: string | null
-    name?: string | null
   } | null
+}
+
+export type GetCommentsQueryVariables = Exact<{
+  postId: Scalars['ID']
+}>
+
+export type GetCommentsQuery = {
+  __typename?: 'Query'
+  comments?: Array<{
+    __typename?: 'Comment'
+    id: string
+    createdAt: any
+    updatedAt: any
+    content: string
+    userId: string
+    postId: string
+    viewerCanEdit: boolean
+    viewerCanDelete: boolean
+    author: {
+      __typename?: 'User'
+      id: string
+      role: Role
+      createdAt: any
+      username: string
+      githubId: number
+      name: string
+      avatar?: string | null
+    }
+  } | null> | null
 }
 
 export type GetPostQueryVariables = Exact<{
@@ -245,8 +421,10 @@ export type GetPostQuery = {
     slug: string
     title: string
     content: string
-    excerpt?: string | null
+    excerpt: string
     featureImage?: string | null
+    reactionCount?: number | null
+    commentCount?: number | null
   } | null
 }
 
@@ -263,8 +441,10 @@ export type GetPostsQuery = {
     slug: string
     title: string
     content: string
-    excerpt?: string | null
+    excerpt: string
     featureImage?: string | null
+    reactionCount?: number | null
+    commentCount?: number | null
   } | null> | null
 }
 
@@ -278,18 +458,44 @@ export type GetUserQuery = {
     __typename?: 'User'
     id: string
     role: Role
+    createdAt: any
     username: string
     githubId: number
-    email?: string | null
+    name: string
     avatar?: string | null
-    description?: string | null
-    location?: string | null
-    name?: string | null
   } | null
 }
 
-export const PostFragmentFragmentDoc = gql`
-  fragment PostFragment on Post {
+export const UserDetailFragmentDoc = gql`
+  fragment UserDetail on User {
+    id
+    role
+    createdAt
+    username
+    githubId
+    name
+    avatar
+  }
+`
+export const CommentDetailFragmentDoc = gql`
+  fragment CommentDetail on Comment {
+    id
+    createdAt
+    updatedAt
+    content
+    userId
+    userId
+    postId
+    author {
+      ...UserDetail
+    }
+    viewerCanEdit
+    viewerCanDelete
+  }
+  ${UserDetailFragmentDoc}
+`
+export const PostCoreFragmentDoc = gql`
+  fragment PostCore on Post {
     id
     createdAt
     updatedAt
@@ -299,21 +505,168 @@ export const PostFragmentFragmentDoc = gql`
     content
     excerpt
     featureImage
+    reactionCount
+    commentCount
   }
 `
-export const UserFragmentFragmentDoc = gql`
-  fragment UserFragment on User {
+export const ReactionDetailFragmentDoc = gql`
+  fragment ReactionDetail on Reaction {
     id
-    role
-    username
-    githubId
-    email
-    avatar
-    description
-    location
-    name
+    createdAt
   }
 `
+export const CreateCommentDocument = gql`
+  mutation createComment($content: String!, $postId: String!) {
+    createComment(content: $content, postId: $postId) {
+      ...CommentDetail
+    }
+  }
+  ${CommentDetailFragmentDoc}
+`
+export type CreateCommentMutationFn = Apollo.MutationFunction<
+  CreateCommentMutation,
+  CreateCommentMutationVariables
+>
+
+/**
+ * __useCreateCommentMutation__
+ *
+ * To run a mutation, you first call `useCreateCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCommentMutation, { data, loading, error }] = useCreateCommentMutation({
+ *   variables: {
+ *      content: // value for 'content'
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useCreateCommentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateCommentMutation,
+    CreateCommentMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    CreateCommentMutation,
+    CreateCommentMutationVariables
+  >(CreateCommentDocument, options)
+}
+export type CreateCommentMutationHookResult = ReturnType<
+  typeof useCreateCommentMutation
+>
+export type CreateCommentMutationResult =
+  Apollo.MutationResult<CreateCommentMutation>
+export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<
+  CreateCommentMutation,
+  CreateCommentMutationVariables
+>
+export const UpdateCommentDocument = gql`
+  mutation updateComment($content: String!, $id: String!) {
+    updateComment(content: $content, id: $id) {
+      ...CommentDetail
+    }
+  }
+  ${CommentDetailFragmentDoc}
+`
+export type UpdateCommentMutationFn = Apollo.MutationFunction<
+  UpdateCommentMutation,
+  UpdateCommentMutationVariables
+>
+
+/**
+ * __useUpdateCommentMutation__
+ *
+ * To run a mutation, you first call `useUpdateCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCommentMutation, { data, loading, error }] = useUpdateCommentMutation({
+ *   variables: {
+ *      content: // value for 'content'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUpdateCommentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateCommentMutation,
+    UpdateCommentMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    UpdateCommentMutation,
+    UpdateCommentMutationVariables
+  >(UpdateCommentDocument, options)
+}
+export type UpdateCommentMutationHookResult = ReturnType<
+  typeof useUpdateCommentMutation
+>
+export type UpdateCommentMutationResult =
+  Apollo.MutationResult<UpdateCommentMutation>
+export type UpdateCommentMutationOptions = Apollo.BaseMutationOptions<
+  UpdateCommentMutation,
+  UpdateCommentMutationVariables
+>
+export const DeleteCommentDocument = gql`
+  mutation deleteComment($id: String!) {
+    deleteComment(id: $id)
+  }
+`
+export type DeleteCommentMutationFn = Apollo.MutationFunction<
+  DeleteCommentMutation,
+  DeleteCommentMutationVariables
+>
+
+/**
+ * __useDeleteCommentMutation__
+ *
+ * To run a mutation, you first call `useDeleteCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCommentMutation, { data, loading, error }] = useDeleteCommentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCommentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteCommentMutation,
+    DeleteCommentMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    DeleteCommentMutation,
+    DeleteCommentMutationVariables
+  >(DeleteCommentDocument, options)
+}
+export type DeleteCommentMutationHookResult = ReturnType<
+  typeof useDeleteCommentMutation
+>
+export type DeleteCommentMutationResult =
+  Apollo.MutationResult<DeleteCommentMutation>
+export type DeleteCommentMutationOptions = Apollo.BaseMutationOptions<
+  DeleteCommentMutation,
+  DeleteCommentMutationVariables
+>
 export const UpsertPostDocument = gql`
   mutation upsertPost(
     $title: String
@@ -329,10 +682,10 @@ export const UpsertPostDocument = gql`
       excerpt: $excerpt
       featureImage: $featureImage
     ) {
-      ...PostFragment
+      ...PostCore
     }
   }
-  ${PostFragmentFragmentDoc}
+  ${PostCoreFragmentDoc}
 `
 export type UpsertPostMutationFn = Apollo.MutationFunction<
   UpsertPostMutation,
@@ -383,10 +736,10 @@ export type UpsertPostMutationOptions = Apollo.BaseMutationOptions<
 export const DeletePostDocument = gql`
   mutation deletePost($slug: String!) {
     deletePost(slug: $slug) {
-      ...PostFragment
+      ...PostCore
     }
   }
-  ${PostFragmentFragmentDoc}
+  ${PostCoreFragmentDoc}
 `
 export type DeletePostMutationFn = Apollo.MutationFunction<
   DeletePostMutation,
@@ -453,10 +806,10 @@ export const UpsertUserDocument = gql`
       location: $location
       name: $name
     ) {
-      ...UserFragment
+      ...UserDetail
     }
   }
-  ${UserFragmentFragmentDoc}
+  ${UserDetailFragmentDoc}
 `
 export type UpsertUserMutationFn = Apollo.MutationFunction<
   UpsertUserMutation,
@@ -509,12 +862,12 @@ export type UpsertUserMutationOptions = Apollo.BaseMutationOptions<
   UpsertUserMutationVariables
 >
 export const DeleteUserDocument = gql`
-  mutation deleteUser($id: String!) {
-    deleteUser(id: $id) {
-      ...UserFragment
+  mutation deleteUser($userId: String!) {
+    deleteUser(userId: $userId) {
+      ...UserDetail
     }
   }
-  ${UserFragmentFragmentDoc}
+  ${UserDetailFragmentDoc}
 `
 export type DeleteUserMutationFn = Apollo.MutationFunction<
   DeleteUserMutation,
@@ -534,7 +887,7 @@ export type DeleteUserMutationFn = Apollo.MutationFunction<
  * @example
  * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      userId: // value for 'userId'
  *   },
  * });
  */
@@ -558,13 +911,70 @@ export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<
   DeleteUserMutation,
   DeleteUserMutationVariables
 >
+export const GetCommentsDocument = gql`
+  query getComments($postId: ID!) {
+    comments(postId: $postId) {
+      ...CommentDetail
+    }
+  }
+  ${CommentDetailFragmentDoc}
+`
+
+/**
+ * __useGetCommentsQuery__
+ *
+ * To run a query within a React component, call `useGetCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCommentsQuery({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useGetCommentsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetCommentsQuery,
+    GetCommentsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetCommentsQuery, GetCommentsQueryVariables>(
+    GetCommentsDocument,
+    options
+  )
+}
+export function useGetCommentsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetCommentsQuery,
+    GetCommentsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetCommentsQuery, GetCommentsQueryVariables>(
+    GetCommentsDocument,
+    options
+  )
+}
+export type GetCommentsQueryHookResult = ReturnType<typeof useGetCommentsQuery>
+export type GetCommentsLazyQueryHookResult = ReturnType<
+  typeof useGetCommentsLazyQuery
+>
+export type GetCommentsQueryResult = Apollo.QueryResult<
+  GetCommentsQuery,
+  GetCommentsQueryVariables
+>
 export const GetPostDocument = gql`
   query getPost($slug: String!) {
     post(slug: $slug) {
-      ...PostFragment
+      ...PostCore
     }
   }
-  ${PostFragmentFragmentDoc}
+  ${PostCoreFragmentDoc}
 `
 
 /**
@@ -610,10 +1020,10 @@ export type GetPostQueryResult = Apollo.QueryResult<
 export const GetPostsDocument = gql`
   query getPosts {
     posts {
-      ...PostFragment
+      ...PostCore
     }
   }
-  ${PostFragmentFragmentDoc}
+  ${PostCoreFragmentDoc}
 `
 
 /**
@@ -663,10 +1073,10 @@ export type GetPostsQueryResult = Apollo.QueryResult<
 export const GetUserDocument = gql`
   query getUser($id: ID!) {
     user(id: $id) {
-      ...UserFragment
+      ...UserDetail
     }
   }
-  ${UserFragmentFragmentDoc}
+  ${UserDetailFragmentDoc}
 `
 
 /**
