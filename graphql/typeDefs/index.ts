@@ -37,6 +37,7 @@ export default gql`
     comments: [Comment]
     reactions: [Reaction]
     isAdmin: Boolean
+    isBlocked: Boolean
   }
 
   type Comment {
@@ -92,7 +93,7 @@ export default gql`
       location: String
       name: String!
     ): User
-    deleteUser(userId: String!): User
+    deleteUser(id: String!): User
 
     createComment(content: String!, postId: String!): Comment
     updateComment(content: String!, id: String!): Comment

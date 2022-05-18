@@ -56,15 +56,11 @@ export async function upsertUser(
   return user
 }
 
-export async function deleteUser(
-  _: any,
-  { userId }: { userId: string },
-  ctx: Context
-) {
+export async function deleteUser(_: any, { id }: { id: string }, ctx: Context) {
   const { prisma } = ctx
   const user = await prisma.user.delete({
     where: {
-      id: userId,
+      id,
     },
   })
   return user

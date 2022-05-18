@@ -1,9 +1,10 @@
-import { Context } from '@apollo/client'
+import { Context } from '../context'
 import { AuthenticationError } from 'apollo-server-micro'
 
-export function requiresAdmin(fn: any) {
+export function requiresUnblocked(fn: any) {
+  console.log('requiresUnblocked')
   return function resolve(parent: any, args: any, context: Context) {
-    if (context.viewer?.isAdmin) {
+    if (context.viewer && !context.viewer.isBlocked) {
       return fn(parent, args, context)
     }
 

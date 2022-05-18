@@ -64,7 +64,7 @@ export type MutationDeletePostArgs = {
 }
 
 export type MutationDeleteUserArgs = {
-  userId: Scalars['String']
+  id: Scalars['String']
 }
 
 export type MutationUpdateCommentArgs = {
@@ -155,6 +155,7 @@ export type User = {
   githubId: Scalars['Int']
   id: Scalars['ID']
   isAdmin?: Maybe<Scalars['Boolean']>
+  isBlocked?: Maybe<Scalars['Boolean']>
   location?: Maybe<Scalars['String']>
   name: Scalars['String']
   reactions?: Maybe<Array<Maybe<Reaction>>>
@@ -360,7 +361,7 @@ export type UpsertUserMutation = {
 }
 
 export type DeleteUserMutationVariables = Exact<{
-  userId: Scalars['String']
+  id: Scalars['String']
 }>
 
 export type DeleteUserMutation = {
@@ -483,7 +484,6 @@ export const CommentDetailFragmentDoc = gql`
     createdAt
     updatedAt
     content
-    userId
     userId
     postId
     author {
@@ -862,8 +862,8 @@ export type UpsertUserMutationOptions = Apollo.BaseMutationOptions<
   UpsertUserMutationVariables
 >
 export const DeleteUserDocument = gql`
-  mutation deleteUser($userId: String!) {
-    deleteUser(userId: $userId) {
+  mutation deleteUser($id: String!) {
+    deleteUser(id: $id) {
       ...UserDetail
     }
   }
@@ -887,7 +887,7 @@ export type DeleteUserMutationFn = Apollo.MutationFunction<
  * @example
  * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
  *   variables: {
- *      userId: // value for 'userId'
+ *      id: // value for 'id'
  *   },
  * });
  */

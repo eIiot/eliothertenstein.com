@@ -1,9 +1,10 @@
 import { getLayout } from '../../components/layouts/SiteLayout'
 import PostsList from '../../components/posts/PostsList'
 import ListView from '../../components/views/ListView'
+import { User } from '../../graphql/types.generated'
 import prisma from '../../lib/prisma'
-import { Viewer } from '../../types/user'
 import { getSession } from '@auth0/nextjs-auth0'
+import { Role } from '@prisma/client'
 import { GetServerSideProps } from 'next'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
@@ -11,11 +12,12 @@ import { ReactElement } from 'react'
 import { Edit } from 'react-feather'
 
 interface PostsPageProps {
-  viewer: Viewer
+  viewer: User
 }
 
 const PostsPage = (props: PostsPageProps) => {
   const { viewer } = props
+  console.log(viewer)
   return (
     <>
       {viewer && viewer.isAdmin && (
@@ -47,12 +49,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     where: { id: viewer?.sub },
   })
 
-  const isAdmin = user?.role === 'ADMIN'
+  const isAdmin = user?.role === Role.ADMIN
+  const isBlocked = user?.role === Role.BLOCKED
   return {
     props: {
       viewer: {
         ...viewer,
         isAdmin,
+        isBlocked,
       },
     },
   }

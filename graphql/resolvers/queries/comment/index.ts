@@ -41,7 +41,7 @@ export function viewerCanEdit(parent: any, _: any, ctx: Context) {
   const { viewer } = ctx
   const { userId } = parent
 
-  return viewer.id === userId
+  return viewer.id === userId && !viewer.isBlocked
 }
 
 export function viewerCanDelete(parent: any, _: any, ctx: Context) {
