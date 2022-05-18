@@ -1,6 +1,5 @@
 import prisma from '../../../lib/prisma'
 import { withApiAuthRequired, getSession, Session } from '@auth0/nextjs-auth0'
-import { FormData } from 'formdata-node'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default withApiAuthRequired(

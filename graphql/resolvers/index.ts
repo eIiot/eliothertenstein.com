@@ -6,7 +6,8 @@ import {
   viewerCanEdit,
 } from './queries/comment'
 import { Context } from '../context'
-import { Role } from '../types.generated'
+import { User } from '../types.generated'
+import { Role } from '@prisma/client'
 import { GraphQLDateTime } from 'graphql-iso-date'
 
 export default {
@@ -64,8 +65,11 @@ export default {
     },
   },
   User: {
-    isAdmin: async ({ id, role }: { id: string; role: Role }) => {
-      return role === 'ADMIN'
+    isAdmin: async ({ id, role }: User) => {
+      return role === Role.ADMIN
+    },
+    isBlocked: async ({ id, role }: User) => {
+      return role === Role.BLOCKED
     },
   },
   Comment: {

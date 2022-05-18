@@ -32,6 +32,7 @@ export async function getViewer(req: NextApiRequest, res: NextApiResponse) {
     ? {
         ...viewer,
         isAdmin: viewer?.role === Role.ADMIN,
+        isBlocked: viewer?.role === Role.BLOCKED,
       }
     : null
 }

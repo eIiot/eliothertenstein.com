@@ -99,7 +99,7 @@ const PostDetail = (props: PostDetailProps) => {
                 </a>
               </Link>
             )}
-            {viewer && (
+            {viewer && !viewer.isBlocked && (
               <CommentBar
                 handleSubmit={(event) => handleSubmit(event, viewer, data)}
                 inView={inView}

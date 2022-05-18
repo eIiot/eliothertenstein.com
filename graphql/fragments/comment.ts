@@ -8,7 +8,6 @@ export const CommentDetailFragment = gql`
     updatedAt
     content
     userId
-    userId
     # post
     postId
     author {

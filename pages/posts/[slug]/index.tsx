@@ -6,6 +6,7 @@ import ListView from '../../../components/views/ListView'
 import { User } from '../../../graphql/types.generated'
 import prisma from '../../../lib/prisma'
 import { getSession, Session } from '@auth0/nextjs-auth0'
+import { Role } from '@prisma/client'
 import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -52,13 +53,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     where: { id: viewer?.sub },
   })
 
-  const isAdmin = user?.role === 'ADMIN'
-
+  const isAdmin = user?.role === Role.ADMIN
+  const isBlocked = user?.role === Role.BLOCKED
   return {
     props: {
       viewer: {
-        ...user,
+        ...viewer,
         isAdmin,
+        isBlocked,
       },
     },
   }

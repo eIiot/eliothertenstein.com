@@ -40,8 +40,6 @@ const CommentDetail = (props: CommentDetailProps) => {
     )
   }, [])
 
-  console.log(canSendComment)
-
   const onEdit = useCallback(
     (event) => {
       event.preventDefault()
