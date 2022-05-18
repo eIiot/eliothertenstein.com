@@ -1,33 +1,17 @@
 import context from '../../../graphql/context'
 import { schema } from '../../../graphql/schema'
-import { ApolloServer } from 'apollo-server-micro'
-import Cors from 'micro-cors'
-import { PageConfig } from 'next'
-
-export const config: PageConfig = {
-  api: {
-    bodyParser: false,
-  },
-}
-
-const cors = Cors()
+import { ApolloServer } from 'apollo-server-nextjs'
 
 const server = new ApolloServer({
   schema,
   context,
 })
 
-const startServer = server.start()
+export default server.createHandler()
 
-export default cors(async (req, res) => {
-  console.log('new request at ' + new Date().toISOString())
-
-  if (req.method === 'OPTIONS') {
-    res.end()
-    return false
-  }
-
-  await startServer
-
-  await server.createHandler({ path: '/api/graphql' })(req, res)
-})
+// Disable Next.js body parsing so that Apollo Server can access it entirely
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}

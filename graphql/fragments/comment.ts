@@ -1,5 +1,5 @@
 import { UserDetailFragment } from './user'
-import { gql } from 'apollo-server-micro'
+import { gql } from 'apollo-server-nextjs'
 
 export const CommentDetailFragment = gql`
   fragment CommentDetail on Comment {

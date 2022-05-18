@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-micro'
+import { gql } from 'apollo-server-nextjs'
 
 export const PostCoreFragment = gql`
   fragment PostCore on Post {

@@ -1,5 +1,5 @@
 import { Context } from '../context'
-import { AuthenticationError } from 'apollo-server-micro'
+import { AuthenticationError } from 'apollo-server-nextjs'
 
 export function requiresUnblocked(fn: any) {
   console.log('requiresUnblocked')
