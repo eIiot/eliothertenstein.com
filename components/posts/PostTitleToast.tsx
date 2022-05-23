@@ -1,12 +1,6 @@
 // user framer-motion to scroll the div onto screen after we've scrolled for 100 pixels
 
-import {
-  motion,
-  MotionValue,
-  useElementScroll,
-  useTransform,
-  useViewportScroll,
-} from 'framer-motion'
+import { motion, MotionValue, useTransform } from 'framer-motion'
 
 interface PostTitleToastProps {
   scrollYProgress: MotionValue<number>
@@ -20,10 +14,11 @@ const PostTitleToast = (props: PostTitleToastProps) => {
     <motion.div
       className="pointer-events-none absolute left-0 right-0 z-10 mx-auto mt-3 flex items-center justify-center font-semibold"
       style={{
-        y: useTransform(
-          useTransform(scrollYProgress, [0.2, 0], [0, -1]),
-          (value) => `calc(100px * ${value})`
-        ),
+        y: useTransform(scrollYProgress, (scrollYProgress) => {
+          console.log(scrollYProgress)
+          return scrollYProgress > 0.06 ? '0' : '-100px'
+        }),
+        transition: 'transform 100ms ease-in-out',
       }}
     >
       <span className="rounded-lg bg-white px-3 py-2 text-sm shadow-lg">

@@ -1,35 +1,78 @@
+import CommandBar from '../CommandBar'
 import { withProviders } from '../providers/withProviders'
 import Sidebar from '../Sidebar'
-import { useState, cloneElement, ReactElement, Children } from 'react'
-import { Menu } from 'react-feather'
+import React, {
+  useState,
+  cloneElement,
+  ReactElement,
+  Children,
+  useEffect,
+  ReactNode,
+} from 'react'
+import {
+  Book,
+  Briefcase,
+  Gift,
+  GitHub,
+  Globe,
+  Heart,
+  Home,
+} from 'react-feather'
 
 interface LayoutProps {
-  // children:
+  children: React.ReactNode
 }
 
 const SiteLayout = (props: LayoutProps) => {
   const { children } = props
   const [isSidebarHidden, setIsSidebarHidden] = useState(true)
+  const [isCommandBarOpen, setIsCommandBarOpen] = useState(false)
 
   // pass isSidebarHidden, setIsSidebarHidden to children
-  const childrenWithProps = Children.map(children, (child) =>
-    cloneElement(child as ReactElement, {
+  const childrenWithProps = Children.map(children, (child) => {
+    // add the props to the list element of the child
+
+    return cloneElement(child as ReactElement, {
       isSidebarHidden,
       setIsSidebarHidden,
     })
-  )
+  })
 
   return (
-    <div className="absolute inset-0 flex flex-row">
-      <Sidebar isHidden={isSidebarHidden} setIsHidden={setIsSidebarHidden} />
-      <main className="relative flex h-screen w-full flex-col overflow-y-auto bg-white">
-        {childrenWithProps}
-      </main>
-    </div>
+    <>
+      <CommandBar
+        items={[
+          {
+            title: 'Home',
+            tags: [],
+            icon: <Home />,
+            href: '/',
+          },
+          {
+            title: 'Posts',
+            tags: [],
+            icon: <Book />,
+            href: '/posts',
+          },
+          {
+            title: 'Github',
+            tags: [],
+            icon: <GitHub />,
+            href: 'https://www.github.com/eiiot',
+          },
+        ]}
+      />
+      <div className="absolute inset-0 flex flex-row">
+        <Sidebar isHidden={isSidebarHidden} setIsHidden={setIsSidebarHidden} />
+        <main className="relative flex h-screen w-full flex-col overflow-y-auto bg-white">
+          {childrenWithProps}
+        </main>
+      </div>
+    </>
   )
 }
 
-export const getLayout = withProviders((page) => (
+export const getLayout = withProviders((page: React.ReactNode) => (
   <SiteLayout>{page}</SiteLayout>
 ))
 

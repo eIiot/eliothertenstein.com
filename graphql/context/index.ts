@@ -2,6 +2,7 @@ import prisma from '../../lib/prisma'
 import { User } from '../types.generated'
 import { getSession } from '@auth0/nextjs-auth0'
 import { PrismaClient, Role } from '@prisma/client'
+import { NextContext } from 'apollo-server-nextjs/dist/ApolloServer'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export interface RawContext {
@@ -46,6 +47,6 @@ export async function getContext(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default async function context(ctx) {
+export default async function context(ctx: NextContext) {
   return await getContext(ctx.req, ctx.res)
 }

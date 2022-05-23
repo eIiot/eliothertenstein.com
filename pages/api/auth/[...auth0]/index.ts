@@ -1,14 +1,12 @@
 import { afterCallback } from '../../../../lib/auth0/afterCallback'
-import { handleAuth, handleCallback } from '@auth0/nextjs-auth0'
+import { handleAuth, handleCallback, RequestError } from '@auth0/nextjs-auth0'
 
 export default handleAuth({
   async callback(req, res) {
     try {
       await handleCallback(req, res, { afterCallback })
-    } catch (error: unknown) {
+    } catch (error: any) {
       res.status(error.status || 500).end(error.message)
     }
   },
 })
-
-// export default handleAuth()
