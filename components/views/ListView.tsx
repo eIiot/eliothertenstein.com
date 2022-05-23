@@ -1,4 +1,4 @@
-import { cloneElement, isValidElement, ReactElement } from 'react'
+import { cloneElement, ReactElement } from 'react'
 
 interface ListViewProps {
   list: ReactElement

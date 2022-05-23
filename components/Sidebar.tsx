@@ -54,7 +54,7 @@ const Sidebar = (props: SidebarProps) => {
             className="m-3 flex h-full min-h-full flex-1 flex-col space-y-2"
             onMouseEnter={() => {
               setDisplayBgHighlight(true)
-              setBgHighlightAnimationDuration(200)
+              setBgHighlightAnimationDuration(100)
             }}
             onMouseLeave={() => {
               setDisplayBgHighlight(false)
@@ -112,7 +112,8 @@ const Sidebar = (props: SidebarProps) => {
               onMouseEnter={() => {
                 setBgHighlightTranslate(119)
               }}
-              rel="noreferrer" target="_blank"
+              rel="noreferrer"
+              target="_blank"
             >
               <GitHub className="mr-3 inline-block" />
               <span className="">GitHub</span>

@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-micro'
+import { gql } from 'apollo-server-nextjs'
 
 export const UserDetailFragment = gql`
   fragment UserDetail on User {

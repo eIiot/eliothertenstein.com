@@ -1,9 +1,10 @@
 import client from '../../lib/apollo'
 import { ApolloProvider, useApolloClient } from '@apollo/client'
 import { UserProvider } from '@auth0/nextjs-auth0'
+import { ReactNode } from 'react'
 import { Toaster } from 'react-hot-toast'
 
-const Providers = ({ pageProps, children }) => {
+const Providers = ({ children }: { children: ReactNode }) => {
   const apolloClient = useApolloClient(client)
   return (
     <>

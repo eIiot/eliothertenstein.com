@@ -3,7 +3,14 @@
 /* eslint-disable react/prop-types */
 import { RenderFn } from 'editorjs-blocks-react-renderer'
 
-const LinkRenderer: RenderFn<{}> = ({ data }) => {
+const LinkRenderer: RenderFn<{
+  link: string
+  meta: {
+    title: string
+    description: string
+    image: string
+  }
+}> = ({ data }) => {
   return (
     <a
       className="flex h-fit flex-col rounded-lg border-neutral-600 bg-white text-left text-black transition-all duration-300 ease-in-out hover:cursor-pointer hover:bg-neutral-100"

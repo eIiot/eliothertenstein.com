@@ -1,5 +1,5 @@
 import { CommentDetailFragment } from '../fragments/comment'
-import { gql } from 'apollo-server-micro'
+import { gql } from 'apollo-server-nextjs'
 
 export const CREATE_COMMENT = gql`
   mutation createComment($content: String!, $postId: String!) {

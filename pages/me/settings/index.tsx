@@ -1,17 +1,16 @@
 import { getLayout } from '../../../components/layouts/SiteLayout'
-import { useDeleteUserMutation } from '../../../graphql/types.generated'
+import { useDeleteUserMutation, User } from '../../../graphql/types.generated'
 import prisma from '../../../lib/prisma'
 import { AuthPage } from '../../../types/page'
-import { Viewer } from '../../../types/user'
 import { getSession, Session, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import * as AlertDialog from '@radix-ui/react-alert-dialog'
 import Link from 'next/link'
 import { ReactElement, useState } from 'react'
 import { ArrowLeft, Menu } from 'react-feather'
-import toast from 'react-hot-toast'
+import { toast } from 'react-hot-toast'
 
 interface SettingsPageProps {
-  viewer: Viewer
+  viewer: User
   isSidebarHidden: boolean
   setIsSidebarHidden: (isSidebarHidden: boolean) => void
 }
@@ -93,7 +92,7 @@ const SettingsPage = withPageAuthRequired((props: SettingsPageProps) => {
                   <AlertDialog.Action
                     className="animate-button-hover rounded-md bg-red-700 px-3 py-2 text-white"
                     onClick={() => {
-                      onDeleteHandler(viewer.sub)
+                      onDeleteHandler(viewer.id)
                     }}
                   >
                     <span className="flex items-center justify-center">

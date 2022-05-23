@@ -3,6 +3,7 @@ import CustomImage from '../components/home/CustomImage'
 import SiteLayout, { getLayout } from '../components/layouts/SiteLayout'
 import { Page } from '../types/page'
 import Link from 'next/link'
+import { ReactNode } from 'react'
 import { Menu } from 'react-feather'
 // import Head from 'next/head'
 // import Image from 'next/image'
@@ -12,7 +13,7 @@ interface HomeProps {
   setIsSidebarHidden: (isSidebarHidden: boolean) => void
 }
 
-const Home: Page = (props: HomeProps) => {
+const Home = (props: HomeProps) => {
   const { isSidebarHidden, setIsSidebarHidden } = props
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-12 pb-10 md:px-8">
@@ -81,6 +82,6 @@ const Home: Page = (props: HomeProps) => {
   )
 }
 
-Home.getLayout = (page) => getLayout(page)
+Home.getLayout = (page: ReactNode) => getLayout(page)
 
 export default Home

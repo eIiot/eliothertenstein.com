@@ -47,5 +47,6 @@ export async function afterCallback(_: any, __: any, session: Session) {
     return session
   } catch (error) {
     console.error(error)
+    return session
   }
 }

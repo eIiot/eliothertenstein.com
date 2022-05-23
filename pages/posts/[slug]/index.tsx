@@ -34,6 +34,7 @@ const PostPage = (props: PostPageProps) => {
 }
 
 PostPage.getLayout = (page: ReactElement) =>
+  // @ts-expect-error UNFIXED: PostList props are added within the ListView component
   getLayout(<ListView detail={page} list={<PostsList />} showDetail />)
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {

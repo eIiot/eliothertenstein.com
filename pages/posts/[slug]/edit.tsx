@@ -17,6 +17,7 @@ const Editor = withPageAuthRequired(() => {
 }) as AuthPage
 
 Editor.getLayout = (page: ReactElement) =>
+  // @ts-expect-error UNFIXED: PostList props are added within the ListView component
   getLayout(<ListView detail={page} list={<PostsList />} showDetail />)
 
 export const getServerSideProps = withPageAuthRequired({
