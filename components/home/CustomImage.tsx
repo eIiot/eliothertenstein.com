@@ -6,12 +6,13 @@ interface CustomImageProps {
   className?: string
   caption?: string
   [key: string]: any
+  children?: React.ReactNode
 }
 
 const CustomImage = (props: CustomImageProps) => {
-  const { src, alt, className, caption, ...rest } = props
+  const { src, alt, className, caption, children, ...rest } = props
   return (
-    <div>
+    <div className="relative">
       <img
         alt={alt}
         className={`${className} w-full rounded-lg`}
@@ -28,12 +29,14 @@ const CustomImage = (props: CustomImageProps) => {
           {caption}
         </div>
       )}
+      {children}
     </div>
   )
 }
 
 CustomImage.defaultProps = {
   caption: '',
+  children: null,
   className: '',
 }
 

@@ -32,7 +32,7 @@ const Sidebar = (props: SidebarProps) => {
   return (
     <div
       className={
-        '3xl:w-80 absolute z-40 flex h-full max-h-screen min-h-screen w-3/4 flex-none transform flex-col overflow-hidden overflow-y-auto border-r border-neutral-100 transition duration-200 ease-in-out sm:w-1/2 md:w-1/3 lg:relative lg:z-auto lg:w-56 lg:translate-x-0 2xl:w-72 ' +
+        '3xl:w-80 absolute z-40 flex h-full max-h-screen min-h-screen w-3/4 flex-none transform flex-col overflow-hidden overflow-y-auto border-r border-neutral-100 bg-white transition duration-200 ease-in-out sm:w-1/2 md:w-1/3 lg:relative lg:z-auto lg:w-56 lg:translate-x-0 2xl:w-72 ' +
         (isHidden ? '-translate-x-full' : 'translate-x-0')
       }
     >

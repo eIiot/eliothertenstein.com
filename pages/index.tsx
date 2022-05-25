@@ -72,11 +72,12 @@ const Home = (props: HomeProps) => {
         </div>
       </CustomGridLayout>
       <CustomGridLayout title="Location">
-        <CustomImage
-          alt="map"
-          caption="San Francisco, CA"
-          src="https://brianlovin.com/_next/image?url=%2Fstatic%2Fimg%2Fsf.png&w=1920&q=100"
-        />
+        <CustomImage alt="map" caption="San Francisco, CA" src="/map.png">
+          <div className="absolute left-[50%] top-[50%] flex h-8 w-8 shadow-lg">
+            <span className="absolute -top-4 -left-4 h-8 w-8 animate-ping rounded-full bg-blue-200 opacity-75" />
+            <span className="ring-3 relative -top-4 -left-4 h-8 w-8 rounded-full border-[5px] border-white bg-blue-500" />
+          </div>
+        </CustomImage>
       </CustomGridLayout>
     </div>
   )
