@@ -12,7 +12,7 @@ export interface RawContext {
 
 export interface Context {
   prisma: PrismaClient
-  viewer: User
+  viewer: User | null
 }
 
 export async function getViewer(req: NextApiRequest, res: NextApiResponse) {
