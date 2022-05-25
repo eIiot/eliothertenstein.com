@@ -5,9 +5,9 @@ import { PrismaClient, Role } from '@prisma/client'
 import { NextContext } from 'apollo-server-nextjs/dist/ApolloServer'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export interface RawContext {
+export interface SafeContext {
   prisma: PrismaClient
-  viewer: User | null
+  viewer: User
 }
 
 export interface Context {
