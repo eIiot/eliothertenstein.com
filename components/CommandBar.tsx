@@ -1,6 +1,7 @@
+import { Global } from '@emotion/core'
 import * as Dialog from '@radix-ui/react-dialog'
 import React, { useEffect, useState } from 'react'
-import { GlobalHotKeys } from 'react-hotkeys'
+import { GlobalHotKeys, HotKeys } from 'react-hotkeys'
 
 interface SearchProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -70,16 +71,47 @@ const CommandBar = (props: CommandBarProps) => {
 
   const itemsRef = React.useRef<HTMLDivElement>(null)
 
-  const handlers = { SHOW_ALL_HOTKEYS: () => console.log('SHOW_ALL_HOTKEYS') }
+  const handlers = {
+    DOWN: () => {
+      setHighlightedItem((prevState) => {
+        const nextItem = prevState?.nextElementSibling as HTMLAnchorElement
+        if (nextItem) {
+          return nextItem
+        } else {
+          return itemsRef.current?.firstElementChild as HTMLAnchorElement
+        }
+      })
+    },
+    UP: () => {
+      setHighlightedItem((prevState) => {
+        const prevItem = prevState?.previousElementSibling as HTMLAnchorElement
+        if (prevItem) {
+          return prevItem
+        } else {
+          return itemsRef.current?.lastElementChild as HTMLAnchorElement
+        }
+      })
+    },
+    CLOSE: () => {
+      setIsOpen(false)
+    },
+    OPEN: (event: any) => {
+      event.preventDefault()
+      setIsOpen(true)
+    },
+  }
 
-  const keyMap = { SHOW_ALL_HOTKEYS: 'command+?' }
-
-  // filter by search
+  const keyMap = {
+    DOWN: 'down',
+    UP: 'up',
+    CLOSE: 'escape',
+    OPEN: 'command+k',
+  }
 
   useEffect(() => {
     if (highlightedItem) {
       setDisplayBgHighlight(true)
-      setBgHighlightAnimationDuration(100)
+      setBgHighlightAnimationDuration(150)
       // get top of element relative to the parent
       const elementTop = highlightedItem.getBoundingClientRect().bottom
       // get top of parent
@@ -94,72 +126,74 @@ const CommandBar = (props: CommandBarProps) => {
   }, [highlightedItem])
 
   return (
-    <Dialog.Root open={isOpen}>
+    <>
       <GlobalHotKeys handlers={handlers} keyMap={keyMap} />
-      <Dialog.Overlay className="fixed inset-0 z-10 flex justify-center bg-neutral-400/30 pt-[20vh]">
-        <Dialog.Content
-          className="relative flex h-min max-h-[50vh] w-2/5 flex-col overflow-auto rounded-lg bg-white p-2 ring-2 ring-neutral-300 transition-all duration-100"
-          style={{
-            height: `${searchItems.length * 52 + 64}px`,
-          }}
-        >
-          <div
-            className="absolute h-[52px] w-[calc(100%-16px)] rounded-md bg-neutral-100 transition-transform duration-100"
+      <Dialog.Root open={isOpen}>
+        <Dialog.Overlay className="fixed inset-0 z-10 flex justify-center bg-neutral-400/30 pt-[20vh]">
+          <Dialog.Content
+            className="relative flex h-min max-h-[50vh] w-2/5 flex-col overflow-auto rounded-lg bg-white p-2 ring-2 ring-neutral-300 transition-all duration-100"
             style={{
-              transform: `translateY(${bgHighlightTranslate}px)`,
-              display: displayBgHighlight ? 'block' : 'none',
-              transition: `transform ${bgHighlightAnimationDuration}ms ease-in-out`,
+              height: `${searchItems.length * 52 + 64}px`,
             }}
-          />
-          <Search
-            onChange={(e) => {
-              const newItems = items.filter((item) => {
-                const title = item.title.toLowerCase()
-                return title
-                  .toLowerCase()
-                  .includes(e.target.value.toLowerCase())
-              })
+          >
+            <div
+              className="absolute h-[52px] w-[calc(100%-16px)] rounded-md bg-neutral-100 transition-transform duration-100"
+              style={{
+                transform: `translateY(${bgHighlightTranslate}px)`,
+                display: displayBgHighlight ? 'block' : 'none',
+                transition: `transform ${bgHighlightAnimationDuration}ms ease-in-out`,
+              }}
+            />
+            <Search
+              onChange={(e) => {
+                const newItems = items.filter((item) => {
+                  const title = item.title.toLowerCase()
+                  return title
+                    .toLowerCase()
+                    .includes(e.target.value.toLowerCase())
+                })
 
-              if (newItems.length === 0) {
-                setDisplayBgHighlight(false)
-              } else if (newItems.length !== items.length) {
-                setTimeout(() => {
-                  setHighlightedItem(
-                    itemsRef.current?.children[0] as HTMLAnchorElement
-                  )
-                }, 100)
-              }
+                if (newItems.length === 0) {
+                  setDisplayBgHighlight(false)
+                } else if (newItems.length !== items.length) {
+                  setTimeout(() => {
+                    setHighlightedItem(
+                      itemsRef.current?.children[0] as HTMLAnchorElement
+                    )
+                  }, 100)
+                }
 
-              setSearchItems(newItems)
-            }}
-          />
-          <div className="inset-0 flex flex-col" ref={itemsRef}>
-            {searchItems.map((item, index) => {
-              const { title, tags, icon, href } = item
-              return (
-                <Item
-                  {...item}
-                  key={title}
-                  onMouseEnter={(
-                    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-                  ) => {
-                    setHighlightedItem(e.currentTarget)
-                  }}
-                  onMouseLeave={() => {
-                    setHighlightedItem(null)
-                  }}
-                  onMouseMove={(
-                    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-                  ) => {
-                    setHighlightedItem(e.currentTarget)
-                  }}
-                />
-              )
-            })}
-          </div>
-        </Dialog.Content>
-      </Dialog.Overlay>
-    </Dialog.Root>
+                setSearchItems(newItems)
+              }}
+            />
+            <div className="inset-0 flex flex-col" ref={itemsRef}>
+              {searchItems.map((item, index) => {
+                const { title, tags, icon, href } = item
+                return (
+                  <Item
+                    {...item}
+                    key={title}
+                    onMouseEnter={(
+                      e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+                    ) => {
+                      setHighlightedItem(e.currentTarget)
+                    }}
+                    onMouseLeave={() => {
+                      setHighlightedItem(null)
+                    }}
+                    onMouseMove={(
+                      e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+                    ) => {
+                      setHighlightedItem(e.currentTarget)
+                    }}
+                  />
+                )
+              })}
+            </div>
+          </Dialog.Content>
+        </Dialog.Overlay>
+      </Dialog.Root>
+    </>
   )
 }
 
