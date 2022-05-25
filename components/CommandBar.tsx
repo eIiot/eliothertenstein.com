@@ -30,12 +30,10 @@ interface ItemProps {
 interface CompItemProps extends ItemProps {
   onMouseMove: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
   onMouseEnter: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
-  onMouseLeave: () => void
 }
 
 const Item = (props: CompItemProps) => {
-  const { title, tags, icon, href, onMouseMove, onMouseEnter, onMouseLeave } =
-    props
+  const { title, tags, icon, href, onMouseMove, onMouseEnter } = props
 
   if (href.startsWith('http')) {
     return (
@@ -43,7 +41,6 @@ const Item = (props: CompItemProps) => {
         className="z-10 flex flex-row space-y-2 p-3 outline-none"
         href={href}
         onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
         onMouseMove={onMouseMove}
       >
         <span className="flex flex-none flex-row items-center justify-center space-x-2">
@@ -62,7 +59,6 @@ const Item = (props: CompItemProps) => {
         <a
           className="z-10 flex flex-row space-y-2 p-3 outline-none"
           onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
           onMouseMove={onMouseMove}
         >
           <span className="flex flex-none flex-row items-center justify-center space-x-2">
@@ -108,36 +104,32 @@ const CommandBar = (props: CommandBarProps) => {
         if (!prevState) {
           return itemsRef.current?.children[1] as HTMLElement
         }
-        if (nextItem) {
-          return nextItem
-        } else {
-          return itemsRef.current?.children[0] as HTMLElement
-        }
+        return nextItem ?? (itemsRef.current?.children[0] as HTMLElement)
       })
     },
     UP: (event: any) => {
       event.preventDefault()
       setHighlightedItem((prevState) => {
         const prevItem = prevState?.previousElementSibling as HTMLElement
-        if (prevItem) {
-          return prevItem
-        } else {
-          return itemsRef.current?.lastElementChild as HTMLElement
-        }
+
+        return prevItem ?? (itemsRef.current?.lastElementChild as HTMLElement)
       })
     },
     CLOSE: () => {
       setIsOpen(false)
     },
     ENTER: () => {
-      if (highlightedItem) {
-        highlightedItem.click()
-      }
+      setHighlightedItem((prevState) => {
+        if (prevState) {
+          prevState.click()
+        }
+        return null
+      })
     },
   }
 
   const keyMap = {
-    DOWN: 'down',
+    DOWN: ['down', 'tab'],
     UP: 'up',
     CLOSE: 'escape',
     ENTER: 'enter',
@@ -157,8 +149,6 @@ const CommandBar = (props: CommandBarProps) => {
 
       setSearchItems(items)
       setIsOpen(true)
-      // console.log(itemsRef.current)
-      // setHighlightedItem(itemsRef.current?.children[0] as HTMLElement)
     },
   }
 
@@ -166,14 +156,15 @@ const CommandBar = (props: CommandBarProps) => {
     if (highlightedItem) {
       // highlightedItem.focus()
       setDisplayBgHighlight(true)
-      setBgHighlightAnimationDuration(150)
+      setBgHighlightAnimationDuration(100)
       // get top of element relative to the parent
       const elementTop = highlightedItem.getBoundingClientRect().top
       // get top of parent
-      const parentTop = highlightedItem.parentElement?.getBoundingClientRect()
-        .top as number
+      const parentTop =
+        highlightedItem.parentElement?.parentElement?.getBoundingClientRect()
+          .top as number
 
-      setBgHighlightTranslate(elementTop - parentTop ?? 0)
+      setBgHighlightTranslate(elementTop - parentTop - 8)
 
       // get height of element
       const elementHeight = highlightedItem.getBoundingClientRect().height
@@ -202,35 +193,31 @@ const CommandBar = (props: CommandBarProps) => {
               height: `${searchItems.length * 52 + 64}px`,
             }}
           >
+            <Search
+              onChange={(e) => {
+                const newItems = items.filter((item) => {
+                  const title = item.title.toLowerCase()
+                  return title
+                    .toLowerCase()
+                    .includes(e.target.value.toLowerCase())
+                })
+
+                setSearchItems(newItems)
+                setHighlightedItem(itemsRef.current?.children[0] as HTMLElement)
+              }}
+            />
+
             <div
               className="absolute w-[calc(100%-16px)] rounded-md bg-neutral-100 transition-transform duration-100"
               style={{
                 height: `${bgHighlightHeight}px`,
                 transform: `translateY(${bgHighlightTranslate}px)`,
-                display: displayBgHighlight ? 'block' : 'none',
+                display: displayBgHighlight ? 'block' : 'hidden',
                 transition: `transform ${bgHighlightAnimationDuration}ms ease-in-out`,
               }}
             />
 
-            <div className="inset-0 flex flex-col" ref={itemsRef}>
-              <Search
-                onChange={(e) => {
-                  const newItems = items.filter((item) => {
-                    const title = item.title.toLowerCase()
-                    return title
-                      .toLowerCase()
-                      .includes(e.target.value.toLowerCase())
-                  })
-
-                  if (items.length > newItems.length) {
-                    setHighlightedItem(
-                      itemsRef.current?.children[0] as HTMLElement
-                    )
-                  }
-
-                  setSearchItems(newItems)
-                }}
-              />
+            <div className="relative inset-0 flex flex-col" ref={itemsRef}>
               {searchItems.map((item, index) => {
                 const { title, tags, icon, href } = item
                 return (
@@ -241,9 +228,6 @@ const CommandBar = (props: CommandBarProps) => {
                       e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
                     ) => {
                       setHighlightedItem(e.currentTarget)
-                    }}
-                    onMouseLeave={() => {
-                      setHighlightedItem(null)
                     }}
                     onMouseMove={(
                       e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
