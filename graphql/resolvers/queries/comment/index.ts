@@ -37,16 +37,17 @@ export async function getCommentAuthor(parent: any, _: any, ctx: Context) {
   return author
 }
 
-export function viewerCanEdit(parent: any, _: any, ctx: Context) {
+export function viewerCanEdit(parent: any, _: any, ctx: Context): boolean {
+  console.log('checking if viewer can edit')
   const { viewer } = ctx
   const { userId } = parent
 
-  return viewer && viewer.id === userId && !viewer.isBlocked
+  return !!viewer && viewer.id === userId && !viewer.isBlocked
 }
 
-export function viewerCanDelete(parent: any, _: any, ctx: Context) {
+export function viewerCanDelete(parent: any, _: any, ctx: Context): boolean {
   const { viewer } = ctx
   const { userId } = parent
 
-  return viewer && (viewer.id === userId || viewer.isAdmin)
+  return !!viewer && !!(viewer.id === userId || viewer.isAdmin)
 }
