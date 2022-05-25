@@ -144,7 +144,7 @@ const CommandBar = (props: CommandBarProps) => {
   }
 
   const globalKeyMap = {
-    OPEN: 'command+k',
+    OPEN: ['command+k', 'ctrl+k'],
   }
 
   configure({
