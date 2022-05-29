@@ -1,7 +1,6 @@
 import CustomGridLayout from '../components/home/CustomGridLayout'
 import CustomImage from '../components/home/CustomImage'
-import SiteLayout, { getLayout } from '../components/layouts/SiteLayout'
-import { Page } from '../types/page'
+import { getLayout } from '../components/layouts/SiteLayout'
 import Link from 'next/link'
 import { ReactNode } from 'react'
 import { Menu } from 'react-feather'
@@ -31,9 +30,14 @@ const Home = (props: HomeProps) => {
         <p className="pb-3">
           My name is Eliot, I&apos;m a student and developer based in Berkeley,
           CA. I&apos;m most well known for{' '}
-          <Link href="https://www.therailmap.com" target="_blank">
+          <a
+            className="animate-link"
+            href="https://www.therailmap.com"
+            rel="noreferrer"
+            target="_blank"
+          >
             The Rail Map
-          </Link>
+          </a>
           , a hobby project of mine that visualizes railroads throughout the
           world, and helps people track their trains.
         </p>
@@ -50,7 +54,7 @@ const Home = (props: HomeProps) => {
           <div className="flex justify-between">
             <span>Twitter</span>
             <a
-              className="animate-link-hover"
+              className="animate-link"
               href="
             https://twitter.com/eiioth"
               target="_blank"
@@ -59,9 +63,9 @@ const Home = (props: HomeProps) => {
             </a>
           </div>
           <div className="flex justify-between">
-            <span>Github</span>
+            <span>GitHub</span>
             <a
-              className="animate-link-hover"
+              className="animate-link"
               href="
             https://github.com/eiiot"
               target="_blank"
