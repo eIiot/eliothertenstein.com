@@ -54,7 +54,7 @@ const Sidebar = (props: SidebarProps) => {
             className="m-3 flex h-full min-h-full flex-1 flex-col space-y-2"
             onMouseEnter={() => {
               setDisplayBgHighlight(true)
-              setBgHighlightAnimationDuration(100)
+              setBgHighlightAnimationDuration(150)
             }}
             onMouseLeave={() => {
               setDisplayBgHighlight(false)

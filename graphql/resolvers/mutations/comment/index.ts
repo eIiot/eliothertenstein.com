@@ -1,12 +1,13 @@
-import { Context } from '../../../context'
+import { Context, SafeContext } from '../../../context'
 import { AuthenticationError } from 'apollo-server-nextjs'
 
 export async function createComment(
   _: any,
   { postId, content }: { postId: string; content: string; userId: string },
-  ctx: Context
+  ctx: SafeContext
 ) {
   const { prisma, viewer } = ctx
+
   const comment = prisma.comment.create({
     data: {
       content,
@@ -31,7 +32,7 @@ export async function createComment(
 export async function updateComment(
   _: any,
   { id, content }: { id: string; content: string },
-  ctx: Context
+  ctx: SafeContext
 ) {
   const { prisma, viewer } = ctx
   const comment = await prisma.comment.findUnique({
@@ -65,7 +66,7 @@ export async function updateComment(
 export async function deleteComment(
   _: any,
   { id }: { id: string },
-  ctx: Context
+  ctx: SafeContext
 ) {
   const { prisma, viewer } = ctx
 

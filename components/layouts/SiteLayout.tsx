@@ -26,7 +26,6 @@ interface LayoutProps {
 const SiteLayout = (props: LayoutProps) => {
   const { children } = props
   const [isSidebarHidden, setIsSidebarHidden] = useState(true)
-  const [isCommandBarOpen, setIsCommandBarOpen] = useState(false)
 
   // pass isSidebarHidden, setIsSidebarHidden to children
   const childrenWithProps = Children.map(children, (child) => {
