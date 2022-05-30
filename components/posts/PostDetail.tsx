@@ -41,7 +41,11 @@ const PostDetail = (props: PostDetailProps) => {
 
   const { scrollYProgress } = useElementScroll(postScrollRef)
 
-  const [inViewRef, inView] = useInView({
+  const [titleInViewRef, titleInView] = useInView({
+    threshold: 0.5,
+  })
+
+  const [commentsInViewRef, commentsInView] = useInView({
     threshold: 0,
   })
 
@@ -88,10 +92,7 @@ const PostDetail = (props: PostDetailProps) => {
       {!loading ? (
         data && data.post ? (
           <>
-            <PostTitleToast
-              scrollYProgress={scrollYProgress}
-              title={data.post.title}
-            />
+            <PostTitleToast isOnScreen={titleInView} title={data.post.title} />
             {viewer && viewer.isAdmin && (
               <Link href={slug + '/edit'}>
                 <a className="absolute right-3 top-3 flex rounded-lg bg-white p-3 text-black shadow-lg ring-2 ring-white hover:bg-neutral-100">
@@ -102,10 +103,10 @@ const PostDetail = (props: PostDetailProps) => {
             {viewer && !viewer.isBlocked && (
               <CommentBar
                 handleSubmit={(event) => handleSubmit(event, viewer, data)}
-                inView={inView}
+                inView={commentsInView}
                 isSending={isSending}
                 scrollToComments={() => {
-                  !inView &&
+                  !commentsInView &&
                     postScrollRef.current?.scrollTo(
                       0,
                       postScrollRef.current?.scrollHeight
@@ -115,7 +116,9 @@ const PostDetail = (props: PostDetailProps) => {
               />
             )}
             <div className="mx-auto max-w-2xl space-y-3 px-4 pt-20 pb-10">
-              <h1 className="text-3xl font-bold">{data.post.title}</h1>
+              <h1 className="text-3xl font-bold" ref={titleInViewRef}>
+                {data.post.title}
+              </h1>
               <h2 className="text-lg text-neutral-600">
                 {moment(data.post.createdAt).format('MMMM Do YYYY')}
               </h2>
@@ -132,7 +135,7 @@ const PostDetail = (props: PostDetailProps) => {
               </div>
             </div>
             <CommentsList
-              inViewRef={inViewRef}
+              inViewRef={commentsInViewRef}
               postId={data.post.id}
               viewer={viewer}
             />
