@@ -93,13 +93,6 @@ const PostDetail = (props: PostDetailProps) => {
         data && data.post ? (
           <>
             <PostTitleToast isOnScreen={titleInView} title={data.post.title} />
-            {viewer && viewer.isAdmin && (
-              <Link href={slug + '/edit'}>
-                <a className="absolute right-3 top-3 flex rounded-lg bg-white p-3 text-black shadow-lg ring-2 ring-white hover:bg-neutral-100">
-                  <Edit />
-                </a>
-              </Link>
-            )}
             {viewer && !viewer.isBlocked && (
               <CommentBar
                 handleSubmit={(event) => handleSubmit(event, viewer, data)}
