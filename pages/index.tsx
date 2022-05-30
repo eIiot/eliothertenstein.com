@@ -1,3 +1,4 @@
+import ChangeLogButton from '../components/home/ChangeLogButton'
 import CustomGridLayout from '../components/home/CustomGridLayout'
 import CustomImage from '../components/home/CustomImage'
 import { getLayout } from '../components/layouts/SiteLayout'
@@ -45,9 +46,11 @@ const Home = (props: HomeProps) => {
         <p className="pb-3">
           As you might have guessed, I&apos;m decently into transit, including
           all things trains, planes, busses etc. I also enjoy cycling,
-          photography, and writing bad takes on twitter, all in my
-          much-too-limited free time.
+          photography, and art history!
         </p>
+        <div className="h-max py-3">
+          <ChangeLogButton />
+        </div>
       </CustomGridLayout>
       <CustomGridLayout title="Social">
         <div className="flex flex-col space-y-3">

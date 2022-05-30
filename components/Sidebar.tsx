@@ -36,17 +36,10 @@ const Sidebar = (props: SidebarProps) => {
         (isHidden ? '-translate-x-full' : 'translate-x-0')
       }
     >
-      <div className="flex-0 sticky top-0 z-10 w-full bg-white py-2 px-3">
-        <span className="text-normal relative inline-block w-full text-center font-normal">
-          <button
-            className="absolute left-0 top-0 block lg:hidden"
-            onClick={() => setIsHidden(!isHidden)}
-            type="button"
-          >
-            <X size={24} />
-          </button>
-          Eliot Hertenstein
-        </span>
+      <div className="flex-0 sticky top-0 z-10 flex w-full items-center justify-start bg-white px-3 pt-3 lg:hidden">
+        <button onClick={() => setIsHidden(!isHidden)} type="button">
+          <X size={24} />
+        </button>
       </div>
       <ScrollArea.Root className="w-full flex-grow">
         <ScrollArea.Viewport className="min-h-full flex-col">
@@ -116,7 +109,7 @@ const Sidebar = (props: SidebarProps) => {
               target="_blank"
             >
               <GitHub className="mr-3 inline-block" />
-              <span className="">GitHub</span>
+              <span className="">GitHub</span>{' '}
               <ArrowUpRight
                 className="transition-transform duration-100 ease-in-out group-hover:translate-x-[2px] group-hover:-translate-y-[2px]"
                 size={18}
