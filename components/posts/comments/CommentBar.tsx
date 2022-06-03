@@ -49,42 +49,59 @@ const CommentBar = (props: CommentBarProps) => {
     >
       <button
         className={
-          'flex-0 flex flex-row items-end p-3' +
+          'flex-0 flex flex-row items-center justify-center p-3' +
           ' ' +
           (inView ? '' : 'hover:bg-neutral-100')
         }
-        disabled={inView}
-        onClick={scrollToComments}
+        // disabled={!inView}
+        onClick={
+          inView
+            ? () => {
+                if (canSendComment || isSending) {
+                  formRef.current?.requestSubmit()
+                }
+              }
+            : scrollToComments
+        }
+        style={{
+          opacity: inView ? (canSendComment ? 1 : 0.5) : 1,
+          transition: 'opacity 0.2s ease-out',
+          cursor:
+            (inView && !canSendComment) || isSending
+              ? 'not-allowed'
+              : 'pointer',
+        }}
         type="button"
       >
-        <MessageCircle />
+        {isSending ? <Loader /> : <MessageCircle />}
       </button>
       <textarea
         className="group bottom-0 h-[48px] flex-1 resize-none overflow-hidden border-x-[1px] border-x-neutral-200 p-3 outline-none transition-all duration-200"
         id="content"
         onChange={validateComment}
         onInput={(e) => {
-          // @ts-expect-error FIXME: Property 'style' does not exist on type 'EventTarget... Remove this comment to see the full error message
-          e.target.style.height = '48px'
-          // @ts-expect-error FIXME: Property 'style' does not exist on type 'EventTarget... Remove this comment to see the full error message
-          e.target.style.height = e.target.scrollHeight + 'px'
+          const target = e.target as HTMLTextAreaElement
+          target.style.height = '48px'
+          target.style.height =
+            target.scrollHeight < 216 ? target.scrollHeight + 'px' : '216px'
         }}
         onKeyDown={(event) => {
           if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault()
             // submit the form
-            if (canSendComment) {
+            if (canSendComment && !isSending) {
               formRef.current?.requestSubmit()
             }
           }
         }}
         placeholder="Markdown supported!"
+        readOnly={isSending}
         style={{
           opacity: inView ? 1 : 0,
           transition: 'opacity 0.2s ease-out',
         }}
       />
-      <button
+      {/* <button
         className="flex-0 flex flex-row items-end p-3"
         disabled={!canSendComment}
         style={{
@@ -95,7 +112,7 @@ const CommentBar = (props: CommentBarProps) => {
         type="submit"
       >
         {isSending ? <Loader /> : <Send />}
-      </button>
+      </button> */}
     </form>
   )
 }

@@ -80,7 +80,7 @@ export default gql`
       excerpt: String
       featureImage: String
     ): Post
-    deletePost(slug: String!): Post
+    deletePost(slug: String!): Boolean
 
     upsertUser(
       id: ID!
@@ -93,7 +93,7 @@ export default gql`
       location: String
       name: String!
     ): User
-    deleteUser(id: String!): User
+    deleteUser(id: String!): Boolean
 
     createComment(content: String!, postId: String!): Comment
     updateComment(content: String!, id: String!): Comment

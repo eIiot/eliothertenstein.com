@@ -134,7 +134,7 @@ export const getServerSideProps = withPageAuthRequired({
     return {
       props: {
         viewer: {
-          ...viewer,
+          ...user,
           isAdmin,
         },
       },

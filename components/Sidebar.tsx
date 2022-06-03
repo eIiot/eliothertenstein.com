@@ -54,6 +54,7 @@ const Sidebar = (props: SidebarProps) => {
               setBgHighlightAnimationDuration(0)
             }}
           >
+            {/* TODO: Refactor into a hook, based off of the command palette implementation of this */}
             <div
               className="absolute top-[20px] h-9 w-full rounded-md bg-neutral-100 px-2"
               style={{
@@ -63,9 +64,11 @@ const Sidebar = (props: SidebarProps) => {
               }}
             />
             <ActiveLink
+              activeChildren={<Home className="mr-3 inline-block" />}
               activeClassName="after:absolute after:right-0 after:h-9 after:w-1 after:translate-x-1/2 after:rounded-sm after:bg-black"
               className="justify-left group z-10 flex flex-1 cursor-pointer items-center rounded-md px-2 py-1.5 transition duration-200"
               href="/"
+              inactiveChildren={<Home className="mr-3 inline-block" />}
               inactiveClassName="bg-transparent text-black"
               onClick={() => {
                 setIsHidden(true)
@@ -74,10 +77,7 @@ const Sidebar = (props: SidebarProps) => {
                 setBgHighlightTranslate(0)
               }}
             >
-              <>
-                <Home className="mr-3 inline-block" />
-                <span className="">Home</span>
-              </>
+              <span className="">Home</span>
             </ActiveLink>
             <ActiveLink
               activeChildren={<BookOpen className="mr-3 inline-block" />}

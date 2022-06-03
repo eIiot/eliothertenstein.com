@@ -50,5 +50,8 @@ export async function deletePost(
       slug,
     },
   })
-  return post
+  if (!post) {
+    throw new Error('Post not found')
+  }
+  return true
 }

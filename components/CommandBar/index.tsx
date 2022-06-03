@@ -1,20 +1,65 @@
 import Item, { ItemProps } from './Item'
+import ItemsList from './ItemsList'
 import Search from './Search'
-import { Global } from '@emotion/core'
+import {
+  Post,
+  useGetPostQuery,
+  useGetPostsQuery,
+} from '../../graphql/types.generated'
 import * as Dialog from '@radix-ui/react-dialog'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Book, GitHub, Home } from 'react-feather'
 import { configure, GlobalHotKeys, HotKeys } from 'react-hotkeys'
 
-interface CommandBarProps {
-  items: ItemProps[]
-}
-
-const CommandBar = (props: CommandBarProps) => {
-  const { items } = props
-
+const CommandBar = () => {
   const router = useRouter()
+
+  const {
+    data: postsData,
+    loading: postsLoading,
+    error: postsError,
+  } = useGetPostsQuery()
+
+  const pages = [
+    {
+      title: 'Home',
+      tags: [],
+      icon: <Home />,
+      href: '/',
+    },
+    {
+      title: 'Posts',
+      tags: [],
+      icon: <Book />,
+      href: '/posts',
+    },
+    {
+      title: 'Github',
+      tags: [],
+      icon: <GitHub />,
+      href: 'https://www.github.com/eiiot',
+    },
+  ]
+
+  const [items, setItems] = useState(pages)
+
+  const [searchPosts, setSearchPosts] = useState<ItemProps[]>([])
+
+  const postItems = useMemo(() => {
+    if (postsData && postsData.posts && !postsLoading) {
+      const postItems = postsData.posts.map((post) => ({
+        title: post?.title ?? '',
+        // tags: post?.tags,
+        icon: <Book />,
+        href: `/posts/${post?.slug}`,
+      }))
+      setSearchPosts(postItems)
+      return postItems
+    } else {
+      return []
+    }
+  }, [postsData, postsLoading])
 
   const [searchItems, setSearchItems] = useState(items)
 
@@ -26,16 +71,12 @@ const CommandBar = (props: CommandBarProps) => {
 
   const itemsRef = useRef<HTMLDivElement>(null)
 
-  // const [highlightedItem, setHighlightedItem] = useState<HTMLElement | null>(
-  //   null
-  // )
-
   const [highlightedItemIndex, setHighlightedItemIndex] = useState<number>(-1)
 
   useEffect(() => {
     if (itemsRef.current?.children?.length) {
       if (highlightedItemIndex < 0) {
-        setHighlightedItemIndex(itemsRef.current?.children?.length)
+        setHighlightedItemIndex(itemsRef.current?.children?.length - 1)
       }
 
       if (highlightedItemIndex >= itemsRef.current?.children?.length) {
@@ -44,7 +85,6 @@ const CommandBar = (props: CommandBarProps) => {
 
       const highlightedItem = itemsRef.current?.children[highlightedItemIndex]
 
-      // highlightedItem.focus()
       setDisplayBgHighlight(true)
       // get top of element relative to the parent
       const elementTop = highlightedItem?.getBoundingClientRect().top ?? 0
@@ -70,19 +110,30 @@ const CommandBar = (props: CommandBarProps) => {
         return title.toLowerCase().includes(searchTerm.toLowerCase())
       })
 
-      if (newItems.length === 0) {
+      setSearchItems(newItems)
+
+      const newPosts = postItems.filter((item) => {
+        const title = item.title.toLowerCase()
+        return title.toLowerCase().includes(searchTerm.toLowerCase())
+      })
+
+      setSearchPosts(newPosts)
+
+      setHighlightedItemIndex(
+        newItems.length > 0 || postItems?.length > 0 ? 0 : -1
+      )
+
+      if (newPosts.length === 0 && newItems.length === 0) {
         setDisplayBgHighlight(false)
       } else {
         setDisplayBgHighlight(true)
       }
-
-      setSearchItems(newItems)
-      setHighlightedItemIndex(newItems.length > 0 ? 0 : -1)
     },
-    [items]
+    [items, postItems]
   )
 
   useEffect(() => {
+    // close the dialog when the user navigates to a new page
     setIsOpen(false)
   }, [router.asPath])
 
@@ -160,7 +211,6 @@ const CommandBar = (props: CommandBarProps) => {
                   onSearch(e.target.value)
                 }}
               />
-
               <div
                 className="absolute w-[calc(100%-16px)] rounded-md bg-neutral-100 transition-transform duration-100"
                 style={{
@@ -170,7 +220,6 @@ const CommandBar = (props: CommandBarProps) => {
                   transition: `transform 100ms ease-in-out`,
                 }}
               />
-
               <div className="relative inset-0 flex flex-col" ref={itemsRef}>
                 {searchItems.map((item, index) => {
                   const { title, tags, icon, href } = item
@@ -186,7 +235,37 @@ const CommandBar = (props: CommandBarProps) => {
                     />
                   )
                 })}
+
+                {searchPosts &&
+                  searchPosts.map((item, index) => {
+                    const { title, icon, href } = item
+                    return (
+                      <Item
+                        {...item}
+                        className={
+                          index === 0 && searchItems.length > 0
+                            ? 'mt-2 before:absolute before:h-[2px] before:w-[calc(40vw-16px)] before:min-w-[484px] before:-translate-y-[17px] before:-translate-x-[12px] before:rounded-sm before:bg-neutral-100'
+                            : ''
+                        }
+                        key={title}
+                        onMouseMove={(
+                          e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+                        ) => {
+                          setHighlightedItemIndex(searchItems.length + index)
+                        }}
+                      />
+                    )
+                  })}
               </div>
+              <span className="flex w-full justify-between pt-1 text-sm">
+                <span>
+                  <span className="text-blue-500">↑</span> and{' '}
+                  <span className="text-blue-500">↓</span> to navigate
+                </span>
+                <span>
+                  <span className="text-blue-500">esc</span> to close
+                </span>
+              </span>
             </Dialog.Content>
           </Dialog.Overlay>
         </Dialog.Root>
