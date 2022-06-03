@@ -80,11 +80,10 @@ const CommentBar = (props: CommentBarProps) => {
         id="content"
         onChange={validateComment}
         onInput={(e) => {
-          // @ts-expect-error FIXME: Property 'style' does not exist on type 'EventTarget... Remove this comment to see the full error message
-          e.target.style.height = '48px'
-          // @ts-expect-error FIXME: Property 'style' does not exist on type 'EventTarget... Remove this comment to see the full error message
-          e.target.style.height =
-            e.target.scrollHeight < 216 ? e.target.scrollHeight + 'px' : '216px'
+          const target = e.target as HTMLTextAreaElement
+          target.style.height = '48px'
+          target.style.height =
+            target.scrollHeight < 216 ? target.scrollHeight + 'px' : '216px'
         }}
         onKeyDown={(event) => {
           if (event.key === 'Enter' && !event.shiftKey) {
