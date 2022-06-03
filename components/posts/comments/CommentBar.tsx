@@ -78,7 +78,7 @@ const CommentBar = (props: CommentBarProps) => {
             }
           }
         }}
-        placeholder="Add a comment"
+        placeholder="Markdown supported!"
         style={{
           opacity: inView ? 1 : 0,
           transition: 'opacity 0.2s ease-out',

@@ -27,7 +27,10 @@ const PostsPage = (props: PostsPageProps) => {
           </a>
         </Link>
       )}
-      <NextSeo description="Posts" title="Posts" />
+      <NextSeo
+        description="Here's some of the writing I've done over the years, mostly about projects I'm working on"
+        title="Posts"
+      />
     </>
   )
 }

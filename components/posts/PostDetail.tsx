@@ -15,6 +15,7 @@ import ErrorNotFound from '../ErrorNotFound'
 import Blocks from 'editorjs-blocks-react-renderer'
 import { useElementScroll } from 'framer-motion'
 import moment from 'moment'
+import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Edit, MessageCircle } from 'react-feather'
@@ -57,6 +58,15 @@ const PostDetail = (props: PostDetailProps) => {
     (event, viewer: User, data) => {
       event.preventDefault()
       const content = event.target.elements.content.value
+      if (
+        content.trim().length < 1 ||
+        content.match(/!\[.*\]\(.*\)/) !== null
+      ) {
+        console.log('Error creating comment: Invalid comment content')
+        setIsSending(false)
+        toast.error('Invalid comment content')
+        return
+      }
       setIsSending(true)
       createComment({
         variables: {
@@ -67,13 +77,12 @@ const PostDetail = (props: PostDetailProps) => {
         .then(async (comment) => {
           event.target.elements.content.value = ''
           event.target.style.height = '48px'
+          setIsSending(false)
+          toast.success('Comment created!')
+          postScrollRef.current?.scrollTo(0, postScrollRef.current.scrollHeight)
           await client.refetchQueries({
             include: 'active',
           })
-          // scroll to bottom of comments using framer-motion
-          postScrollRef.current?.scrollTo(0, postScrollRef.current.scrollHeight)
-          setIsSending(false)
-          toast.success('Comment created!')
         })
         .catch((err) => {
           console.log('Error creating comment: ', err)
@@ -85,68 +94,80 @@ const PostDetail = (props: PostDetailProps) => {
   )
 
   return (
-    <div
-      className="h-full w-full overflow-x-hidden overflow-y-scroll bg-white"
-      ref={postScrollRef}
-    >
-      {!loading ? (
-        data && data.post ? (
-          <>
-            <PostTitleToast isOnScreen={titleInView} title={data.post.title} />
-            {viewer && viewer.isAdmin && (
-              <Link href={slug + '/edit'}>
-                <a className="absolute right-3 top-3 flex rounded-lg bg-white p-3 text-black shadow-lg ring-2 ring-white hover:bg-neutral-100">
-                  <Edit />
-                </a>
-              </Link>
-            )}
-            {viewer && !viewer.isBlocked && (
-              <CommentBar
-                handleSubmit={(event) => handleSubmit(event, viewer, data)}
-                inView={commentsInView}
-                isSending={isSending}
-                scrollToComments={() => {
-                  !commentsInView &&
-                    postScrollRef.current?.scrollTo(
-                      0,
-                      postScrollRef.current?.scrollHeight
-                    )
-                }}
-                setIsSending={setIsSending}
+    <>
+      <NextSeo
+        description={data?.post?.content ?? 'Loading...'}
+        openGraph={{
+          title: data?.post?.title ?? 'Loading...',
+          description: data?.post?.content ?? 'Loading...',
+          images: [
+            {
+              url: data?.post?.featureImage ?? '',
+              alt: data?.post?.title ?? 'Loading...',
+            },
+          ],
+        }}
+        title={data?.post?.title ?? 'Loading...'}
+      />
+      <div
+        className="h-full w-full overflow-x-hidden overflow-y-scroll bg-white"
+        ref={postScrollRef}
+      >
+        {!loading ? (
+          data && data.post ? (
+            <>
+              <PostTitleToast
+                isOnScreen={titleInView}
+                title={data.post.title}
               />
-            )}
-            <div className="mx-auto max-w-2xl space-y-3 px-4 pt-20 pb-10">
-              <h1 className="text-3xl font-bold" ref={titleInViewRef}>
-                {data.post.title}
-              </h1>
-              <h2 className="text-lg text-neutral-600">
-                {moment(data.post.createdAt).format('MMMM Do YYYY')}
-              </h2>
-              <div className="post-text">
-                <Blocks
-                  config={postStyles}
-                  data={JSON.parse(data.post.content)}
-                  renderers={{
-                    checklist: ChecklistRenderer,
-                    link: LinkRenderer,
-                    code: CodeBlockRenderer,
+              {viewer && !viewer.isBlocked && (
+                <CommentBar
+                  handleSubmit={(event) => handleSubmit(event, viewer, data)}
+                  inView={commentsInView}
+                  isSending={isSending}
+                  scrollToComments={() => {
+                    !commentsInView &&
+                      postScrollRef.current?.scrollTo(
+                        0,
+                        postScrollRef.current?.scrollHeight
+                      )
                   }}
+                  setIsSending={setIsSending}
                 />
+              )}
+              <div className="mx-auto max-w-2xl space-y-3 px-4 pt-20 pb-10">
+                <h1 className="text-3xl font-bold" ref={titleInViewRef}>
+                  {data.post.title}
+                </h1>
+                <h2 className="text-lg text-neutral-600">
+                  {moment(data.post.createdAt).format('MMMM Do YYYY')}
+                </h2>
+                <div className="post-text">
+                  <Blocks
+                    config={postStyles}
+                    data={JSON.parse(data.post.content)}
+                    renderers={{
+                      checklist: ChecklistRenderer,
+                      link: LinkRenderer,
+                      code: CodeBlockRenderer,
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-            <CommentsList
-              inViewRef={commentsInViewRef}
-              postId={data.post.id}
-              viewer={viewer}
-            />
-          </>
+              <CommentsList
+                inViewRef={commentsInViewRef}
+                postId={data.post.id}
+                viewer={viewer}
+              />
+            </>
+          ) : (
+            <ErrorNotFound />
+          )
         ) : (
-          <ErrorNotFound />
-        )
-      ) : (
-        <div className="animate-shimmer h-full w-full rounded-lg bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 bg-[length:400%_100%]" />
-      )}
-    </div>
+          <div className="animate-shimmer h-full w-full rounded-lg bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 bg-[length:400%_100%]" />
+        )}
+      </div>
+    </>
   )
 }
 

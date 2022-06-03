@@ -49,7 +49,7 @@
 /* links */
 
 .post-text a {
-  @apply relative break-words text-blue-500 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:translate-y-1 after:bg-blue-300 after:opacity-0 after:transition after:duration-200 after:ease-in-out hover:after:translate-y-0 hover:after:opacity-100;
+  @apply relative text-blue-500 after:absolute after:bottom-0 after:left-0 after:h-[1.4px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-blue-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100;
 }
 
 .post-text a code {

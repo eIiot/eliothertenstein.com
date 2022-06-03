@@ -11,7 +11,7 @@ import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { ContextType, ReactElement } from 'react'
-import { ArrowLeft } from 'react-feather'
+import { ArrowLeft, Edit } from 'react-feather'
 
 interface PostPageProps {
   viewer: User
@@ -28,6 +28,13 @@ const PostPage = (props: PostPageProps) => {
           <ArrowLeft />
         </a>
       </Link>
+      {viewer && viewer.isAdmin && (
+        <Link href={slug + '/edit'}>
+          <a className="absolute right-3 top-3 flex rounded-lg bg-white p-3 text-black shadow-lg ring-2 ring-white hover:bg-neutral-100">
+            <Edit />
+          </a>
+        </Link>
+      )}
       <PostDetail slug={slug} viewer={viewer} />
     </>
   )
