@@ -39,28 +39,7 @@ const SiteLayout = (props: LayoutProps) => {
 
   return (
     <>
-      <CommandBar
-        items={[
-          {
-            title: 'Home',
-            tags: [],
-            icon: <Home />,
-            href: '/',
-          },
-          {
-            title: 'Posts',
-            tags: [],
-            icon: <Book />,
-            href: '/posts',
-          },
-          {
-            title: 'Github',
-            tags: [],
-            icon: <GitHub />,
-            href: 'https://www.github.com/eiiot',
-          },
-        ]}
-      />
+      <CommandBar />
       <div className="absolute inset-0 flex flex-row">
         <Sidebar isHidden={isSidebarHidden} setIsHidden={setIsSidebarHidden} />
         <main className="relative flex h-screen w-full flex-col overflow-y-auto bg-white">

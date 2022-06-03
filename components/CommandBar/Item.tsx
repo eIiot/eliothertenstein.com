@@ -2,9 +2,10 @@ import Link from 'next/link'
 
 export interface ItemProps {
   title: string
-  tags: string[]
+  // tags: string[]
   icon: React.ReactNode
   href: string
+  className?: string
 }
 
 interface CompItemProps extends ItemProps {
@@ -12,12 +13,15 @@ interface CompItemProps extends ItemProps {
 }
 
 const Item = (props: CompItemProps) => {
-  const { title, tags, icon, href, onMouseMove } = props
+  const { title, icon, href, onMouseMove, className } = props
 
-  if (href.startsWith('http')) {
+  if (href && href.startsWith('http')) {
     return (
       <a
-        className="DISABLEDoutline-none z-10 flex flex-row space-y-2 p-3"
+        className={
+          'z-10 flex flex-row space-y-2 p-3' +
+          (className ? ' ' + className : '')
+        }
         href={href}
         onMouseMove={onMouseMove}
       >
@@ -31,7 +35,10 @@ const Item = (props: CompItemProps) => {
     return (
       <Link href={href} passHref>
         <a
-          className="DISABLEDoutline-none z-10 flex flex-row space-y-2 p-3"
+          className={
+            'z-10 flex flex-row space-y-2 p-3' +
+            (className ? ' ' + className : '')
+          }
           onMouseMove={onMouseMove}
         >
           <span className="flex flex-none flex-row items-center justify-center space-x-2">
@@ -42,6 +49,10 @@ const Item = (props: CompItemProps) => {
       </Link>
     )
   }
+}
+
+Item.defaultProps = {
+  className: '',
 }
 
 export default Item
