@@ -24,9 +24,7 @@ export const UPSERT_POST = gql`
 
 export const DELETE_POST = gql`
   mutation deletePost($slug: String!) {
-    deletePost(slug: $slug) {
-      ...PostCore
-    }
+    deletePost(slug: $slug)
   }
   ${PostCoreFragment}
 `

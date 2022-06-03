@@ -43,8 +43,8 @@ export type Mutation = {
   __typename?: 'Mutation'
   createComment?: Maybe<Comment>
   deleteComment?: Maybe<Scalars['Boolean']>
-  deletePost?: Maybe<Post>
-  deleteUser?: Maybe<User>
+  deletePost?: Maybe<Scalars['Boolean']>
+  deleteUser?: Maybe<Scalars['Boolean']>
   updateComment?: Maybe<Comment>
   upsertPost?: Maybe<Post>
   upsertUser?: Maybe<User>
@@ -318,20 +318,7 @@ export type DeletePostMutationVariables = Exact<{
 
 export type DeletePostMutation = {
   __typename?: 'Mutation'
-  deletePost?: {
-    __typename?: 'Post'
-    id: string
-    createdAt: any
-    updatedAt: any
-    publishedAt?: any | null
-    slug: string
-    title: string
-    content: string
-    excerpt: string
-    featureImage?: string | null
-    reactionCount?: number | null
-    commentCount?: number | null
-  } | null
+  deletePost?: boolean | null
 }
 
 export type UpsertUserMutationVariables = Exact<{
@@ -366,16 +353,7 @@ export type DeleteUserMutationVariables = Exact<{
 
 export type DeleteUserMutation = {
   __typename?: 'Mutation'
-  deleteUser?: {
-    __typename?: 'User'
-    id: string
-    role: Role
-    createdAt: any
-    username: string
-    githubId: number
-    name: string
-    avatar?: string | null
-  } | null
+  deleteUser?: boolean | null
 }
 
 export type GetCommentsQueryVariables = Exact<{
@@ -735,11 +713,8 @@ export type UpsertPostMutationOptions = Apollo.BaseMutationOptions<
 >
 export const DeletePostDocument = gql`
   mutation deletePost($slug: String!) {
-    deletePost(slug: $slug) {
-      ...PostCore
-    }
+    deletePost(slug: $slug)
   }
-  ${PostCoreFragmentDoc}
 `
 export type DeletePostMutationFn = Apollo.MutationFunction<
   DeletePostMutation,
@@ -863,11 +838,8 @@ export type UpsertUserMutationOptions = Apollo.BaseMutationOptions<
 >
 export const DeleteUserDocument = gql`
   mutation deleteUser($id: String!) {
-    deleteUser(id: $id) {
-      ...UserDetail
-    }
+    deleteUser(id: $id)
   }
-  ${UserDetailFragmentDoc}
 `
 export type DeleteUserMutationFn = Apollo.MutationFunction<
   DeleteUserMutation,
