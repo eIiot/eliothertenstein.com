@@ -37,6 +37,8 @@ export default {
         })
         .reactions()
 
+      if (!reactions) return 0
+
       return reactions.length
     },
     commentCount: async (
@@ -60,6 +62,8 @@ export default {
           where: { id },
         })
         .comments()
+
+      if (!comments) return 0
 
       return comments.length
     },
