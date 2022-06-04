@@ -42,7 +42,14 @@ const SiteLayout = (props: LayoutProps) => {
       <CommandBar />
       <div className="absolute inset-0 flex flex-row">
         <Sidebar isHidden={isSidebarHidden} setIsHidden={setIsSidebarHidden} />
-        <main className="relative flex h-screen w-full flex-col overflow-y-auto bg-white">
+        <div
+          className="absolute z-30 h-screen w-full bg-neutral-100"
+          style={{
+            opacity: isSidebarHidden ? 0 : 0.4,
+            pointerEvents: isSidebarHidden ? 'none' : 'auto',
+          }}
+        />
+        <main className="relative flex h-screen w-full flex-col overflow-y-auto bg-white md:opacity-100">
           {childrenWithProps}
         </main>
       </div>

@@ -1,11 +1,12 @@
 import CommentBar from './comments/CommentBar'
 import CommentsList from './comments/CommentsList'
 import postStyles from './PostStyles'
-import PostTitleToast from './PostTitleToast'
+import PostTitleBar from './PostTitleBar'
 import ChecklistRenderer from './renderers/ChecklistRenderer'
 import CodeBlockRenderer from './renderers/CodeBlockRenderer'
 import LinkRenderer from './renderers/LinkRenderer'
 import {
+  Post,
   useCreateCommentMutation,
   useGetPostQuery,
   User,
@@ -27,23 +28,18 @@ import { useInView } from 'react-intersection-observer'
 interface PostDetailProps {
   slug: string
   viewer: User | null
+  post: Post
 }
 
 const PostDetail = (props: PostDetailProps) => {
-  const { slug, viewer } = props
-
-  const { data, loading, error } = useGetPostQuery({
-    variables: {
-      slug,
-    },
-  })
+  const { slug, viewer, post } = props
 
   const postScrollRef = useRef<HTMLDivElement>(null)
 
-  const { scrollYProgress } = useElementScroll(postScrollRef)
+  const { scrollY } = useElementScroll(postScrollRef)
 
   const [titleInViewRef, titleInView] = useInView({
-    threshold: 0.5,
+    threshold: 1,
   })
 
   const [commentsInViewRef, commentsInView] = useInView({
@@ -54,7 +50,7 @@ const PostDetail = (props: PostDetailProps) => {
 
   const [isSending, setIsSending] = useState(false)
 
-  const handleSubmit = useCallback(
+  const handleCommentSubmit = useCallback(
     (event, viewer: User, data) => {
       event.preventDefault()
       const content = event.target.elements.content.value
@@ -94,80 +90,55 @@ const PostDetail = (props: PostDetailProps) => {
   )
 
   return (
-    <>
-      <NextSeo
-        description={data?.post?.content ?? 'Loading...'}
-        openGraph={{
-          title: data?.post?.title ?? 'Loading...',
-          description: data?.post?.content ?? 'Loading...',
-          images: [
-            {
-              url: data?.post?.featureImage ?? '',
-              alt: data?.post?.title ?? 'Loading...',
-            },
-          ],
-        }}
-        title={data?.post?.title ?? 'Loading...'}
+    <div
+      className="h-full w-full overflow-x-hidden overflow-y-scroll bg-white"
+      ref={postScrollRef}
+    >
+      <PostTitleBar
+        isOnScreen={titleInView}
+        scrollY={scrollY}
+        title={post.title}
       />
-      <div
-        className="h-full w-full overflow-x-hidden overflow-y-scroll bg-white"
-        ref={postScrollRef}
-      >
-        {!loading ? (
-          data && data.post ? (
-            <>
-              <PostTitleToast
-                isOnScreen={titleInView}
-                title={data.post.title}
-              />
-              {viewer && !viewer.isBlocked && (
-                <CommentBar
-                  handleSubmit={(event) => handleSubmit(event, viewer, data)}
-                  inView={commentsInView}
-                  isSending={isSending}
-                  scrollToComments={() => {
-                    !commentsInView &&
-                      postScrollRef.current?.scrollTo(
-                        0,
-                        postScrollRef.current?.scrollHeight
-                      )
-                  }}
-                  setIsSending={setIsSending}
-                />
-              )}
-              <div className="mx-auto max-w-2xl space-y-3 px-4 pt-20 pb-10">
-                <h1 className="text-3xl font-bold" ref={titleInViewRef}>
-                  {data.post.title}
-                </h1>
-                <h2 className="text-lg text-neutral-600">
-                  {moment(data.post.createdAt).format('MMMM Do YYYY')}
-                </h2>
-                <div className="post-text">
-                  <Blocks
-                    config={postStyles}
-                    data={JSON.parse(data.post.content)}
-                    renderers={{
-                      checklist: ChecklistRenderer,
-                      link: LinkRenderer,
-                      code: CodeBlockRenderer,
-                    }}
-                  />
-                </div>
-              </div>
-              <CommentsList
-                inViewRef={commentsInViewRef}
-                postId={data.post.id}
-                viewer={viewer}
-              />
-            </>
-          ) : (
-            <ErrorNotFound />
-          )
-        ) : (
-          <div className="animate-shimmer h-full w-full rounded-lg bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 bg-[length:400%_100%]" />
-        )}
+      {viewer && !viewer.isBlocked && (
+        <CommentBar
+          handleSubmit={(event) => handleCommentSubmit(event, viewer, post)}
+          inView={commentsInView}
+          isSending={isSending}
+          scrollToComments={() => {
+            !commentsInView &&
+              postScrollRef.current?.scrollTo(
+                0,
+                postScrollRef.current?.scrollHeight
+              )
+          }}
+          setIsSending={setIsSending}
+        />
+      )}
+      <div className="mx-auto max-w-2xl space-y-3 px-4 pt-28 pb-10">
+        <h1 className="text-3xl font-bold" ref={titleInViewRef}>
+          {post.title}
+        </h1>
+        <h2 className="text-lg text-neutral-600">
+          {moment(post.createdAt).format('MMMM Do YYYY')}
+        </h2>
+        <div className="post-text">
+          <Blocks
+            config={postStyles}
+            data={JSON.parse(post.content)}
+            renderers={{
+              checklist: ChecklistRenderer,
+              link: LinkRenderer,
+              code: CodeBlockRenderer,
+            }}
+          />
+        </div>
       </div>
-    </>
+      <CommentsList
+        inViewRef={commentsInViewRef}
+        postId={post.id}
+        viewer={viewer}
+      />
+    </div>
   )
 }
 

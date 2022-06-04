@@ -24,11 +24,11 @@ const Home = (props: HomeProps) => {
       />
       <div className="mx-auto w-full max-w-3xl px-4 py-12 pb-10 md:px-8">
         <button
-          className="absolute left-0 top-0 block p-3 lg:hidden"
+          className="absolute left-0 top-0 m-3 block rounded-md p-2 text-black hover:bg-neutral-100 lg:hidden"
           onClick={() => setIsSidebarHidden(!isSidebarHidden)}
           type="button"
         >
-          <Menu size={24} />
+          <Menu size={16} />
         </button>
         <p className="py-12" />
 

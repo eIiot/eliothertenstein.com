@@ -12,8 +12,6 @@ export default withApiAuthRequired(
       return viewer
     }
 
-    // get user with useGetUserQuer
-
     const getIsAdmin = async (res: NextApiResponse, req: NextApiRequest) => {
       const viewer = await getIsAuthenticated(res, req)
       const user = await prisma.user.findUnique({

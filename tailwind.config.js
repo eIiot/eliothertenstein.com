@@ -53,11 +53,16 @@ module.exports = {
       },
       animation: {
         marquee: 'marquee 20s linear infinite',
+        shimmer: 'shimmer 8s ease-in-out infinite',
       },
       keyframes: {
         marquee: {
           '0%': { left: 'translateX(-100%)' },
           '100%': { transform: 'translateX(100%)' },
+        },
+        shimmer: {
+          from: { backgroundPosition: '200% 0' },
+          to: { backgroundPosition: '-200% 0' },
         },
       },
     },

@@ -1,9 +1,9 @@
 import { NextResponse, NextRequest, NextFetchEvent } from 'next/server'
 export async function middleware(req: NextRequest, ev: NextFetchEvent) {
-  console.log(req.nextUrl.pathname)
-  // // redirect /me to /me/settings
-  // if (req.nextUrl.pathname === '/me') {
-  //   return NextResponse.redirect(`${req.url}/settings`)
+  const url = req.nextUrl.clone()
+  // if (req.nextUrl.pathname === '/posts/edit') {
+  //   url.pathname = '/posts/new/edit'
+  //   return NextResponse.rewrite(url)
   // }
 
   return NextResponse.next()

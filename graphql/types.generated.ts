@@ -114,6 +114,7 @@ export type Query = {
   post?: Maybe<Post>
   posts?: Maybe<Array<Maybe<Post>>>
   user?: Maybe<User>
+  viewer?: Maybe<User>
 }
 
 export type QueryCommentsArgs = {
@@ -435,6 +436,24 @@ export type GetUserQuery = {
   __typename?: 'Query'
   user?: {
     __typename?: 'User'
+    id: string
+    role: Role
+    createdAt: any
+    username: string
+    githubId: number
+    name: string
+    avatar?: string | null
+  } | null
+}
+
+export type GetViewerQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetViewerQuery = {
+  __typename?: 'Query'
+  viewer?: {
+    __typename?: 'User'
+    isAdmin?: boolean | null
+    isBlocked?: boolean | null
     id: string
     role: Role
     createdAt: any
@@ -1090,4 +1109,59 @@ export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>
 export type GetUserQueryResult = Apollo.QueryResult<
   GetUserQuery,
   GetUserQueryVariables
+>
+export const GetViewerDocument = gql`
+  query getViewer {
+    viewer {
+      ...UserDetail
+      isAdmin
+      isBlocked
+    }
+  }
+  ${UserDetailFragmentDoc}
+`
+
+/**
+ * __useGetViewerQuery__
+ *
+ * To run a query within a React component, call `useGetViewerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetViewerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetViewerQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetViewerQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetViewerQuery, GetViewerQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetViewerQuery, GetViewerQueryVariables>(
+    GetViewerDocument,
+    options
+  )
+}
+export function useGetViewerLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetViewerQuery,
+    GetViewerQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetViewerQuery, GetViewerQueryVariables>(
+    GetViewerDocument,
+    options
+  )
+}
+export type GetViewerQueryHookResult = ReturnType<typeof useGetViewerQuery>
+export type GetViewerLazyQueryHookResult = ReturnType<
+  typeof useGetViewerLazyQuery
+>
+export type GetViewerQueryResult = Apollo.QueryResult<
+  GetViewerQuery,
+  GetViewerQueryVariables
 >
