@@ -69,6 +69,7 @@ export default gql`
     post(slug: String!): Post
     user(id: ID!): User
     comments(postId: ID!): [Comment]
+    viewer: User
   }
 
   type Mutation {
