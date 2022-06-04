@@ -53,6 +53,22 @@ async function uploadFile({
   return upload?.result?.id
 }
 
+async function uploadUrl({
+  url,
+  signedUrl,
+}: {
+  url: string
+  signedUrl: string
+}) {
+  const data = new FormData()
+  data.append('url', url)
+  const upload = await fetch(signedUrl, {
+    method: 'POST',
+    body: data,
+  }).then((res) => res.json())
+  return upload?.result?.id
+}
+
 export const EDITOR_JS_TOOLS = {
   // NOTE: Paragraph is default tool. Declare only when you want to change paragraph option.
   // paragraph: Paragraph,
@@ -107,22 +123,28 @@ export const EDITOR_JS_TOOLS = {
           })
         },
 
-        //       /**
-        //        * Send URL-string to the server. Backend should load image by this URL and return an uploaded image data
-        //        * @param {string} url - pasted image URL
-        //        * @return {Promise.<{success, file: {url}}>}
-        //        */
-        //       uploadByUrl(url){
-        //         // your ajax request for uploading
-        //         return MyAjax.upload(file).then(() => {
-        //           return {
-        //             success: 1,
-        //             file: {
-        //               url: 'https://codex.so/upload/redactor_images/o_e48549d1855c7fc1807308dd14990126.jpg',,
-        //               // any other image data you want to store, such as width, height, color, extension, etc
-        //             }
-        //           }
-        //         })
+        /**
+         * Send URL-string to the server. Backend should load image by this URL and return an uploaded image data
+         * @param {string} url - pasted image URL
+         * @return {Promise.<{success, file: {url}}>}
+         */
+        uploadByUrl(
+          url: string
+        ): Promise<{ success: boolean; file: { url: string } }> {
+          // your ajax request for uploading
+          return new Promise((resolve) => {
+            getSignedUrl().then((signedUrl) => {
+              uploadUrl({ url, signedUrl }).then((id) => {
+                resolve({
+                  success: true,
+                  file: {
+                    url: `https://imagedelivery.net/xUFYKyrYJ8VwR259YgmweA/${id}/public`,
+                  },
+                })
+              })
+            })
+          })
+        },
       },
     },
   },
