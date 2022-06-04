@@ -37,8 +37,12 @@ const Sidebar = (props: SidebarProps) => {
       }
     >
       <div className="flex-0 sticky top-0 z-10 flex w-full items-center justify-start bg-white px-3 pt-3 lg:hidden">
-        <button onClick={() => setIsHidden(!isHidden)} type="button">
-          <X size={24} />
+        <button
+          className="block rounded-md p-2 text-black hover:bg-neutral-100 lg:hidden"
+          onClick={() => setIsHidden(!isHidden)}
+          type="button"
+        >
+          <X size={16} />
         </button>
       </div>
       <ScrollArea.Root className="w-full flex-grow">
