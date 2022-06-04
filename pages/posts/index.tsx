@@ -17,21 +17,11 @@ interface PostsPageProps {
 
 const PostsPage = (props: PostsPageProps) => {
   const { viewer } = props
-  console.log(viewer)
   return (
-    <>
-      {viewer && viewer.isAdmin && (
-        <Link href="posts/new/edit">
-          <a className="absolute top-0 right-0 z-10 m-3 rounded-lg bg-white p-3 text-black shadow-lg first-line:right-0 hover:bg-neutral-100">
-            <Edit />
-          </a>
-        </Link>
-      )}
-      <NextSeo
-        description="Here's some of the writing I've done over the years, mostly about projects I'm working on"
-        title="Posts"
-      />
-    </>
+    <NextSeo
+      description="Here's some of the writing I've done over the years, mostly about projects I'm working on"
+      title="Posts"
+    />
   )
 }
 
