@@ -5,7 +5,11 @@ import PostsList from '../../../components/posts/PostsList'
 import ListView from '../../../components/views/ListView'
 import { Post, User } from '../../../graphql/types.generated'
 import prisma from '../../../lib/prisma'
-import { getSession, Session } from '@auth0/nextjs-auth0'
+import {
+  getServerSidePropsWrapper,
+  getSession,
+  Session,
+} from '@auth0/nextjs-auth0'
 import { Role } from '@prisma/client'
 import { GetServerSideProps } from 'next'
 import { NextSeo } from 'next-seo'
@@ -54,46 +58,48 @@ PostPage.getLayout = (page: ReactElement) =>
   // @ts-expect-error UNFIXED: PostList props are added within the ListView component
   getLayout(<ListView detail={page} list={<PostsList />} showDetail />)
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const post = await prisma.post.findUnique({
-    where: { slug: ctx.query.slug as string },
-  })
+export const getServerSideProps: GetServerSideProps = getServerSidePropsWrapper(
+  async (ctx) => {
+    const post = await prisma.post.findUnique({
+      where: { slug: ctx.query.slug as string },
+    })
 
-  if (!post) {
-    // ctx.res.statusCode = 404
-    return { redirect: { destination: '/404', permanent: false } }
-  }
+    if (!post) {
+      // ctx.res.statusCode = 404
+      return { redirect: { destination: '/404', permanent: false } }
+    }
 
-  const session = getSession(ctx.req, ctx.res)
+    const session = getSession(ctx.req, ctx.res)
 
-  if (!session) {
+    if (!session) {
+      return {
+        props: {
+          viewer: null,
+          post,
+        },
+      }
+    }
+
+    const { user: viewer } = session
+
+    const user = await prisma.user.findUnique({
+      where: { id: viewer?.sub },
+    })
+
+    const isAdmin = user?.role === Role.ADMIN
+    const isBlocked = user?.role === Role.BLOCKED
+
     return {
       props: {
-        viewer: null,
+        viewer: {
+          ...viewer,
+          isAdmin,
+          isBlocked,
+        },
         post,
       },
     }
   }
-
-  const { user: viewer } = session
-
-  const user = await prisma.user.findUnique({
-    where: { id: viewer?.sub },
-  })
-
-  const isAdmin = user?.role === Role.ADMIN
-  const isBlocked = user?.role === Role.BLOCKED
-
-  return {
-    props: {
-      viewer: {
-        ...viewer,
-        isAdmin,
-        isBlocked,
-      },
-      post,
-    },
-  }
-}
+)
 
 export default PostPage
