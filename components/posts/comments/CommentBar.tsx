@@ -24,9 +24,13 @@ const CommentBar = (props: CommentBarProps) => {
     const content = event.target.value
     // match regex markdown image, and don't allow it
     setCanSendComment(
-      content.trim().length > 0 && content.match(/!\[.*\]\(.*\)/) === null
+      content.trim().length > 0 &&
+        content.match(/!\[.*\]\(.*\)/) === null &&
+        content.length < 1000
     )
-    setErrorState(content.match(/!\[.*\]\(.*\)/) !== null)
+    setErrorState(
+      content.match(/!\[.*\]\(.*\)/) !== null || content.length > 1000
+    )
   }, [])
 
   return (

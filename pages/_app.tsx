@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import 'mapbox-gl/dist/mapbox-gl.css'
 import { getLayout as getSiteLayout } from '../components/layouts/SiteLayout'
 import type { Page } from '../types/page'
 import type { AppProps } from 'next/app'

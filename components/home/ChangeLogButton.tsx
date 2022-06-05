@@ -1,6 +1,6 @@
 const ChangeLogButton = () => (
   <a
-    className="animate-button-hover group relative flex h-10 w-44 items-center justify-center rounded-md ring-2 ring-neutral-100"
+    className="animate-hover-grow group relative flex h-10 w-44 items-center justify-center rounded-md ring-2 ring-neutral-100"
     href="
     https://changelog.eliothertenstein.com/
     "

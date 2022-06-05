@@ -27,7 +27,7 @@ const EditorDeleteDialog = (props: EditorDeleteDialogProps) => {
               </span>
               <span className="flex flex-row items-center justify-evenly space-x-3">
                 <AlertDialog.Action
-                  className="animate-button-hover rounded-md bg-red-700 px-3 py-2 text-white"
+                  className="animate-hover-grow rounded-md bg-red-700 px-3 py-2 text-white"
                   onClick={handleDelete}
                 >
                   {isDeleting ? (
@@ -40,7 +40,7 @@ const EditorDeleteDialog = (props: EditorDeleteDialogProps) => {
                     </span>
                   )}
                 </AlertDialog.Action>
-                <AlertDialog.Cancel className="animate-button-hover rounded-md bg-neutral-800 px-3 py-2 text-white">
+                <AlertDialog.Cancel className="animate-hover-grow rounded-md bg-neutral-800 px-3 py-2 text-white">
                   Cancel
                 </AlertDialog.Cancel>
               </span>

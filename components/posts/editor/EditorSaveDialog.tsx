@@ -134,7 +134,7 @@ const EditorSaveDialog = (props: EditorSaveDialogProps) => {
                     <div className="flex flex-row items-center justify-end space-x-3">
                       <button
                         aria-label="Close"
-                        className="animate-button-hover inline-block rounded-lg bg-green-700 px-3 py-2 text-white"
+                        className="animate-hover-grow inline-block rounded-lg bg-green-700 px-3 py-2 text-white"
                         disabled={isSubmitting}
                         type="submit"
                       >
@@ -150,7 +150,7 @@ const EditorSaveDialog = (props: EditorSaveDialogProps) => {
                       </button>
                       <button
                         aria-label="Close"
-                        className="animate-button-hover inline-block rounded-lg bg-blue-700 px-3 py-2 text-white"
+                        className="animate-hover-grow inline-block rounded-lg bg-blue-700 px-3 py-2 text-white"
                         disabled={isSubmitting}
                         onClick={() => {
                           setFieldValue('draft', true)
@@ -170,7 +170,7 @@ const EditorSaveDialog = (props: EditorSaveDialogProps) => {
                       </button>
                       <Dialog.Close
                         aria-label="Cancel"
-                        className="animate-button-hover inline-block rounded-lg bg-neutral-800 px-3 py-2 text-white"
+                        className="animate-hover-grow inline-block rounded-lg bg-neutral-800 px-3 py-2 text-white"
                         type="submit"
                       >
                         Cancel

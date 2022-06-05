@@ -39,7 +39,7 @@ const PostEditor = (props: PostEditorProps) => {
             : 'Loading...'
         }
       />
-      <div className="w-full">
+      <div className="h-full w-full overflow-y-scroll bg-white">
         <OpenSidebarButton
           isSidebarHidden={isSidebarHidden}
           setIsSidebarHidden={setIsSidebarHidden}

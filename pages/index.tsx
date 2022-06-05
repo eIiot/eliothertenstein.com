@@ -2,13 +2,14 @@ import OpenSidebarButton from '../components/buttons/OpenSidebarButton'
 import ChangeLogButton from '../components/home/ChangeLogButton'
 import CustomGridLayout from '../components/home/CustomGridLayout'
 import CustomImage from '../components/home/CustomImage'
+import MyMap from '../components/home/MyMap'
 import { getLayout } from '../components/layouts/SiteLayout'
 import ScrollBar from '../components/Scrollbar'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
-import { ReactNode } from 'react'
-import { Menu } from 'react-feather'
+import { ReactNode, useState } from 'react'
+import { Menu, Minus, Plus } from 'react-feather'
 // import Head from 'next/head'
 // import Image from 'next/image'
 
@@ -19,6 +20,8 @@ interface HomeProps {
 
 const Home = (props: HomeProps) => {
   const { isSidebarHidden, setIsSidebarHidden } = props
+
+  const [mapZoom, setMapZoom] = useState(10)
   return (
     <>
       <NextSeo
@@ -38,7 +41,7 @@ const Home = (props: HomeProps) => {
               <p className="pb-3">Hi! 👋</p>
               <p className="pb-3">
                 My name is Eliot, I&apos;m a student and developer based in
-                Berkeley, CA. I&apos;m most well known for{' '}
+                Berkeley, CA. I&apos;m best known for{' '}
                 <a
                   className="animate-link"
                   href="https://www.therailmap.com"
@@ -87,12 +90,31 @@ const Home = (props: HomeProps) => {
               </div>
             </CustomGridLayout>
             <CustomGridLayout title="Location">
-              <CustomImage alt="map" caption="Berkeley, CA" src="/map.png">
-                <div className="absolute left-[50%] top-[50%] flex h-8 w-8 shadow-lg">
-                  <span className="absolute -top-4 -left-4 h-8 w-8 animate-ping rounded-full bg-blue-200 opacity-75" />
+              <div className="relative h-[400px] w-full">
+                <MyMap zoom={mapZoom} />
+                <div className="absolute left-[50%] top-[50%] flex h-8 w-8">
+                  <span className="absolute -top-4 -left-4 h-8 w-8 animate-ping rounded-full bg-blue-200 opacity-75 shadow-lg" />
                   <span className="ring-3 relative -top-4 -left-4 h-8 w-8 rounded-full border-[5px] border-white bg-blue-500" />
                 </div>
-              </CustomImage>
+                {mapZoom > 2 && (
+                  <button
+                    className="absolute bottom-0 left-0 m-2 rounded-full bg-white p-2 text-sm "
+                    onClick={() => setMapZoom(mapZoom - 3)}
+                    type="button"
+                  >
+                    <Minus size={16} />
+                  </button>
+                )}
+                {mapZoom < 10 && (
+                  <button
+                    className="absolute bottom-0 right-0 m-2 rounded-full bg-white p-2 text-sm"
+                    onClick={() => setMapZoom(mapZoom + 3)}
+                    type="button"
+                  >
+                    <Plus size={16} />
+                  </button>
+                )}
+              </div>
             </CustomGridLayout>
           </div>
         </ScrollArea.Viewport>

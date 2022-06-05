@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* default text styling */
 
 /* .post-text {
@@ -11,11 +7,17 @@
 /* add margins to text */
 
 .post-text > * {
-  @apply my-3;
+  @apply my-4;
 }
 
 .post-text > * + * {
   @apply mt-0;
+}
+
+/* paragraph */
+
+.post-text p {
+  @apply break-words font-[350] text-neutral-800;
 }
 
 /* blockquote */
@@ -35,7 +37,7 @@
 /* images */
 
 .post-text img {
-  @apply mx-auto rounded-md shadow-sm;
+  @apply mx-auto rounded-md;
 }
 
 .post-text figure {
@@ -48,8 +50,12 @@
 
 /* links */
 
-.post-text a {
-  @apply relative text-blue-500 after:absolute after:bottom-0 after:left-0 after:h-[1.4px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-blue-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100;
+.post-text a:not([rel-type='header-link']) {
+  @apply relative text-blue-500 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-full  after:origin-bottom-right after:scale-x-0 after:bg-blue-500 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100;
+}
+
+.post-text a[rel-type='header-link'] {
+  @apply text-black hover:underline;
 }
 
 .post-text a code {
@@ -122,6 +128,30 @@
 .post-text h5 a,
 .post-text h6 a {
   @apply font-sans font-bold text-neutral-100 no-underline dark:text-neutral-100;
+}
+
+.post-text h1 {
+  @apply text-xl;
+}
+
+.post-text h2 {
+  @apply text-lg;
+}
+
+.post-text h3 {
+  @apply text-base font-bold;
+}
+
+.post-text h4 {
+  @apply text-base font-semibold;
+}
+
+.post-text h5 {
+  @apply text-base font-medium;
+}
+
+.post-text h6 {
+  @apply text-base font-normal;
 }
 
 /* code */
