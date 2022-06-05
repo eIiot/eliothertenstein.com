@@ -44,6 +44,7 @@ const SiteLayout = (props: LayoutProps) => {
         <Sidebar isHidden={isSidebarHidden} setIsHidden={setIsSidebarHidden} />
         <div
           className="absolute z-30 h-screen w-full bg-neutral-100"
+          onClick={() => setIsSidebarHidden(true)}
           style={{
             opacity: isSidebarHidden ? 0 : 0.4,
             pointerEvents: isSidebarHidden ? 'none' : 'auto',
