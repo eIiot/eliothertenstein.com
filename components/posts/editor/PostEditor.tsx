@@ -1,5 +1,5 @@
 import { useGetPostQuery } from '../../../graphql/types.generated'
-import OpenSidebarButton from '../../openSidebarButton'
+import OpenSidebarButton from '../../buttons/OpenSidebarButton'
 import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'

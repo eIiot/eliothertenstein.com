@@ -1,5 +1,5 @@
+import OpenSidebarButton from '../../../components/buttons/OpenSidebarButton'
 import { getLayout } from '../../../components/layouts/SiteLayout'
-import OpenSidebarButton from '../../../components/openSidebarButton'
 import { useDeleteUserMutation, User } from '../../../graphql/types.generated'
 import prisma from '../../../lib/prisma'
 import { AuthPage } from '../../../types/page'
