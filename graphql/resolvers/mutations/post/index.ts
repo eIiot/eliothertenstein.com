@@ -8,12 +8,14 @@ export async function upsertPost(
     slug,
     excerpt,
     featureImage,
+    publishedAt,
   }: {
     title: string
     content: string
     slug: string
     excerpt: string
     featureImage: string
+    publishedAt: string
   },
   ctx: Context
 ) {
@@ -27,6 +29,7 @@ export async function upsertPost(
       content,
       excerpt,
       featureImage,
+      publishedAt,
     },
     create: {
       title,
@@ -34,6 +37,7 @@ export async function upsertPost(
       slug,
       excerpt,
       featureImage,
+      publishedAt,
     },
   })
   return post

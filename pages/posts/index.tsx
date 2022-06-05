@@ -3,7 +3,7 @@ import PostsList from '../../components/posts/PostsList'
 import ListView from '../../components/views/ListView'
 import { User } from '../../graphql/types.generated'
 import prisma from '../../lib/prisma'
-import { getSession } from '@auth0/nextjs-auth0'
+import { getServerSidePropsWrapper, getSession } from '@auth0/nextjs-auth0'
 import { Role } from '@prisma/client'
 import { GetServerSideProps } from 'next'
 import { NextSeo } from 'next-seo'
@@ -25,35 +25,37 @@ const PostsPage = (props: PostsPageProps) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const session = getSession(ctx.req, ctx.res)
+export const getServerSideProps: GetServerSideProps = getServerSidePropsWrapper(
+  async (ctx) => {
+    const session = getSession(ctx.req, ctx.res)
 
-  if (!session) {
+    if (!session) {
+      return {
+        props: {
+          viewer: null,
+        },
+      }
+    }
+
+    const { user: viewer } = session
+
+    const user = await prisma.user.findUnique({
+      where: { id: viewer?.sub },
+    })
+
+    const isAdmin = user?.role === Role.ADMIN
+    const isBlocked = user?.role === Role.BLOCKED
     return {
       props: {
-        viewer: null,
+        viewer: {
+          ...viewer,
+          isAdmin,
+          isBlocked,
+        },
       },
     }
   }
-
-  const { user: viewer } = session
-
-  const user = await prisma.user.findUnique({
-    where: { id: viewer?.sub },
-  })
-
-  const isAdmin = user?.role === Role.ADMIN
-  const isBlocked = user?.role === Role.BLOCKED
-  return {
-    props: {
-      viewer: {
-        ...viewer,
-        isAdmin,
-        isBlocked,
-      },
-    },
-  }
-}
+)
 
 PostsPage.getLayout = (page: ReactElement) =>
   getLayout(

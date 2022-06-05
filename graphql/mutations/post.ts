@@ -8,6 +8,7 @@ export const UPSERT_POST = gql`
     $slug: String!
     $excerpt: String
     $featureImage: String
+    $publishedAt: DateTime
   ) {
     upsertPost(
       title: $title
@@ -15,6 +16,7 @@ export const UPSERT_POST = gql`
       slug: $slug
       excerpt: $excerpt
       featureImage: $featureImage
+      publishedAt: $publishedAt
     ) {
       ...PostCore
     }

@@ -1,5 +1,6 @@
 // user framer-motion to scroll the div onto screen after we've scrolled for 100 pixels
 
+import { useGetViewerQuery } from '../../graphql/types.generated'
 import {
   motion,
   MotionValue,
@@ -7,8 +8,9 @@ import {
   useTransform,
 } from 'framer-motion'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { ArrowLeft } from 'react-feather'
+import { ArrowLeft, Edit } from 'react-feather'
 
 interface PostTitleBarProps {
   isOnScreen: boolean
@@ -18,6 +20,14 @@ interface PostTitleBarProps {
 
 const PostTitleBar = (props: PostTitleBarProps) => {
   const { isOnScreen, title, scrollY } = props
+
+  const {
+    data: viewerData,
+    loading: viewerLoading,
+    error: viewerError,
+  } = useGetViewerQuery()
+
+  const Router = useRouter()
 
   const shadow = useTransform(
     useTransform(scrollY, [0, 100], [0, 5]),
@@ -52,6 +62,13 @@ const PostTitleBar = (props: PostTitleBarProps) => {
       >
         {title}
       </motion.div>
+      {viewerData && viewerData.viewer && viewerData.viewer.isAdmin && (
+        <Link href={Router.asPath + '/edit'} passHref>
+          <a className="ml-auto rounded-md p-2 hover:bg-neutral-100 lg:hidden">
+            <Edit height={16} width={16} />
+          </a>
+        </Link>
+      )}
     </motion.div>
   )
 }

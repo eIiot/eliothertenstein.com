@@ -80,6 +80,7 @@ export default gql`
       content: String
       excerpt: String
       featureImage: String
+      publishedAt: DateTime
     ): Post
     deletePost(slug: String!): Boolean
 
