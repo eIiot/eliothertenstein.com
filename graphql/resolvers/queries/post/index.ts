@@ -30,6 +30,15 @@ export async function getPosts(_: any, __: any, ctx: Context) {
       },
     ],
   })
-  // sort posts by createdAt (most recent first)
-  return posts.sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)))
+
+  if (ctx.viewer?.isAdmin) {
+    return posts.sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)))
+  } else {
+    const filteredPosts = posts.filter((post) => {
+      return post.publishedAt
+    })
+    return filteredPosts.sort((a, b) =>
+      moment(b.createdAt).diff(moment(a.createdAt))
+    )
+  }
 }

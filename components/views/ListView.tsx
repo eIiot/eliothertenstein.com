@@ -27,6 +27,20 @@ const ListView = (props: ListViewProps) => {
     setIsSidebarHidden,
   })
 
+  const detailWithProps = detail
+    ? cloneElement(detail, {
+        isSidebarHidden,
+        setIsSidebarHidden,
+      })
+    : null
+
+  const childrenWithProps = children
+    ? cloneElement(children, {
+        isSidebarHidden,
+        setIsSidebarHidden,
+      })
+    : null
+
   return (
     <div className="bg-grid-pattern flex h-full flex-row">
       <div
@@ -37,15 +51,15 @@ const ListView = (props: ListViewProps) => {
       >
         {listWithProps}
       </div>
-      <main
+      <article
         className={
-          'flex h-full max-h-screen w-full flex-col overflow-y-auto ' +
+          'flex h-full max-h-screen w-full flex-col' +
           (showDetail ? ' relative' : ' hidden')
         }
       >
-        {detail}
-      </main>
-      {children}
+        {detailWithProps}
+      </article>
+      {childrenWithProps}
     </div>
   )
 }

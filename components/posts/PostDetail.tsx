@@ -8,18 +8,15 @@ import LinkRenderer from './renderers/LinkRenderer'
 import {
   Post,
   useCreateCommentMutation,
-  useGetPostQuery,
   User,
 } from '../../graphql/types.generated'
 import client from '../../lib/apollo'
-import ErrorNotFound from '../ErrorNotFound'
+import ScrollBar from '../Scrollbar'
+import * as ScrollArea from '@radix-ui/react-scroll-area'
 import Blocks from 'editorjs-blocks-react-renderer'
 import { useElementScroll } from 'framer-motion'
 import moment from 'moment'
-import { NextSeo } from 'next-seo'
-import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Edit, MessageCircle } from 'react-feather'
 import { toast } from 'react-hot-toast'
 import { useInView } from 'react-intersection-observer'
 
@@ -90,55 +87,58 @@ const PostDetail = (props: PostDetailProps) => {
   )
 
   return (
-    <div
-      className="h-full w-full overflow-x-hidden overflow-y-scroll bg-white"
-      ref={postScrollRef}
-    >
-      <PostTitleBar
-        isOnScreen={titleInView}
-        scrollY={scrollY}
-        title={post.title}
-      />
-      {viewer && !viewer.isBlocked && (
-        <CommentBar
-          handleSubmit={(event) => handleCommentSubmit(event, viewer, post)}
-          inView={commentsInView}
-          isSending={isSending}
-          scrollToComments={() => {
-            !commentsInView &&
-              postScrollRef.current?.scrollTo(
-                0,
-                postScrollRef.current?.scrollHeight
-              )
-          }}
-          setIsSending={setIsSending}
+    <ScrollArea.Root className="h-full w-full">
+      <ScrollArea.Viewport
+        className="h-full w-full bg-white"
+        ref={postScrollRef}
+      >
+        <PostTitleBar
+          isOnScreen={titleInView}
+          scrollY={scrollY}
+          title={post.title}
         />
-      )}
-      <div className="mx-auto max-w-2xl space-y-3 px-4 pt-28 pb-10">
-        <h1 className="text-3xl font-bold" ref={titleInViewRef}>
-          {post.title}
-        </h1>
-        <h2 className="text-lg text-neutral-600">
-          {moment(post.createdAt).format('MMMM Do YYYY')}
-        </h2>
-        <div className="post-text">
-          <Blocks
-            config={postStyles}
-            data={JSON.parse(post.content)}
-            renderers={{
-              checklist: ChecklistRenderer,
-              link: LinkRenderer,
-              code: CodeBlockRenderer,
+        {viewer && !viewer.isBlocked && (
+          <CommentBar
+            handleSubmit={(event) => handleCommentSubmit(event, viewer, post)}
+            inView={commentsInView}
+            isSending={isSending}
+            scrollToComments={() => {
+              !commentsInView &&
+                postScrollRef.current?.scrollTo(
+                  0,
+                  postScrollRef.current?.scrollHeight
+                )
             }}
+            setIsSending={setIsSending}
           />
+        )}
+        <div className="mx-auto max-w-2xl space-y-3 px-4 pt-28 pb-10">
+          <h1 className="text-3xl font-bold" ref={titleInViewRef}>
+            {post.title}
+          </h1>
+          <h2 className="text-lg text-neutral-600">
+            {moment(post.createdAt).format('MMMM Do YYYY')}
+          </h2>
+          <div className="post-text">
+            <Blocks
+              config={postStyles}
+              data={JSON.parse(post.content)}
+              renderers={{
+                checklist: ChecklistRenderer,
+                link: LinkRenderer,
+                code: CodeBlockRenderer,
+              }}
+            />
+          </div>
         </div>
-      </div>
-      <CommentsList
-        inViewRef={commentsInViewRef}
-        postId={post.id}
-        viewer={viewer}
-      />
-    </div>
+        <CommentsList
+          inViewRef={commentsInViewRef}
+          postId={post.id}
+          viewer={viewer}
+        />
+      </ScrollArea.Viewport>
+      <ScrollBar />
+    </ScrollArea.Root>
   )
 }
 

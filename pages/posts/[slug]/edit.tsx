@@ -9,11 +9,25 @@ import { useRouter } from 'next/router'
 import { ReactElement } from 'react'
 import { toast } from 'react-hot-toast'
 
-const Editor = withPageAuthRequired(() => {
+interface EditorPageProps {
+  isSidebarHidden: boolean
+  setIsSidebarHidden: (isSidebarHidden: boolean) => void
+}
+
+const Editor = withPageAuthRequired((props: EditorPageProps) => {
+  const { isSidebarHidden, setIsSidebarHidden } = props
   const router = useRouter()
   const { slug } = router.query as { slug: string }
 
-  return <PostEditor slug={slug} />
+  console.log(isSidebarHidden, setIsSidebarHidden)
+
+  return (
+    <PostEditor
+      isSidebarHidden={isSidebarHidden}
+      setIsSidebarHidden={setIsSidebarHidden}
+      slug={slug}
+    />
+  )
 }) as AuthPage
 
 Editor.getLayout = (page: ReactElement) =>

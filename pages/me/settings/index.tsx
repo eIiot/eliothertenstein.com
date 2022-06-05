@@ -1,4 +1,5 @@
 import { getLayout } from '../../../components/layouts/SiteLayout'
+import OpenSidebarButton from '../../../components/openSidebarButton'
 import { useDeleteUserMutation, User } from '../../../graphql/types.generated'
 import prisma from '../../../lib/prisma'
 import { AuthPage } from '../../../types/page'
@@ -53,13 +54,10 @@ const SettingsPage = withPageAuthRequired((props: SettingsPageProps) => {
         title="Settings"
       />
       <span className="mt-32 flex flex-col items-start space-y-3 px-9">
-        <button
-          className="absolute left-0 top-0 block p-3 lg:hidden"
-          onClick={() => setIsSidebarHidden(!isSidebarHidden)}
-          type="button"
-        >
-          <Menu size={24} />
-        </button>
+        <OpenSidebarButton
+          isSidebarHidden={isSidebarHidden}
+          setIsSidebarHidden={setIsSidebarHidden}
+        />
         <h1 className="h-2xl font-bold">Account</h1>
         <Link href="/api/auth/logout" passHref>
           <a className="animate-button-hover rounded-md border-[1px] border-neutral-300 px-3 py-2 shadow-sm ">

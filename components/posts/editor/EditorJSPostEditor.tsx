@@ -55,7 +55,6 @@ const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
 
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-  const [isSaving, setIsSaving] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
   const [upsertPost] = useUpsertPostMutation()
@@ -70,36 +69,21 @@ const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
   }
 
   const handleSave = useCallback(
-    (event) => {
-      event.preventDefault()
-      console.log(event.target.elements.slug)
-      const slug = post?.slug || event.target.elements.slug.value
-      const title = event.target.elements.title.value
-      const excerpt = event.target.elements.excerpt.value
+    async (values) => {
+      const { slug, title, excerpt, draft } = values
       editorCore.current?.save().then((savedJsonContent) => {
         const content = JSON.stringify(savedJsonContent)
-        setIsSaving(true)
         upsertPost({
           variables: {
             slug,
             title,
             excerpt,
             content,
+            publishedAt: draft ? null : new Date(),
           },
+        }).then(() => {
+          return
         })
-          .then(() => {
-            setIsSaving(false)
-            toast.success('Saved!')
-            onSaveDialogChange(false)
-            if (!post) {
-              window.location.href = `/posts/${slug}`
-            }
-          })
-          .catch((error) => {
-            setIsSaving(false)
-            console.error(error)
-            toast.error(error.message)
-          })
       })
     },
     [upsertPost]
@@ -142,7 +126,7 @@ const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
   return (
     <>
       <span
-        className="peer absolute right-0 top-0 z-10 m-3 cursor-pointer rounded-lg bg-white p-3 text-black shadow-lg hover:bg-neutral-100"
+        className="peer fixed right-3 top-0 z-10 m-3 cursor-pointer rounded-lg bg-white p-3 text-black shadow-lg hover:bg-neutral-100"
         onClick={() => {
           onSaveDialogChange(true)
         }}
@@ -151,7 +135,7 @@ const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
       </span>
       {post && (
         <span
-          className="duration-400 absolute right-0 top-0 m-3 cursor-pointer rounded-lg bg-white p-3 text-black shadow-lg transition-transform delay-1000 hover:translate-y-[calc(100%+0.75rem)] hover:bg-neutral-100 peer-hover:translate-y-[calc(100%+0.75rem)] peer-hover:delay-0"
+          className="duration-400 fixed right-3 top-0 m-3 cursor-pointer rounded-lg bg-white p-3 text-black shadow-lg transition-transform delay-1000 hover:translate-y-[calc(100%+0.75rem)] hover:bg-neutral-100 peer-hover:translate-y-[calc(100%+0.75rem)] peer-hover:delay-0"
           onClick={() => {
             onDeleteDialogChange(true)
           }}
@@ -168,9 +152,9 @@ const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
       <EditorSaveDialog
         handleSave={handleSave}
         isSaveDialogOpen={isSaveDialogOpen}
-        isSaving={isSaving}
-        onOpenChange={onSaveDialogChange}
+        onOpenChange={setIsSaveDialogOpen}
         post={post}
+        setIsSaveDialogOpen={onSaveDialogChange}
       />
       <EditorDeleteDialog
         handleDelete={handleDelete}

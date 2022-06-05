@@ -1,4 +1,5 @@
 import ActiveLink from './ActiveLink'
+import ScrollBar from './Scrollbar'
 import { useUser } from '@auth0/nextjs-auth0'
 import * as Avatar from '@radix-ui/react-avatar'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
@@ -12,6 +13,7 @@ import {
   Home,
   Menu,
   Settings,
+  Twitter,
   User,
   X,
 } from 'react-feather'
@@ -32,17 +34,17 @@ const Sidebar = (props: SidebarProps) => {
   return (
     <div
       className={
-        '3xl:w-80 absolute z-40 flex h-full max-h-screen min-h-screen w-3/4 flex-none transform flex-col overflow-hidden overflow-y-auto border-r border-neutral-100 bg-white transition duration-200 ease-in-out sm:w-1/2 md:w-1/3 lg:relative lg:z-auto lg:w-56 lg:translate-x-0 2xl:w-72 ' +
+        '3xl:w-80 absolute z-40 flex h-full max-h-screen min-h-screen w-3/4 flex-none transform flex-col overflow-hidden overflow-y-auto bg-neutral-50 transition duration-200 ease-in-out sm:w-1/2 md:w-1/3 lg:relative lg:z-auto lg:w-56 lg:translate-x-0 2xl:w-72 ' +
         (isHidden ? '-translate-x-full' : 'translate-x-0')
       }
     >
-      <div className="flex-0 sticky top-0 z-10 flex w-full items-center justify-start bg-white px-3 pt-3 lg:hidden">
+      <div className="flex-0 sticky top-0 z-10 flex w-full items-center justify-start bg-neutral-50 px-3 pt-3 lg:hidden">
         <button
           className="block rounded-md p-2 text-black hover:bg-neutral-100 lg:hidden"
           onClick={() => setIsHidden(!isHidden)}
           type="button"
         >
-          <X size={16} />
+          <X size={18} />
         </button>
       </div>
       <ScrollArea.Root className="w-full flex-grow">
@@ -99,7 +101,7 @@ const Sidebar = (props: SidebarProps) => {
             >
               <span className="">Posts</span>
             </ActiveLink>
-            <span className="z-10">Social</span>
+            <span className="z-10 text-sm text-neutral-500">Social</span>
             <a
               className="justify-left group z-10 flex flex-1 cursor-pointer items-center rounded-md px-2 py-1.5 transition duration-200"
               href="https://www.github.com/eiiot"
@@ -107,7 +109,7 @@ const Sidebar = (props: SidebarProps) => {
                 setIsHidden(true)
               }}
               onMouseEnter={() => {
-                setBgHighlightTranslate(119)
+                setBgHighlightTranslate(116)
               }}
               rel="noreferrer"
               target="_blank"
@@ -119,13 +121,30 @@ const Sidebar = (props: SidebarProps) => {
                 size={18}
               />
             </a>
+            <a
+              className="justify-left group z-10 flex flex-1 cursor-pointer items-center rounded-md px-2 py-1.5 transition duration-200"
+              href="https://www.twitter.com/eiioth"
+              onClick={() => {
+                setIsHidden(true)
+              }}
+              onMouseEnter={() => {
+                setBgHighlightTranslate(159)
+              }}
+              rel="noreferrer"
+              target="_blank"
+            >
+              <Twitter className="mr-3 inline-block" />
+              <span className="">Twitter</span>{' '}
+              <ArrowUpRight
+                className="transition-transform duration-100 ease-in-out group-hover:translate-x-[2px] group-hover:-translate-y-[2px]"
+                size={18}
+              />
+            </a>
           </div>
         </ScrollArea.Viewport>
-        <ScrollArea.Scrollbar className="flex w-1 touch-none select-none">
-          <ScrollArea.Thumb className="relative flex-1 rounded-lg bg-[#7b7b7b] opacity-70 before:absolute before:top-1/2 before:left-1/2 before:h-full before:w-full before:-translate-x-1/2 before:-translate-y-1/2" />
-        </ScrollArea.Scrollbar>
+        <ScrollBar />
       </ScrollArea.Root>
-      <div className="flex-0 sticky bottom-0 z-10 w-full bg-white px-3 py-2">
+      <div className="flex-0 sticky bottom-0 z-10 w-full bg-neutral-50 px-3 py-2">
         {!user && (
           // eslint-disable-next-line @next/next/no-html-link-for-pages
           <a className="justify-self-end" href="/api/auth/login">

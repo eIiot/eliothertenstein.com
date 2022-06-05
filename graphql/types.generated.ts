@@ -77,6 +77,7 @@ export type MutationUpsertPostArgs = {
   excerpt?: InputMaybe<Scalars['String']>
   featureImage?: InputMaybe<Scalars['String']>
   id?: InputMaybe<Scalars['ID']>
+  publishedAt?: InputMaybe<Scalars['DateTime']>
   slug: Scalars['String']
   title?: InputMaybe<Scalars['String']>
 }
@@ -293,6 +294,7 @@ export type UpsertPostMutationVariables = Exact<{
   slug: Scalars['String']
   excerpt?: InputMaybe<Scalars['String']>
   featureImage?: InputMaybe<Scalars['String']>
+  publishedAt?: InputMaybe<Scalars['DateTime']>
 }>
 
 export type UpsertPostMutation = {
@@ -671,6 +673,7 @@ export const UpsertPostDocument = gql`
     $slug: String!
     $excerpt: String
     $featureImage: String
+    $publishedAt: DateTime
   ) {
     upsertPost(
       title: $title
@@ -678,6 +681,7 @@ export const UpsertPostDocument = gql`
       slug: $slug
       excerpt: $excerpt
       featureImage: $featureImage
+      publishedAt: $publishedAt
     ) {
       ...PostCore
     }
@@ -707,6 +711,7 @@ export type UpsertPostMutationFn = Apollo.MutationFunction<
  *      slug: // value for 'slug'
  *      excerpt: // value for 'excerpt'
  *      featureImage: // value for 'featureImage'
+ *      publishedAt: // value for 'publishedAt'
  *   },
  * });
  */
