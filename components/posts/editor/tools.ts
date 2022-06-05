@@ -1,36 +1,28 @@
 // ? Editor JS Does not provide typings for their tools :/
 
-// @ts-ignore
+// @ts-expect-error
 import editorjsCodeflask from '@calumk/editorjs-codeflask'
-// @ts-ignore
+// @ts-expect-error
 import CheckList from '@editorjs/checklist'
-// @ts-ignore
-// @ts-ignore
+// @ts-expect-error
 import Delimiter from '@editorjs/delimiter'
-// @ts-ignore
+// @ts-expect-error
 import Embed from '@editorjs/embed'
-// @ts-ignore
 import Header from '@editorjs/header'
-// @ts-ignore
+// @ts-expect-error
 import Image from '@editorjs/image'
-// @ts-ignore
+// @ts-expect-error
 import InlineCode from '@editorjs/inline-code'
-// @ts-ignore
-import Link from '@editorjs/link'
-// @ts-ignore
+// @ts-expect-error
 import List from '@editorjs/list'
-// @ts-ignore
+// @ts-expect-error
 import Marker from '@editorjs/marker'
-// @ts-ignore
+// @ts-expect-error
 import Quote from '@editorjs/quote'
-// @ts-ignore
-import Raw from '@editorjs/raw'
-// @ts-ignore
+// @ts-expect-error
 import SimpleImage from '@editorjs/simple-image'
-// @ts-ignore
+// @ts-expect-error
 import Table from '@editorjs/table'
-// @ts-ignore
-import Hyperlink from 'editorjs-hyperlink'
 
 async function getSignedUrl() {
   const data = await fetch('/api/images/sign').then((res) => res.json())
@@ -76,23 +68,7 @@ export const EDITOR_JS_TOOLS = {
   table: Table,
   list: List,
   code: editorjsCodeflask,
-  link: {
-    class: Link,
-    config: {
-      endpoint: '/api/editorJS/fetchUrl', // Your backend endpoint for url data fetching
-    },
-  },
-  hyperlink: {
-    class: Hyperlink,
-    config: {
-      shortcut: 'CMD+K',
-      target: '_blank',
-      rel: 'nofollow',
-      availableTargets: ['_blank', '_self'],
-      availableRels: ['author', 'noreferrer'],
-      validate: false,
-    },
-  },
+
   image: {
     class: Image,
     config: {
@@ -148,7 +124,7 @@ export const EDITOR_JS_TOOLS = {
       },
     },
   },
-  raw: Raw,
+  // raw: Raw,
   header: Header,
   quote: Quote,
   marker: Marker,

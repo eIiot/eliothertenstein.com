@@ -42,7 +42,7 @@ const ListView = (props: ListViewProps) => {
     : null
 
   return (
-    <div className="bg-grid-pattern flex h-full flex-row">
+    <div className="bg-pattern-grid flex h-full flex-row">
       <div
         className={
           'z-20 h-full max-h-screen w-full flex-none flex-col overflow-y-auto border-r border-neutral-100 bg-white lg:relative lg:z-auto lg:flex lg:w-80 ' +

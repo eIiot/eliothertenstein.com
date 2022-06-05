@@ -9,16 +9,16 @@ const ChecklistRenderer: RenderFn<{
 }> = ({ data, className = '' }) => {
   return (
     <>
-      {data?.items.map((item, i) => (
-        // disable no-index-key because I don't have another option
-        // eslint-disable-next-line react/no-array-index-key
-        <p className={className} key={i}>
-          <label>
+      <p className={className}>
+        {data?.items.map((item, i) => (
+          // disable no-index-key because I don't have another option
+          // eslint-disable-next-line react/no-array-index-key
+          <label className="block" key={i}>
             <input checked={item.checked} readOnly type="checkbox" />{' '}
             {parse(item.text)}
           </label>
-        </p>
-      ))}
+        ))}
+      </p>
     </>
   )
 }

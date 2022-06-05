@@ -4,7 +4,7 @@ import postStyles from './PostStyles'
 import PostTitleBar from './PostTitleBar'
 import ChecklistRenderer from './renderers/ChecklistRenderer'
 import CodeBlockRenderer from './renderers/CodeBlockRenderer'
-import LinkRenderer from './renderers/LinkRenderer'
+import HeaderRenderer from './renderers/HeaderRenderer'
 import {
   Post,
   useCreateCommentMutation,
@@ -53,7 +53,8 @@ const PostDetail = (props: PostDetailProps) => {
       const content = event.target.elements.content.value
       if (
         content.trim().length < 1 ||
-        content.match(/!\[.*\]\(.*\)/) !== null
+        content.match(/!\[.*\]\(.*\)/) !== null ||
+        content.length > 1000
       ) {
         console.log('Error creating comment: Invalid comment content')
         setIsSending(false)
@@ -64,7 +65,7 @@ const PostDetail = (props: PostDetailProps) => {
       createComment({
         variables: {
           content,
-          postId: data.post.id,
+          postId: post.id,
         },
       })
         .then(async (comment) => {
@@ -83,8 +84,27 @@ const PostDetail = (props: PostDetailProps) => {
           toast.error(err.message)
         })
     },
-    [createComment]
+    [createComment, post]
   )
+
+  const wordCount = (content: string) => {
+    const contentObject = JSON.parse(content) as EditorJSOutput
+    const paragraphs = contentObject.blocks.filter(
+      (block) => block.type === 'paragraph'
+    )
+    const words = paragraphs.reduce(
+      (acc, paragraph) => acc + paragraph.data.text.split(' ').length,
+      0
+    )
+    console.log(words)
+    return words
+  }
+
+  const readingTime = (words: number) => {
+    const wpm = 225
+    const time = Math.ceil(words / wpm)
+    return time
+  }
 
   return (
     <ScrollArea.Root className="h-full w-full">
@@ -116,17 +136,19 @@ const PostDetail = (props: PostDetailProps) => {
           <h1 className="text-3xl font-bold" ref={titleInViewRef}>
             {post.title}
           </h1>
-          <h2 className="text-lg text-neutral-600">
-            {moment(post.createdAt).format('MMMM Do YYYY')}
-          </h2>
+          <p className="text-[15px] font-light text-neutral-500">
+            {moment(post.createdAt).format('MMMM Do, YYYY')} /{' '}
+            {wordCount(post.content)} words /{' '}
+            {readingTime(wordCount(post.content))} min read
+          </p>
           <div className="post-text">
             <Blocks
               config={postStyles}
               data={JSON.parse(post.content)}
               renderers={{
                 checklist: ChecklistRenderer,
-                link: LinkRenderer,
                 code: CodeBlockRenderer,
+                header: HeaderRenderer,
               }}
             />
           </div>

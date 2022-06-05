@@ -31,7 +31,7 @@ const PostTitleBar = (props: PostTitleBarProps) => {
 
   const shadow = useTransform(
     useTransform(scrollY, [0, 100], [0, 5]),
-    (p) => `0px 0px ${p}px rgba(0, 0, 0, 0.1)`
+    (p) => `0px ${p}px 3px -3px rgba(0, 0, 0, 0.1)`
   )
 
   const transform = useTransform(
@@ -43,7 +43,7 @@ const PostTitleBar = (props: PostTitleBarProps) => {
 
   return (
     <motion.div
-      className="saturate absolute top-0 z-20 flex w-full items-center justify-start bg-white/80 p-3"
+      className="absolute top-0 z-20 flex w-full items-center justify-start bg-white/80 p-3 backdrop-blur-lg backdrop-saturate-200"
       style={{
         boxShadow: shadow,
       }}
@@ -63,7 +63,12 @@ const PostTitleBar = (props: PostTitleBarProps) => {
         {title}
       </motion.div>
       {viewerData && viewerData.viewer && viewerData.viewer.isAdmin && (
-        <Link href={Router.asPath + '/edit'} passHref>
+        <Link
+          href={
+            Router.asPath.replace(/#.*$/, '').replace(/\?.*$/, '') + '/edit'
+          }
+          passHref
+        >
           <a className="ml-auto rounded-md p-2 hover:bg-neutral-100 lg:hidden">
             <Edit height={16} width={16} />
           </a>

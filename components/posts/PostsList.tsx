@@ -75,7 +75,12 @@ const PostsList = (props: PostsListProps) => {
           viewerData.viewer.isAdmin &&
           viewerData.viewer.isAdmin &&
           !Router.asPath.includes('edit') && (
-            <Link href={Router.asPath + '/edit'} passHref>
+            <Link
+              href={
+                Router.asPath.replace(/#.*$/, '').replace(/\?.*$/, '') + '/edit'
+              }
+              passHref
+            >
               <a
                 className="mx-3 ml-auto block rounded-md p-2 hover:bg-neutral-100"
                 // href="edit/"

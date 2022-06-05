@@ -1,5 +1,6 @@
 import ActiveLink from './ActiveLink'
 import ScrollBar from './Scrollbar'
+import { useGetViewerQuery } from '../graphql/types.generated'
 import { useUser } from '@auth0/nextjs-auth0'
 import * as Avatar from '@radix-ui/react-avatar'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
@@ -30,6 +31,10 @@ const Sidebar = (props: SidebarProps) => {
   const [displayBgHighlight, setDisplayBgHighlight] = useState(false)
   const [bgHighlightAnimationDuration, setBgHighlightAnimationDuration] =
     useState(0)
+  const [bgHighlightBackgroundColor, setBgHighlightBackgroundColor] =
+    useState('rgb(245 245 245)')
+
+  const { data: viewerData, loading: viewerLoading } = useGetViewerQuery()
 
   return (
     <div
@@ -54,6 +59,7 @@ const Sidebar = (props: SidebarProps) => {
             onMouseEnter={() => {
               setDisplayBgHighlight(true)
               setBgHighlightAnimationDuration(150)
+              setBgHighlightBackgroundColor('rgb(245 245 245)')
             }}
             onMouseLeave={() => {
               setDisplayBgHighlight(false)
@@ -66,7 +72,10 @@ const Sidebar = (props: SidebarProps) => {
               style={{
                 transform: `translateY(${bgHighlightTranslate}px)`,
                 display: displayBgHighlight ? 'block' : 'none',
-                transition: `transform ${bgHighlightAnimationDuration}ms ease-in-out`,
+                transition: `transform ${bgHighlightAnimationDuration}ms ease-in-out, background-color ${
+                  bgHighlightAnimationDuration * 2
+                }ms ease-in-out`,
+                backgroundColor: bgHighlightBackgroundColor,
               }}
             />
             <ActiveLink
@@ -97,6 +106,7 @@ const Sidebar = (props: SidebarProps) => {
               }}
               onMouseEnter={() => {
                 setBgHighlightTranslate(44)
+                setBgHighlightBackgroundColor('rgb(245 245 245)')
               }}
             >
               <span className="">Posts</span>
@@ -110,6 +120,7 @@ const Sidebar = (props: SidebarProps) => {
               }}
               onMouseEnter={() => {
                 setBgHighlightTranslate(116)
+                setBgHighlightBackgroundColor('rgb(245 245 245)')
               }}
               rel="noreferrer"
               target="_blank"
@@ -129,6 +140,7 @@ const Sidebar = (props: SidebarProps) => {
               }}
               onMouseEnter={() => {
                 setBgHighlightTranslate(159)
+                setBgHighlightBackgroundColor('rgba(097,159,230,.1)')
               }}
               rel="noreferrer"
               target="_blank"
@@ -145,52 +157,58 @@ const Sidebar = (props: SidebarProps) => {
         <ScrollBar />
       </ScrollArea.Root>
       <div className="flex-0 sticky bottom-0 z-10 w-full bg-neutral-50 px-3 py-2">
-        {!user && (
-          // eslint-disable-next-line @next/next/no-html-link-for-pages
-          <a className="justify-self-end" href="/api/auth/login">
-            <div className="justify-left flex flex-1 cursor-pointer items-center rounded-md  px-2 py-1.5 transition duration-200 hover:bg-neutral-100">
-              <User className="mr-3 inline-block" />
-              <span className="">Login</span>
-            </div>
-          </a>
-        )}
-        {user && (
-          <div className="grid grid-cols-5">
-            <div className="col-span-1 flex h-full w-full items-center justify-center">
-              <Link className="" href="/profile/me">
-                <Avatar.Root className="h-8 w-8 cursor-pointer rounded-full bg-neutral-100">
-                  <Avatar.Image
-                    alt="Profile"
-                    className="rounded-full"
-                    src={user.picture ?? undefined}
-                  />
-                  <Avatar.Fallback className="color-red-500 content-center items-center">
-                    EH
-                  </Avatar.Fallback>
-                </Avatar.Root>
-              </Link>
-            </div>
-            <div className="col-span-3 flex h-full w-full items-center justify-center">
-              <span className="text-normal inline-block w-full pl-2 text-left font-normal">
-                {user.name}
-              </span>
-            </div>
-            <div className="col-span-1 h-full w-full">
-              <span className="flex h-full w-full items-center justify-center">
-                <Link href="/me/settings" passHref>
-                  <a
-                    className="cursor-pointer rounded-md hover:bg-neutral-100"
-                    onClick={() => {
-                      setIsHidden(true)
-                    }}
-                  >
-                    <Settings className="m-2 inline-block" size={18} />{' '}
-                  </a>
+        {!viewerLoading ? (
+          viewerData?.viewer ? (
+            <div className="grid grid-cols-5">
+              <div className="col-span-1 flex h-full w-full items-center justify-center">
+                <Link className="" href="/profile/me">
+                  <Avatar.Root className="h-8 w-8 cursor-pointer rounded-full bg-neutral-100">
+                    <Avatar.Image
+                      alt="Profile"
+                      className="rounded-full"
+                      src={viewerData.viewer.avatar ?? undefined}
+                    />
+                    <Avatar.Fallback className="color-red-500 content-center items-center">
+                      {viewerData.viewer.name
+                        ? viewerData.viewer.name
+                            .split(' ')
+                            .map((name) => name[0])
+                            .join('')
+                        : '?'}
+                    </Avatar.Fallback>
+                  </Avatar.Root>
                 </Link>
-              </span>
+              </div>
+              <div className="col-span-3 flex h-full w-full items-center justify-center">
+                <span className="text-normal inline-block w-full overflow-hidden text-ellipsis whitespace-nowrap pl-2 text-left font-normal">
+                  {viewerData.viewer.name.split(' ')[0]}
+                </span>
+              </div>
+              <div className="col-span-1 h-full w-full">
+                <span className="flex h-full w-full items-center justify-center overflow-hidden">
+                  <Link href="/me/settings" passHref>
+                    <a
+                      className="cursor-pointer rounded-md hover:bg-neutral-100"
+                      onClick={() => {
+                        setIsHidden(true)
+                      }}
+                    >
+                      <Settings className="m-2 inline-block" size={18} />{' '}
+                    </a>
+                  </Link>
+                </span>
+              </div>
             </div>
-          </div>
-        )}
+          ) : (
+            // eslint-disable-next-line @next/next/no-html-link-for-pages
+            <a className="justify-self-end" href="/api/auth/login">
+              <div className="justify-left flex flex-1 cursor-pointer items-center rounded-md  px-2 py-1.5 transition duration-200 hover:bg-neutral-100">
+                <User className="mr-3 inline-block" />
+                <span className="">Login</span>
+              </div>
+            </a>
+          )
+        ) : null}
       </div>
     </div>
   )

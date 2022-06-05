@@ -60,13 +60,13 @@ const SettingsPage = withPageAuthRequired((props: SettingsPageProps) => {
         />
         <h1 className="h-2xl font-bold">Account</h1>
         <Link href="/api/auth/logout" passHref>
-          <a className="animate-button-hover rounded-md border-[1px] border-neutral-300 px-3 py-2 shadow-sm ">
+          <a className="animate-hover-grow rounded-md border-[1px] border-neutral-300 px-3 py-2 shadow-sm ">
             Logout
           </a>
         </Link>
 
         <button
-          className="animate-button-hover rounded-md bg-red-700 px-3 py-2 text-white shadow-sm"
+          className="animate-hover-grow rounded-md bg-red-700 px-3 py-2 text-white shadow-sm"
           onClick={() => {
             setIsDeleteDialogOpen(true)
           }}
@@ -96,7 +96,7 @@ const SettingsPage = withPageAuthRequired((props: SettingsPageProps) => {
                   </span>
                   <span className="flex flex-row items-center justify-evenly space-x-3">
                     <AlertDialog.Action
-                      className="animate-button-hover rounded-md bg-red-700 px-3 py-2 text-white"
+                      className="animate-hover-grow rounded-md bg-red-700 px-3 py-2 text-white"
                       onClick={() => {
                         onDeleteHandler(viewer.id)
                       }}
@@ -105,7 +105,7 @@ const SettingsPage = withPageAuthRequired((props: SettingsPageProps) => {
                         Delete
                       </span>
                     </AlertDialog.Action>
-                    <AlertDialog.Cancel className="animate-button-hover rounded-md border-[1px] border-neutral-300 px-3 py-2 ">
+                    <AlertDialog.Cancel className="animate-hover-grow rounded-md border-[1px] border-neutral-300 px-3 py-2 ">
                       Cancel
                     </AlertDialog.Cancel>
                   </span>

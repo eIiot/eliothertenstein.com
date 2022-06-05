@@ -23,7 +23,7 @@ const postStyles = {
     },
   },
   list: {
-    className: 'list-decimal list-inside',
+    className: 'list-inside',
   },
   paragraph: {
     className: '',
