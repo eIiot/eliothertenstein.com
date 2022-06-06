@@ -1,4 +1,3 @@
-import ActiveLink from '../ActiveLink'
 import { ReactNode, useEffect, useState } from 'react'
 import { ArrowUpRight, Music } from 'react-feather'
 

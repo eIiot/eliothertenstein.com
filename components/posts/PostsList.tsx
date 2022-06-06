@@ -1,11 +1,9 @@
-import {
-  useGetPostsQuery,
-  User,
-  useGetViewerQuery,
-} from '../../graphql/types.generated'
-import ActiveLink from '../ActiveLink'
-import MenuBarGhost from '../effects/MenuBarGhost'
-import ScrollBar from '../Scrollbar'
+import { useGetPostsQuery } from '../../graphql/types.generated'
+import useShadowTransform from '../../hooks/animations/useShadowTransform'
+import MenuBarGhost from '../animations/MenuBarGhost'
+import ActiveLink from '../elements/ActiveLink'
+import ScrollBar from '../elements/Scrollbar'
+import { useViewer } from '../providers/ViewerProvider'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import { motion, useElementScroll, useTransform } from 'framer-motion'
 import moment from 'moment'
@@ -34,16 +32,13 @@ const PostsList = (props: PostsListProps) => {
 
   const Router = useRouter()
 
-  const shadow = useTransform(
-    useTransform(scrollY, [0, 100], [0, 5]),
-    (p) => `0px 0px ${p}px rgba(0, 0, 0, 0.1)`
-  )
+  const shadow = useShadowTransform(scrollY)
 
   const {
     data: viewerData,
     loading: viewerLoading,
     error: viewerError,
-  } = useGetViewerQuery()
+  } = useViewer()
 
   if (postsError) {
     console.error(postsError)

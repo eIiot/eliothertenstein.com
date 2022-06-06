@@ -1,4 +1,4 @@
-import { User } from '../../graphql/types.generated'
+import { User } from '../../../graphql/types.generated'
 import { cloneElement, ReactElement } from 'react'
 
 interface ListViewProps {
@@ -45,7 +45,7 @@ const ListView = (props: ListViewProps) => {
     <div className="bg-pattern-grid flex h-full flex-row">
       <div
         className={
-          'z-20 h-full max-h-screen w-full flex-none flex-col overflow-y-auto border-r border-neutral-100 bg-white lg:relative lg:z-auto lg:flex lg:w-80 ' +
+          'z-20 h-full max-h-screen w-full flex-none flex-col overflow-y-auto border-r border-neutral-100 bg-white lg:relative lg:flex lg:w-80 ' +
           (showDetail ? ' hidden' : 'relative')
         }
       >

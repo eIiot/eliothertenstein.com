@@ -1,3 +1,4 @@
+import ViewerProvider from './ViewerProvider'
 import client from '../../lib/apollo'
 import { ApolloProvider, useApolloClient } from '@apollo/client'
 import { UserProvider } from '@auth0/nextjs-auth0'
@@ -10,7 +11,9 @@ const Providers = ({ children }: { children: ReactNode }) => {
     <>
       <Toaster position="top-left" reverseOrder={false} />
       <ApolloProvider client={apolloClient}>
-        <UserProvider>{children}</UserProvider>
+        <UserProvider>
+          <ViewerProvider>{children}</ViewerProvider>
+        </UserProvider>
       </ApolloProvider>
     </>
   )

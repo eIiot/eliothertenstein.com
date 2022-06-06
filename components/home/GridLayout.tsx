@@ -1,13 +1,11 @@
-// * Heavily inspired by Brian Lovin's Personal Site, https://brianlovin.com/
-
 import React, { ReactElement, ReactNode } from 'react'
 
-interface CustomGridLayoutProps {
+interface GridLayoutProps {
   title: string
   children: ReactNode
 }
 
-const CustomGridLayout = (props: CustomGridLayoutProps) => {
+const GridLayout = (props: GridLayoutProps) => {
   const { title, children } = props
   return (
     <div className="grid grid-cols-1 pb-12 md:grid-cols-12">
@@ -19,4 +17,4 @@ const CustomGridLayout = (props: CustomGridLayoutProps) => {
   )
 }
 
-export default CustomGridLayout
+export default GridLayout

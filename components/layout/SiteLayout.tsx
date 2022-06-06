@@ -1,6 +1,6 @@
-import CommandBar from '../CommandBar'
+import Sidebar from './Sidebar'
+import CommandBar from '../elements/CommandBar'
 import { withProviders } from '../providers/withProviders'
-import Sidebar from '../Sidebar'
 import React, { useState, cloneElement, ReactElement, Children } from 'react'
 
 interface LayoutProps {

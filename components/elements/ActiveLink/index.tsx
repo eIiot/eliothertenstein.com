@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { ReactElement } from 'react'
+import { ReactElement, ReactNode } from 'react'
 
 interface ActiveLinkProps {
-  children: ReactElement
+  children: ReactNode
   href: string
   className?: string
   activeClassName?: string

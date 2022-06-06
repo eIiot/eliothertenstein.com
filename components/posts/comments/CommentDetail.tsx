@@ -7,7 +7,7 @@ import {
   useUpdateCommentMutation,
 } from '../../../graphql/types.generated'
 import client from '../../../lib/apollo'
-import Avatar from '../../users/Avatar'
+import Avatar from '../../user/Avatar'
 import { useCallback, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import ReactMarkdown from 'react-markdown'

@@ -1,10 +1,9 @@
-import OpenSidebarButton from '../components/buttons/OpenSidebarButton'
+import ScrollBar from '../components/elements/Scrollbar'
 import ChangeLogButton from '../components/home/ChangeLogButton'
-import CustomGridLayout from '../components/home/CustomGridLayout'
-import CustomImage from '../components/home/CustomImage'
+import GridLayout from '../components/home/GridLayout'
 import MyMap from '../components/home/MyMap'
-import { getLayout } from '../components/layouts/SiteLayout'
-import ScrollBar from '../components/Scrollbar'
+import OpenSidebarButton from '../components/layout/Sidebar/OpenSidebarButton'
+import { getLayout } from '../components/layout/SiteLayout'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
@@ -37,7 +36,7 @@ const Home = (props: HomeProps) => {
             />
             <p className="py-12" />
 
-            <CustomGridLayout title="">
+            <GridLayout title="">
               <p className="pb-3">Hi! 👋</p>
               <p className="pb-3">
                 My name is Eliot, I&apos;m a student and developer based in
@@ -62,8 +61,8 @@ const Home = (props: HomeProps) => {
               <div className="h-max py-3">
                 <ChangeLogButton />
               </div>
-            </CustomGridLayout>
-            <CustomGridLayout title="Social">
+            </GridLayout>
+            <GridLayout title="Social">
               <div className="flex flex-col space-y-3">
                 <div className="flex justify-between">
                   <span>Twitter</span>
@@ -88,8 +87,8 @@ const Home = (props: HomeProps) => {
                   </a>
                 </div>
               </div>
-            </CustomGridLayout>
-            <CustomGridLayout title="Location">
+            </GridLayout>
+            <GridLayout title="Location">
               <div className="relative h-[400px] w-full">
                 <MyMap zoom={mapZoom} />
                 <div className="absolute left-[50%] top-[50%] flex h-8 w-8">
@@ -115,7 +114,7 @@ const Home = (props: HomeProps) => {
                   </button>
                 )}
               </div>
-            </CustomGridLayout>
+            </GridLayout>
           </div>
         </ScrollArea.Viewport>
         <ScrollBar />

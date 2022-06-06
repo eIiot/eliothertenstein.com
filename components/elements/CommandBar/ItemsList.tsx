@@ -17,9 +17,7 @@ const ItemsList = (props: ItemsListProps) => {
           <Item
             {...item}
             key={title}
-            onMouseMove={(
-              e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-            ) => {
+            onMouseMove={() => {
               setHighlightedItemIndex(index)
             }}
           />
