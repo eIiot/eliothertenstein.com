@@ -4,22 +4,16 @@ import GridLayout from '../components/home/GridLayout'
 import MyMap from '../components/home/MyMap'
 import OpenSidebarButton from '../components/layout/Sidebar/OpenSidebarButton'
 import { getLayout } from '../components/layout/SiteLayout'
+import { useSidebarControl } from '../components/providers/SidebarControlProvider'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
-import { ReactNode, useState } from 'react'
+import { Dispatch, ReactNode, SetStateAction, useState } from 'react'
 import { Menu, Minus, Plus } from 'react-feather'
 // import Head from 'next/head'
 // import Image from 'next/image'
 
-interface HomeProps {
-  isSidebarHidden: boolean
-  setIsSidebarHidden: (isSidebarHidden: boolean) => void
-}
-
-const Home = (props: HomeProps) => {
-  const { isSidebarHidden, setIsSidebarHidden } = props
-
+const Home = () => {
   const [mapZoom, setMapZoom] = useState(10)
   return (
     <>
@@ -30,10 +24,7 @@ const Home = (props: HomeProps) => {
       <ScrollArea.Root className="h-full w-full">
         <ScrollArea.Viewport className="h-full w-full">
           <div className="mx-auto w-full max-w-3xl px-4 py-12 pb-10 md:px-8">
-            <OpenSidebarButton
-              isSidebarHidden={isSidebarHidden}
-              setIsSidebarHidden={setIsSidebarHidden}
-            />
+            <OpenSidebarButton className="absolute" />
             <p className="py-12" />
 
             <GridLayout title="">

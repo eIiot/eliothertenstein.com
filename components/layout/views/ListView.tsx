@@ -1,45 +1,15 @@
 import { User } from '../../../graphql/types.generated'
-import { cloneElement, ReactElement } from 'react'
+import { cloneElement, Dispatch, ReactElement, SetStateAction } from 'react'
 
 interface ListViewProps {
   list: ReactElement
   detail?: ReactElement
   children?: ReactElement
   showDetail: boolean
-  isSidebarHidden?: boolean
-  setIsSidebarHidden?: (isSidebarHidden: boolean) => void
 }
 
 const ListView = (props: ListViewProps) => {
-  const {
-    list,
-    detail,
-    showDetail,
-    isSidebarHidden,
-    setIsSidebarHidden,
-    children,
-  } = props
-
-  // add the isSidebarHidden and setIsSidebarHidden prop to the list component
-
-  const listWithProps = cloneElement(list, {
-    isSidebarHidden,
-    setIsSidebarHidden,
-  })
-
-  const detailWithProps = detail
-    ? cloneElement(detail, {
-        isSidebarHidden,
-        setIsSidebarHidden,
-      })
-    : null
-
-  const childrenWithProps = children
-    ? cloneElement(children, {
-        isSidebarHidden,
-        setIsSidebarHidden,
-      })
-    : null
+  const { list, detail, showDetail, children } = props
 
   return (
     <div className="bg-pattern-grid flex h-full flex-row">
@@ -49,7 +19,7 @@ const ListView = (props: ListViewProps) => {
           (showDetail ? ' hidden' : 'relative')
         }
       >
-        {listWithProps}
+        {list}
       </div>
       <article
         className={
@@ -57,9 +27,9 @@ const ListView = (props: ListViewProps) => {
           (showDetail ? ' relative' : ' hidden')
         }
       >
-        {detailWithProps}
+        {detail}
       </article>
-      {childrenWithProps}
+      {children}
     </div>
   )
 }
@@ -67,8 +37,6 @@ const ListView = (props: ListViewProps) => {
 ListView.defaultProps = {
   children: null,
   detail: null,
-  isSidebarHidden: false,
-  setIsSidebarHidden: () => {},
 }
 
 export default ListView

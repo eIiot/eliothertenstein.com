@@ -22,12 +22,14 @@ const Item = (props: ItemProps) => {
     setIsHidden,
     updateBgHighlight,
     icon,
-    activeIcon = icon,
+    activeIcon: oldActiveIcon,
     translate,
     bgColor,
     children,
     href,
   } = props
+
+  const activeIcon = oldActiveIcon || icon
 
   // check if the link is external or not
 

@@ -1,3 +1,4 @@
+import SidebarControlProvider from './SidebarControlProvider'
 import ViewerProvider from './ViewerProvider'
 import client from '../../lib/apollo'
 import { ApolloProvider, useApolloClient } from '@apollo/client'
@@ -12,7 +13,9 @@ const Providers = ({ children }: { children: ReactNode }) => {
       <Toaster position="top-left" reverseOrder={false} />
       <ApolloProvider client={apolloClient}>
         <UserProvider>
-          <ViewerProvider>{children}</ViewerProvider>
+          <ViewerProvider>
+            <SidebarControlProvider>{children}</SidebarControlProvider>
+          </ViewerProvider>
         </UserProvider>
       </ApolloProvider>
     </>

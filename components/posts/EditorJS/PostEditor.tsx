@@ -1,10 +1,9 @@
 import { useGetPostQuery } from '../../../graphql/types.generated'
-import OpenSidebarButton from '../..OpenSidebarButton'
+import OpenSidebarButton from '../../layout/Sidebar/OpenSidebarButton'
+import { useSidebarControl } from '../../providers/SidebarControlProvider'
 import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { Edit, Menu } from 'react-feather'
+import { Dispatch, SetStateAction } from 'react'
 
 const EditorJSPostEditor = dynamic(() => import('./EditorJSPostEditor'), {
   ssr: false,
@@ -14,12 +13,10 @@ const EditorJSPostEditor = dynamic(() => import('./EditorJSPostEditor'), {
 
 interface PostEditorProps {
   slug: string
-  isSidebarHidden: boolean
-  setIsSidebarHidden: (isSidebarHidden: boolean) => void
 }
 
 const PostEditor = (props: PostEditorProps) => {
-  const { slug, isSidebarHidden, setIsSidebarHidden } = props
+  const { slug } = props
 
   const { data, loading, error } = useGetPostQuery({
     variables: {
@@ -40,23 +37,14 @@ const PostEditor = (props: PostEditorProps) => {
         }
       />
       <div className="h-full w-full overflow-y-scroll bg-white">
-        <OpenSidebarButton
-          isSidebarHidden={isSidebarHidden}
-          setIsSidebarHidden={setIsSidebarHidden}
-        />
+        <OpenSidebarButton />
         {!loading ? (
-          data && data.post && data.post.content ? (
-            <div className="space-y-3 px-24 py-8">
-              <EditorJSPostEditor
-                content={data.post.content}
-                post={data.post}
-              />
-            </div>
-          ) : (
-            <div className="space-y-3 px-24 py-8">
-              <EditorJSPostEditor post={data?.post} />
-            </div>
-          )
+          <div className="space-y-3 px-2 py-8 sm:px-24">
+            <EditorJSPostEditor
+              content={data?.post?.content ?? undefined}
+              post={data?.post}
+            />
+          </div>
         ) : (
           <div className="h-full w-full animate-shimmer rounded-lg bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 bg-[length:400%_100%]" />
         )}

@@ -1,5 +1,6 @@
 import Sidebar from './Sidebar'
 import CommandBar from '../elements/CommandBar'
+import { useSidebarControl } from '../providers/SidebarControlProvider'
 import { withProviders } from '../providers/withProviders'
 import React, { useState, cloneElement, ReactElement, Children } from 'react'
 
@@ -9,23 +10,14 @@ interface LayoutProps {
 
 const SiteLayout = (props: LayoutProps) => {
   const { children } = props
-  const [isSidebarHidden, setIsSidebarHidden] = useState(true)
 
-  // pass isSidebarHidden, setIsSidebarHidden to children
-  const childrenWithProps = Children.map(children, (child) => {
-    // add the props to the list element of the child
-
-    return cloneElement(child as ReactElement, {
-      isSidebarHidden,
-      setIsSidebarHidden,
-    })
-  })
+  const [isSidebarHidden, setIsSidebarHidden] = useSidebarControl()
 
   return (
     <>
       <CommandBar />
       <div className="absolute inset-0 flex flex-row bg-neutral-50">
-        <Sidebar isHidden={isSidebarHidden} setIsHidden={setIsSidebarHidden} />
+        <Sidebar />
         <div
           className="absolute z-30 h-screen w-full bg-neutral-100/50"
           onClick={() => setIsSidebarHidden(true)}
@@ -35,7 +27,7 @@ const SiteLayout = (props: LayoutProps) => {
           }}
         />
         <main className="relative m-2 flex h-[calc(100vh-16px)] w-full flex-col overflow-hidden rounded-lg bg-white shadow-sm md:opacity-100">
-          {childrenWithProps}
+          {children}
         </main>
       </div>
     </>

@@ -126,7 +126,7 @@ const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
   return (
     <>
       <span
-        className="peer fixed right-3 top-0 z-10 m-3 cursor-pointer rounded-lg bg-white p-3 text-black shadow-lg hover:bg-neutral-100"
+        className="peer fixed right-3 top-0 z-20 m-3 cursor-pointer rounded-lg bg-white p-3 text-black shadow-lg hover:bg-neutral-100"
         onClick={() => {
           onSaveDialogChange(true)
         }}
@@ -135,7 +135,7 @@ const EditorJSPostEditor = (props: EditorJSPostEditorProps) => {
       </span>
       {post && (
         <span
-          className="duration-400 fixed right-3 top-0 m-3 cursor-pointer rounded-lg bg-white p-3 text-black shadow-lg transition-transform delay-1000 hover:translate-y-[calc(100%+0.75rem)] hover:bg-neutral-100 peer-hover:translate-y-[calc(100%+0.75rem)] peer-hover:delay-0"
+          className="duration-400 fixed right-3 top-0 z-10 m-3 translate-y-[calc(100%+0.75rem)] cursor-pointer rounded-lg bg-white p-3 text-black shadow-lg transition-transform delay-1000 hover:bg-neutral-100 lg:translate-y-0 lg:hover:translate-y-[calc(100%+0.75rem)] lg:peer-hover:translate-y-[calc(100%+0.75rem)] lg:peer-hover:delay-0"
           onClick={() => {
             onDeleteDialogChange(true)
           }}

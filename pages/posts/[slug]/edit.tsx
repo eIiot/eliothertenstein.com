@@ -9,29 +9,14 @@ import { useRouter } from 'next/router'
 import { ReactElement } from 'react'
 import { toast } from 'react-hot-toast'
 
-interface EditorPageProps {
-  isSidebarHidden: boolean
-  setIsSidebarHidden: (isSidebarHidden: boolean) => void
-}
-
-const Editor = withPageAuthRequired((props: EditorPageProps) => {
-  const { isSidebarHidden, setIsSidebarHidden } = props
+const Editor = withPageAuthRequired(() => {
   const router = useRouter()
   const { slug } = router.query as { slug: string }
 
-  console.log(isSidebarHidden, setIsSidebarHidden)
-
-  return (
-    <PostEditor
-      isSidebarHidden={isSidebarHidden}
-      setIsSidebarHidden={setIsSidebarHidden}
-      slug={slug}
-    />
-  )
+  return <PostEditor slug={slug} />
 }) as AuthPage
 
 Editor.getLayout = (page: ReactElement) =>
-  // @ts-expect-error UNFIXED: PostList props are added within the ListView component
   getLayout(<ListView detail={page} list={<PostsList />} showDetail />)
 
 export const getServerSideProps = withPageAuthRequired({

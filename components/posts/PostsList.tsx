@@ -1,25 +1,24 @@
-import { useGetPostsQuery } from '../../graphql/types.generated'
+import { useGetPostsQuery, User } from '../../graphql/types.generated'
 import useShadowTransform from '../../hooks/animations/useShadowTransform'
 import MenuBarGhost from '../animations/MenuBarGhost'
 import ActiveLink from '../elements/ActiveLink'
 import ScrollBar from '../elements/Scrollbar'
+import OpenSidebarButton from '../layout/Sidebar/OpenSidebarButton'
+import { useSidebarControl } from '../providers/SidebarControlProvider'
 import { useViewer } from '../providers/ViewerProvider'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import { motion, useElementScroll, useTransform } from 'framer-motion'
 import moment from 'moment'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 import { BookOpen, Edit, Loader, Menu } from 'react-feather'
 import { toast } from 'react-hot-toast'
 
-interface PostsListProps {
-  isSidebarHidden: boolean
-  setIsSidebarHidden: (isSidebarHidden: boolean) => void
-}
+interface PostsListProps {}
 
 const PostsList = (props: PostsListProps) => {
-  const { isSidebarHidden, setIsSidebarHidden } = props
+  const [isSidebarHidden, setIsSidebarHidden] = useSidebarControl()
   const {
     data: postsData,
     loading: postsLoading,
@@ -57,13 +56,7 @@ const PostsList = (props: PostsListProps) => {
           boxShadow: shadow,
         }}
       >
-        <button
-          className="mx-3 block rounded-md p-2 hover:bg-neutral-100 lg:hidden"
-          onClick={() => setIsSidebarHidden(!isSidebarHidden)}
-          type="button"
-        >
-          <Menu size={18} />
-        </button>
+        <OpenSidebarButton setIsSidebarHidden={setIsSidebarHidden} />
         <span className="lg:pl-5">Posts</span>
         {viewerData &&
           viewerData.viewer &&

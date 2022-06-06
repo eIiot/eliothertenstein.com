@@ -18,9 +18,7 @@ const ViewerProvider = ({ children }: { children: ReactNode }) => {
 }
 
 export const useViewer = () => {
-  const viewer = useContext(ViewerContext)
-
-  return viewer
+  return useContext(ViewerContext)
 }
 
 export default ViewerProvider

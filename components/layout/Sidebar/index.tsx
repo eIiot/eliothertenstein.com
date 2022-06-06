@@ -1,13 +1,9 @@
 import BackgroundHighlight from './BackgroundHighlight'
 import Item from './Item'
 import Viewer from './Viewer'
-import ActiveLink from '../../elements/ActiveLink'
 import ScrollBar from '../../elements/Scrollbar'
-import { useViewer } from '../../providers/ViewerProvider'
-import { useUser } from '@auth0/nextjs-auth0'
-import * as Avatar from '@radix-ui/react-avatar'
+import { useSidebarControl } from '../../providers/SidebarControlProvider'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
-import Link from 'next/link'
 import { useState } from 'react'
 import {
   ArrowUpRight,
@@ -15,20 +11,12 @@ import {
   BookOpen,
   GitHub,
   Home,
-  Menu,
-  Settings,
   Twitter,
-  User,
   X,
 } from 'react-feather'
 
-interface SidebarProps {
-  isHidden: boolean
-  setIsHidden: (isHidden: boolean) => void
-}
-
-const Sidebar = (props: SidebarProps) => {
-  const { isHidden, setIsHidden } = props
+const Sidebar = () => {
+  const [isHidden, setIsHidden] = useSidebarControl()
 
   const [bgHighLight, setBgHighLight] = useState({
     translate: 0,
@@ -48,8 +36,6 @@ const Sidebar = (props: SidebarProps) => {
       ...changes,
     }))
   }
-
-  const { data: viewerData, loading: viewerLoading } = useViewer()
 
   return (
     <div
