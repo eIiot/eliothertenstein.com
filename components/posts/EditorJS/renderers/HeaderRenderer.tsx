@@ -3,6 +3,7 @@
 /* eslint-disable react/prop-types */
 
 import { RenderFn } from 'editorjs-blocks-react-renderer'
+import he from 'he'
 import { createElement } from 'react'
 
 const HeaderRenderer: RenderFn<{
@@ -25,10 +26,10 @@ const HeaderRenderer: RenderFn<{
     },
     anchor ? (
       <a href={`#${anchor}`} rel-type="header-link">
-        {text}
+        {he.decode(text)}
       </a>
     ) : (
-      text
+      he.decode(text)
     )
   )
 }
