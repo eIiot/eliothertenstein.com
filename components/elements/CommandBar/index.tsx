@@ -169,7 +169,7 @@ const CommandBar = () => {
 
       <HotKeys handlers={handlers} keyMap={keyMap}>
         <Dialog.Root onOpenChange={setIsOpen} open={isOpen}>
-          <Dialog.Overlay className="fixed inset-0 z-40 flex justify-center bg-neutral-400/30 pt-[20vh]">
+          <Dialog.Overlay className="fixed inset-0 z-50 flex justify-center bg-neutral-400/30 pt-[20vh]">
             <Dialog.Content
               className="absolute bottom-0 flex !h-[66vh] w-full flex-col overflow-auto rounded-lg bg-white p-2 ring-2 ring-neutral-300 transition-all duration-100 md:relative md:!h-min md:max-h-[50vh] md:w-2/5 md:min-w-[500px]"
               onOpenAutoFocus={() => {
