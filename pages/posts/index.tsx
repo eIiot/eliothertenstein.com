@@ -59,7 +59,6 @@ export const getServerSideProps: GetServerSideProps = getServerSidePropsWrapper(
 
 PostsPage.getLayout = (page: ReactElement) =>
   getLayout(
-    // @ts-expect-error UNFIXED: PostList props are added within the ListView component
     <ListView list={<PostsList />} showDetail={false}>
       {page}
     </ListView>

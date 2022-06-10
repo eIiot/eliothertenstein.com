@@ -56,7 +56,7 @@ const PostsList = (props: PostsListProps) => {
           boxShadow: shadow,
         }}
       >
-        <OpenSidebarButton setIsSidebarHidden={setIsSidebarHidden} />
+        <OpenSidebarButton />
         <span className="lg:pl-5">Posts</span>
         {viewerData &&
           viewerData.viewer &&
