@@ -5,7 +5,8 @@ import {
   Post,
   useGetPostQuery,
   useGetPostsQuery,
-} from '../../graphql/types.generated'
+} from '../../../graphql/types.generated'
+import useHighlightedItemIndex from '../../../hooks/commandBar/useHighlightedItemIndex'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -63,45 +64,17 @@ const CommandBar = () => {
 
   const [searchItems, setSearchItems] = useState(items)
 
-  const [bgHighlightTranslate, setBgHighlightTranslate] = useState(0)
-  const [bgHighlightHeight, setBgHighlightHeight] = useState(0)
-  const [displayBgHighlight, setDisplayBgHighlight] = useState(false)
-
   const [isOpen, setIsOpen] = useState(false)
 
   const itemsRef = useRef<HTMLDivElement>(null)
 
-  const [highlightedItemIndex, setHighlightedItemIndex] = useState<number>(-1)
-
-  useEffect(() => {
-    if (itemsRef.current?.children?.length) {
-      if (highlightedItemIndex < 0) {
-        setHighlightedItemIndex(itemsRef.current?.children?.length - 1)
-      }
-
-      if (highlightedItemIndex >= itemsRef.current?.children?.length) {
-        setHighlightedItemIndex(0)
-      }
-
-      const highlightedItem = itemsRef.current?.children[highlightedItemIndex]
-
-      setDisplayBgHighlight(true)
-      // get top of element relative to the parent
-      const elementTop = highlightedItem?.getBoundingClientRect().top ?? 0
-      // get top of parent
-      const parentTop =
-        highlightedItem?.parentElement?.parentElement?.getBoundingClientRect()
-          .top as number
-
-      setBgHighlightTranslate(elementTop - parentTop - 8)
-
-      // get height of element
-      const elementHeight = highlightedItem?.getBoundingClientRect().height
-      setBgHighlightHeight(elementHeight ?? 0)
-    } else {
-      setDisplayBgHighlight(false)
-    }
-  }, [highlightedItemIndex, searchItems])
+  const {
+    setHighlightedItemIndex,
+    setDisplayBgHighlight,
+    bgHighlightHeight,
+    bgHighlightTranslate,
+    displayBgHighlight,
+  } = useHighlightedItemIndex(itemsRef)
 
   const onSearch = useCallback(
     (searchTerm: string) => {
@@ -129,7 +102,7 @@ const CommandBar = () => {
         setDisplayBgHighlight(true)
       }
     },
-    [items, postItems]
+    [items, postItems, setDisplayBgHighlight, setHighlightedItemIndex]
   )
 
   useEffect(() => {
@@ -220,7 +193,10 @@ const CommandBar = () => {
                   transition: `transform 100ms ease-in-out`,
                 }}
               />
-              <div className="relative inset-0 flex flex-col" ref={itemsRef}>
+              <div
+                className="relative inset-0 flex flex-col overflow-x-hidden overflow-y-scroll"
+                ref={itemsRef}
+              >
                 {searchItems.map((item, index) => {
                   const { title, tags, icon, href } = item
                   return (

@@ -1,8 +1,8 @@
-import { getLayout } from '../../../components/layouts/SiteLayout'
+import { getLayout } from '../../../components/layout/SiteLayout'
+import ListView from '../../../components/layout/views/ListView'
 import CommentsList from '../../../components/posts/comments/CommentsList'
 import PostDetail from '../../../components/posts/PostDetail'
 import PostsList from '../../../components/posts/PostsList'
-import ListView from '../../../components/views/ListView'
 import { Post, User } from '../../../graphql/types.generated'
 import prisma from '../../../lib/prisma'
 import {
@@ -55,7 +55,6 @@ const PostPage = (props: PostPageProps) => {
 }
 
 PostPage.getLayout = (page: ReactElement) =>
-  // @ts-expect-error UNFIXED: PostList props are added within the ListView component
   getLayout(<ListView detail={page} list={<PostsList />} showDetail />)
 
 export const getServerSideProps: GetServerSideProps = getServerSidePropsWrapper(

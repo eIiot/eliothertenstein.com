@@ -23,7 +23,7 @@ const EditorSaveDialog = (props: EditorSaveDialogProps) => {
   return (
     <Dialog.Root onOpenChange={onSaveDialogChange} open={isSaveDialogOpen}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-10 flex items-center justify-center bg-transparent">
+        <Dialog.Overlay className="fixed inset-0 z-20 flex items-center justify-center bg-transparent">
           <Dialog.Content className="items-left relative flex max-w-sm flex-col rounded-lg bg-white p-8 shadow-xl">
             <Dialog.Title className="text-lg font-bold">Save Post</Dialog.Title>
             <Dialog.Description className="flex flex-col space-y-4 text-sm font-normal">

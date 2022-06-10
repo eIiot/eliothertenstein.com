@@ -1,5 +1,5 @@
-import OpenSidebarButton from '../../../components/buttons/OpenSidebarButton'
-import { getLayout } from '../../../components/layouts/SiteLayout'
+import OpenSidebarButton from '../../../components/layout/Sidebar/OpenSidebarButton'
+import { getLayout } from '../../../components/layout/SiteLayout'
 import { useDeleteUserMutation, User } from '../../../graphql/types.generated'
 import prisma from '../../../lib/prisma'
 import { AuthPage } from '../../../types/page'
@@ -7,18 +7,16 @@ import { getSession, Session, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import * as AlertDialog from '@radix-ui/react-alert-dialog'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
-import { ReactElement, useState } from 'react'
+import { Dispatch, ReactElement, SetStateAction, useState } from 'react'
 import { ArrowLeft, Menu } from 'react-feather'
 import { toast } from 'react-hot-toast'
 
 interface SettingsPageProps {
   viewer: User
-  isSidebarHidden: boolean
-  setIsSidebarHidden: (isSidebarHidden: boolean) => void
 }
 
 const SettingsPage = withPageAuthRequired((props: SettingsPageProps) => {
-  const { viewer, isSidebarHidden, setIsSidebarHidden } = props
+  const { viewer } = props
   const [deleteUser] = useDeleteUserMutation()
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -54,10 +52,7 @@ const SettingsPage = withPageAuthRequired((props: SettingsPageProps) => {
         title="Settings"
       />
       <span className="mt-32 flex flex-col items-start space-y-3 px-9">
-        <OpenSidebarButton
-          isSidebarHidden={isSidebarHidden}
-          setIsSidebarHidden={setIsSidebarHidden}
-        />
+        <OpenSidebarButton />
         <h1 className="h-2xl font-bold">Account</h1>
         <Link href="/api/auth/logout" passHref>
           <a className="animate-hover-grow rounded-md border-[1px] border-neutral-300 px-3 py-2 shadow-sm ">

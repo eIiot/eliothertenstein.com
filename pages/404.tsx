@@ -1,5 +1,5 @@
-import ErrorNotFound from '../components/ErrorNotFound'
-import { getLayout } from '../components/layouts/SiteLayout'
+import ErrorNotFound from '../components/elements/ErrorNotFound'
+import { getLayout } from '../components/layout/SiteLayout'
 
 const NotFound = () => {
   return <ErrorNotFound />

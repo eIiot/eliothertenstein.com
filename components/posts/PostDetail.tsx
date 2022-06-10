@@ -1,17 +1,17 @@
 import CommentBar from './comments/CommentBar'
 import CommentsList from './comments/CommentsList'
-import postStyles from './PostStyles'
+import postStyles from './EditorJS/PostStyles'
+import ChecklistRenderer from './EditorJS/renderers/ChecklistRenderer'
+import CodeBlockRenderer from './EditorJS/renderers/CodeBlockRenderer'
+import HeaderRenderer from './EditorJS/renderers/HeaderRenderer'
 import PostTitleBar from './PostTitleBar'
-import ChecklistRenderer from './renderers/ChecklistRenderer'
-import CodeBlockRenderer from './renderers/CodeBlockRenderer'
-import HeaderRenderer from './renderers/HeaderRenderer'
 import {
   Post,
   useCreateCommentMutation,
   User,
 } from '../../graphql/types.generated'
 import client from '../../lib/apollo'
-import ScrollBar from '../Scrollbar'
+import ScrollBar from '../elements/Scrollbar'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import Blocks from 'editorjs-blocks-react-renderer'
 import { useElementScroll } from 'framer-motion'

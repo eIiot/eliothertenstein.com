@@ -12,4 +12,18 @@ module.exports = {
       },
     ]
   },
+  async redirects() {
+    return [
+      {
+        source: '/math',
+        destination: 'https://eiiot.github.io/math/',
+        permanent: true,
+      },
+      {
+        source: '/scripts',
+        destination: 'https://eiiot.github.io/scripts/',
+        permanent: true,
+      },
+    ]
+  },
 }

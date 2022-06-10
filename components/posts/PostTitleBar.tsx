@@ -1,6 +1,7 @@
 // user framer-motion to scroll the div onto screen after we've scrolled for 100 pixels
 
-import { useGetViewerQuery } from '../../graphql/types.generated'
+import useShadowTransform from '../../hooks/animations/useShadowTransform'
+import { useViewer } from '../providers/ViewerProvider'
 import {
   motion,
   MotionValue,
@@ -25,14 +26,11 @@ const PostTitleBar = (props: PostTitleBarProps) => {
     data: viewerData,
     loading: viewerLoading,
     error: viewerError,
-  } = useGetViewerQuery()
+  } = useViewer()
 
   const Router = useRouter()
 
-  const shadow = useTransform(
-    useTransform(scrollY, [0, 100], [0, 5]),
-    (p) => `0px ${p}px 3px -3px rgba(0, 0, 0, 0.1)`
-  )
+  const shadow = useShadowTransform(scrollY)
 
   const transform = useTransform(
     useTransform(scrollY, [50, 100], [40, 0]),
@@ -43,7 +41,7 @@ const PostTitleBar = (props: PostTitleBarProps) => {
 
   return (
     <motion.div
-      className="absolute top-0 z-20 flex w-full items-center justify-start bg-white/80 p-3 backdrop-blur-lg backdrop-saturate-200"
+      className="absolute top-0 z-10 flex w-full items-center justify-start bg-white/80 p-3 backdrop-blur-lg backdrop-saturate-200"
       style={{
         boxShadow: shadow,
       }}

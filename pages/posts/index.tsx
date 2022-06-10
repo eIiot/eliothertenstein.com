@@ -1,6 +1,6 @@
-import { getLayout } from '../../components/layouts/SiteLayout'
+import { getLayout } from '../../components/layout/SiteLayout'
+import ListView from '../../components/layout/views/ListView'
 import PostsList from '../../components/posts/PostsList'
-import ListView from '../../components/views/ListView'
 import { User } from '../../graphql/types.generated'
 import prisma from '../../lib/prisma'
 import { getServerSidePropsWrapper, getSession } from '@auth0/nextjs-auth0'
@@ -59,7 +59,6 @@ export const getServerSideProps: GetServerSideProps = getServerSidePropsWrapper(
 
 PostsPage.getLayout = (page: ReactElement) =>
   getLayout(
-    // @ts-expect-error UNFIXED: PostList props are added within the ListView component
     <ListView list={<PostsList />} showDetail={false}>
       {page}
     </ListView>

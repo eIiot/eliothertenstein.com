@@ -1,5 +1,5 @@
 import { useCreateCommentMutation } from '../../../graphql/types.generated'
-import Loader from '../../effects/Loader'
+import Loader from '../../animations/Loader'
 import { useCallback, useRef, useState } from 'react'
 import { MessageCircle, Send } from 'react-feather'
 
