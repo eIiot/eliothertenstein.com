@@ -88,7 +88,7 @@ const Home = () => {
                 </div>
                 {mapZoom > 2 && (
                   <button
-                    className="absolute bottom-0 left-0 m-2 rounded-full bg-white p-2 text-sm "
+                    className="animate-hover-grow absolute bottom-0 left-0 m-2 rounded-full bg-white p-2 text-sm "
                     onClick={() => setMapZoom(mapZoom - 3)}
                     type="button"
                   >
@@ -97,7 +97,7 @@ const Home = () => {
                 )}
                 {mapZoom < 10 && (
                   <button
-                    className="absolute bottom-0 right-0 m-2 rounded-full bg-white p-2 text-sm"
+                    className="animate-hover-grow absolute bottom-0 right-0 m-2 rounded-full bg-white p-2 text-sm"
                     onClick={() => setMapZoom(mapZoom + 3)}
                     type="button"
                   >
