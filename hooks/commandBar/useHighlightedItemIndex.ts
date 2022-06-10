@@ -20,7 +20,7 @@ const useHighlightedItemIndex = (itemsRef: RefObject<HTMLDivElement>) => {
 
       highlightedItem &&
         highlightedItem.scrollIntoView({
-          behavior: 'smooth',
+          // behavior: 'smooth',
           block: 'center',
         })
 
