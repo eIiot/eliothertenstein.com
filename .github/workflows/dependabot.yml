@@ -7,3 +7,9 @@ updates:
     open-pull-requests-limit: 1
     assignees:
       - eiiot
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      # Check for updates to GitHub Actions every weekday
+      interval: 'daily'
