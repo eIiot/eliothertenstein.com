@@ -1,9 +1,7 @@
 import { useGetPostQuery } from '../../../graphql/types.generated'
 import OpenSidebarButton from '../../layout/Sidebar/OpenSidebarButton'
-import { useSidebarControl } from '../../providers/SidebarControlProvider'
 import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
-import { Dispatch, SetStateAction } from 'react'
 
 const EditorJSPostEditor = dynamic(() => import('./EditorJSPostEditor'), {
   ssr: false,

@@ -5,19 +5,29 @@ import {
   useGetCommentsQuery,
   User,
 } from '../../../graphql/types.generated'
+import { useViewer } from '../../providers/ViewerProvider'
 
 interface CommentsDetailProps {
   postId: string
-  viewer: User | null
   inViewRef: (node: Element | null) => void
 }
 
 const CommentsList = (props: CommentsDetailProps) => {
-  const { postId, viewer, inViewRef } = props
+  const { postId, inViewRef } = props
 
-  // get comments from the post slug
+  const {
+    data: viewerData,
+    loading: viewerLoading,
+    error: viewerError,
+  } = useViewer()
 
-  const { data, loading, error } = useGetCommentsQuery({
+  const viewer = viewerData?.viewer
+
+  const {
+    data: commentsData,
+    loading: commentsLoading,
+    error: commentsError,
+  } = useGetCommentsQuery({
     variables: {
       postId,
     },
@@ -32,9 +42,11 @@ const CommentsList = (props: CommentsDetailProps) => {
       }
       ref={inViewRef}
     >
-      {!loading ? (
-        data && data.comments && data.comments.length > 0 ? (
-          data.comments.map((comment) => (
+      {!commentsLoading ? (
+        commentsData &&
+        commentsData.comments &&
+        commentsData.comments.length > 0 ? (
+          commentsData.comments.map((comment) => (
             // @ts-expect-error, it thinks the comment will be null for some reason
             <CommentDetail comment={comment} key={comment.id} viewer={viewer} />
           ))
