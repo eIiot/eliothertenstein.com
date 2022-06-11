@@ -12,6 +12,7 @@ import {
 } from '../../graphql/types.generated'
 import client from '../../lib/apollo'
 import ScrollBar from '../elements/Scrollbar'
+import { useViewer } from '../providers/ViewerProvider'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import Blocks from 'editorjs-blocks-react-renderer'
 import { useElementScroll } from 'framer-motion'
@@ -23,13 +24,21 @@ import { useInView } from 'react-intersection-observer'
 // get post by slug from Prisma using serverSideProp
 
 interface PostDetailProps {
-  slug: string
-  viewer: User | null
   post: Post
 }
 
 const PostDetail = (props: PostDetailProps) => {
-  const { slug, viewer, post } = props
+  const { post } = props
+
+  const {
+    data: viewerData,
+    loading: viewerLoading,
+    error: viewerError,
+  } = useViewer()
+
+  const postText = useRef<HTMLDivElement>(null)
+
+  const viewer = viewerData?.viewer
 
   const postScrollRef = useRef<HTMLDivElement>(null)
 
@@ -47,8 +56,19 @@ const PostDetail = (props: PostDetailProps) => {
 
   const [isSending, setIsSending] = useState(false)
 
+  useEffect(() => {
+    if (postText.current) {
+      const links = postText.current.getElementsByTagName('a')
+      for (let link of links) {
+        link.setAttribute('target', '_blank')
+        link.setAttribute('rel', 'noopener')
+        link.setAttribute('aria-label', 'External link (opens in new tab)')
+      }
+    }
+  }, [postText])
+
   const handleCommentSubmit = useCallback(
-    (event, viewer: User, data) => {
+    (event) => {
       event.preventDefault()
       const content = event.target.elements.content.value
       if (
@@ -119,7 +139,7 @@ const PostDetail = (props: PostDetailProps) => {
         />
         {viewer && !viewer.isBlocked && (
           <CommentBar
-            handleSubmit={(event) => handleCommentSubmit(event, viewer, post)}
+            handleSubmit={(event) => handleCommentSubmit(event)}
             inView={commentsInView}
             isSending={isSending}
             scrollToComments={() => {
@@ -141,7 +161,7 @@ const PostDetail = (props: PostDetailProps) => {
             {wordCount(post.content)} words /{' '}
             {readingTime(wordCount(post.content))} min read
           </p>
-          <div className="post-text">
+          <div className="post-text" ref={postText}>
             <Blocks
               config={postStyles}
               data={JSON.parse(post.content)}
@@ -153,11 +173,7 @@ const PostDetail = (props: PostDetailProps) => {
             />
           </div>
         </div>
-        <CommentsList
-          inViewRef={commentsInViewRef}
-          postId={post.id}
-          viewer={viewer}
-        />
+        <CommentsList inViewRef={commentsInViewRef} postId={post.id} />
       </ScrollArea.Viewport>
       <ScrollBar />
     </ScrollArea.Root>
