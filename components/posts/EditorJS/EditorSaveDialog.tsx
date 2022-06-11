@@ -1,7 +1,7 @@
 import { Post } from '../../../graphql/types.generated'
 import * as Dialog from '@radix-ui/react-dialog'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import toast from 'react-hot-toast'
+import { toast } from 'react-hot-toast'
 
 interface EditorSaveDialogProps {
   onOpenChange: (open: boolean) => void
@@ -39,7 +39,6 @@ const EditorSaveDialog = (props: EditorSaveDialogProps) => {
                   draft: false,
                 }}
                 onSubmit={(values, { setSubmitting }) => {
-                  console.log(values)
                   handleSave(values)
                     .then(() => {
                       toast.success(values.draft ? 'Saved!' : 'Published!')
@@ -65,7 +64,13 @@ const EditorSaveDialog = (props: EditorSaveDialogProps) => {
                     errors.title = 'Required'
                   }
 
-                  if (!values.slug) {
+                  // make sure slug can be used as a URL
+                  const slug = values.slug
+                    .toLowerCase()
+                    .replace(/ /g, '-')
+                    .replace(/[^a-z0-9-]/g, '')
+
+                  if (!slug) {
                     errors.slug = 'Required'
                   }
 
