@@ -35,7 +35,7 @@ const CommentBar = (props: CommentBarProps) => {
 
   return (
     <form
-      className="absolute right-0 bottom-0 m-3 flex flex-row overflow-y-auto overflow-x-hidden rounded-lg bg-white text-black ring-2 ring-black drop-shadow-lg duration-200"
+      className="absolute right-0 bottom-0 m-3 flex flex-row overflow-y-auto overflow-x-hidden rounded-md bg-white text-black ring-2 ring-black drop-shadow-lg duration-200"
       onSubmit={handleSubmit}
       ref={formRef}
       style={
