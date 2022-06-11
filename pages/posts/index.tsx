@@ -7,16 +7,8 @@ import { getServerSidePropsWrapper, getSession } from '@auth0/nextjs-auth0'
 import { Role } from '@prisma/client'
 import { GetServerSideProps } from 'next'
 import { NextSeo } from 'next-seo'
-import Link from 'next/link'
 import { ReactElement } from 'react'
-import { Edit } from 'react-feather'
-
-interface PostsPageProps {
-  viewer: User
-}
-
-const PostsPage = (props: PostsPageProps) => {
-  const { viewer } = props
+const PostsPage = () => {
   return (
     <NextSeo
       description="Here's some of the writing I've done over the years, mostly about projects I'm working on"
@@ -24,38 +16,6 @@ const PostsPage = (props: PostsPageProps) => {
     />
   )
 }
-
-export const getServerSideProps: GetServerSideProps = getServerSidePropsWrapper(
-  async (ctx) => {
-    const session = getSession(ctx.req, ctx.res)
-
-    if (!session) {
-      return {
-        props: {
-          viewer: null,
-        },
-      }
-    }
-
-    const { user: viewer } = session
-
-    const user = await prisma.user.findUnique({
-      where: { id: viewer?.sub },
-    })
-
-    const isAdmin = user?.role === Role.ADMIN
-    const isBlocked = user?.role === Role.BLOCKED
-    return {
-      props: {
-        viewer: {
-          ...viewer,
-          isAdmin,
-          isBlocked,
-        },
-      },
-    }
-  }
-)
 
 PostsPage.getLayout = (page: ReactElement) =>
   getLayout(
