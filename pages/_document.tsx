@@ -9,6 +9,7 @@ const Document = () => {
           defer
           src="https://analytics.eliothertenstein.com/js/plausible.js"
         />
+        <link href="favicon.svg" rel="icon" type="image/svg+xml" />
       </Head>
       <body>
         <Main />
